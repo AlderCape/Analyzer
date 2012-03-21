@@ -1,0 +1,105 @@
+<project name="Economics" default="build-all" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property name="lib.dir" value="lib" />
+	
+    <property name="build.dir" value="build" />
+    <property name="build.prod.dir" value="${build.dir}/prod" />
+    <property name="src.prod.dir" value="src" />
+    <property name="src.test.dir" value="test" />
+    <property name="build.test.dir" value="${build.dir}/test" />
+
+    <property name="build.doc.dir" value="build/doc" />
+    <property name="junit.report.dir" value="${build.doc.dir}/junit" />
+
+    <!-- paths used for compilation and run  -->
+    <path id="lib.path.id">
+        <fileset dir="${lib.dir}" />
+	</path>
+    <path id="run.path.id">
+        <path refid="lib.path.id" />
+        <path location="${build.prod.dir}" />
+    </path>
+    
+    <path id="test.path.id">
+        <path refid="lib.path.id" />
+        <path location="${build.prod.dir}" />
+    </path>
+    <path id="run.test.classpath">
+        <path refid="test.path.id" />
+        <path location="${build.test.dir}" />
+    </path>
+	
+    
+    <!-- ================================= 
+          target: resolve              
+         ================================= -->
+    <target name="resolve" description="--> retreive dependencies with ivy">
+        <ivy:retrieve/>
+    </target>    
+    
+    <!-- ================================= 
+          target: report              
+         ================================= -->
+    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+        <ivy:report todir="${build.doc.dir}" dot="true"/>
+    </target>
+
+    <!-- ================================= 
+          target: run
+         ================================= -->
+    <target name="compile-prod" depends="resolve" description="--> compile and run the project">
+        <mkdir dir="${build.prod.dir}" />
+        <javac srcdir="${src.prod.dir}" destdir="${build.prod.dir}" classpathref="lib.path.id" />
+    </target>
+
+    <target name="compile-test" depends="compile-prod" description="--> compile the tests">
+        <mkdir dir="${build.test.dir}" />
+        <javac srcdir="${src.test.dir}" destdir="${build.test.dir}" classpathref="test.path.id" />
+    </target>
+	
+	<target name="run-tests" depends="compile-test">
+		<delete dir="${junit.report.dir}"/>
+		<mkdir dir="${junit.report.dir}"/>
+		<junit printsummary="yes" failureproperty="junit.error" haltonfailure="false">
+			<classpath>
+		    	<path refid="run.test.classpath"/>
+			</classpath>
+		            
+		    <formatter type="xml"/>
+		            
+		    <batchtest fork="yes" todir="${junit.report.dir}">
+		     	<fileset dir="${src.test.dir}" includes="**/*Test.java" excludes="**/__*.java"/>
+		    </batchtest>
+		</junit>
+		<junitreport todir="${junit.report.dir}">
+		  <fileset dir="${junit.report.dir}">
+		    <include name="TEST-*.xml"/>
+		  </fileset>
+		  <report format="frames" todir="${junit.report.dir}"/>
+		</junitreport>
+		<fail message="jUnit tests faild" if="junit.error" />
+	</target>
+
+    <target name="build-all" depends="compile-prod, compile-test, run-tests" description="--> compile the project">
+        <mkdir dir="${build.prod.dir}" />
+        <javac srcdir="${src.prod.dir}" destdir="${build.prod.dir}" classpathref="lib.path.id" />
+    </target>
+
+    <!-- ================================= 
+          target: clean              
+         ================================= -->
+    <target name="clean" description="--> clean the project">
+        <delete includeemptydirs="true">
+            <fileset dir="${basedir}">
+              <include name="${build.dir}/**" />
+        	</fileset>
+    	</delete>
+    </target>
+	
+    <!-- ================================= 
+          target: clean-cache              
+         ================================= -->
+	<target name="clean-cache" description="--> clean the ivy cache">
+		<ivy:cleancache />
+	</target>
+	
+</project>

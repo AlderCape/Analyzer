@@ -1,0 +1,14 @@
+<ivy-module version="2.0">
+    <info organisation="AlderCape" module="Economics" status="integration" />
+    <configurations>
+        <conf name="build"  description="build dependancies"/>
+        <conf name="runtime" description="runtime dependancies"/>
+        <conf name="junit" extends="build, runtime" description="junit dependances"/>
+        <conf name="mysql" description="mysql dependances"/>
+        <conf name="cobertura" description="cobertura dependances"/>
+        <conf name="findbugs" description="findbugs dependances"/>
+    </configurations>
+    <dependencies defaultconfmapping="*->default,sources">
+        <dependency org="junit" name="junit" rev="4.8.2" conf="build" />
+    </dependencies>
+</ivy-module>
