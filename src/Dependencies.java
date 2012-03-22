@@ -14,6 +14,9 @@ public class Dependencies {
 		report.addClass(parser.parse());
 
 		DotOutputFormat output = new DotOutputFormat();
-		output.write(report, new FileWriter("project.dot"));
+		FileWriter writer = new FileWriter("project.dot");
+		output.write(report, writer);
+		writer.flush();
+		writer.close();
 	}
 }

@@ -67,4 +67,17 @@ public class JavaClassTest {
 		assertEquals(expected, info.getPackageDependencies());
 	}
 
+	@Test
+	public void fieldsAreIncluded() {
+		JavaClass info = new JavaClass(0, 0, 0);
+		info.setClassName("testpackage.TestClass");
+
+		List<FieldInfo> fields = new ArrayList<>();
+		fields.add(new FieldInfo(0, "str", "java.lang.String"));
+		info.setFields(fields);
+		Set<PackageInfo> expected = new HashSet<>();
+		expected.add(new PackageInfo("java.lang"));
+		assertEquals(expected, info.getPackageDependencies());
+	}
+
 }

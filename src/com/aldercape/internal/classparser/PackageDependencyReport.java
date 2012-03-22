@@ -13,23 +13,31 @@ public class PackageDependencyReport {
 	private Map<PackageInfo, SortedSet<PackageInfo>> efferent = new HashMap<>();
 	private Map<PackageInfo, SortedSet<PackageInfo>> afferent = new HashMap<>();
 
-	public void addClass(JavaClass info) {
+	public void addClass(ClassInfo info) {
 		packages.add(info.getPackage());
 		Set<PackageInfo> packageDependencies = info.getPackageDependencies();
 		for (PackageInfo packageInfo : packageDependencies) {
 			packages.add(packageInfo);
 		}
-		if (!efferent.containsKey(info.getPackage())) {
-			efferent.put(info.getPackage(), new TreeSet<PackageInfo>());
-		}
-		efferent.get(info.getPackage()).addAll(packageDependencies);
+		efferentFor(info.getPackage()).addAll(packageDependencies);
 
 		for (PackageInfo packageName : packageDependencies) {
-			if (!afferent.containsKey(packageName.getName())) {
-				afferent.put(packageName, new TreeSet<PackageInfo>());
-			}
-			afferent.get(packageName).add(info.getPackage());
+			afferentFor(packageName).add(info.getPackage());
 		}
+	}
+
+	protected SortedSet<PackageInfo> afferentFor(PackageInfo packageName) {
+		if (!afferent.containsKey(packageName.getName())) {
+			afferent.put(packageName, new TreeSet<PackageInfo>());
+		}
+		return afferent.get(packageName);
+	}
+
+	protected SortedSet<PackageInfo> efferentFor(PackageInfo packageInfo) {
+		if (!efferent.containsKey(packageInfo)) {
+			efferent.put(packageInfo, new TreeSet<PackageInfo>());
+		}
+		return efferent.get(packageInfo);
 	}
 
 	public SortedSet<PackageInfo> getPackages() {
@@ -37,7 +45,7 @@ public class PackageDependencyReport {
 	}
 
 	public SortedSet<PackageInfo> getEfferentFor(PackageInfo packageName) {
-		return Collections.unmodifiableSortedSet(efferent.get(packageName));
+		return Collections.unmodifiableSortedSet(efferentFor(packageName));
 	}
 
 	public SortedSet<PackageInfo> getAfferentFor(PackageInfo packageName) {

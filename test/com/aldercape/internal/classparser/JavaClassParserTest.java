@@ -7,6 +7,7 @@ import java.io.File;
 import org.junit.Test;
 
 import testdata.ClassWithAllPrimitivesInOneConstructor;
+import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;
 import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
@@ -88,5 +89,14 @@ public class JavaClassParserTest {
 		assertEquals(Float.class.getName(), result.getMethod(0).getParameterType(5));
 		assertEquals(Character.class.getName(), result.getMethod(0).getParameterType(6));
 		assertEquals(Boolean.class.getName(), result.getMethod(0).getParameterType(7));
+	}
+
+	@Test
+	public void parsesClassWithOneField() {
+		JavaClass result = new JavaClassParser(ClassWithOneField.class.getName()).parse();
+		assertEquals(1, result.getMethodsCount());
+		assertEquals("<init>", result.getMethod(0).getName());
+		assertEquals(1, result.getFieldsCount());
+		assertEquals(String.class.getName(), result.getField(0).getType());
 	}
 }

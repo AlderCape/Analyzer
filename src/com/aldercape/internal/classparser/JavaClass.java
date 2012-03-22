@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class JavaClass {
+public class JavaClass implements ClassInfo {
 
 	private int magic;
 	private int minor;
@@ -18,7 +18,8 @@ public class JavaClass {
 	private int fieldsCount;
 	private int methodsCount;
 	private int attributesCount;
-	private List<MethodInfo> methods;
+	private List<FieldInfo> fields = new ArrayList<>();
+	private List<MethodInfo> methods = new ArrayList<>();
 	private PackageInfo classPackage;
 
 	public JavaClass(int magic, int minor, int major) {
@@ -65,6 +66,7 @@ public class JavaClass {
 
 	public void setClassName(String className) {
 		this.className = className;
+		classPackage = new PackageInfo(className.substring(0, className.lastIndexOf('.')));
 	}
 
 	public String getSuperclassName() {
@@ -107,6 +109,14 @@ public class JavaClass {
 		this.attributesCount = attributesCount;
 	}
 
+	public FieldInfo getField(int i) {
+		return fields.get(i);
+	}
+
+	public void setFields(List<FieldInfo> fields) {
+		this.fields = new ArrayList<>(fields);
+	}
+
 	public MethodInfo getMethod(int i) {
 		return methods.get(i);
 	}
@@ -117,6 +127,10 @@ public class JavaClass {
 
 	public Set<PackageInfo> getPackageDependencies() {
 		Set<PackageInfo> result = new HashSet<>();
+		for (FieldInfo field : fields) {
+			PackageInfo packageInfo = field.getDependentPackage();
+			result.add(packageInfo);
+		}
 		for (MethodInfo method : methods) {
 			Set<PackageInfo> dependentPackages = method.getDependentPackages();
 			for (PackageInfo packageInfo : dependentPackages) {
@@ -128,7 +142,7 @@ public class JavaClass {
 	}
 
 	private PackageInfo getPackage(String className) {
-		return new PackageInfo(className.substring(0, className.lastIndexOf('.')));
+		return classPackage;
 	}
 
 	public PackageInfo getPackage() {

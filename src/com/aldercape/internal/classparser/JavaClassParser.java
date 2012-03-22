@@ -52,7 +52,25 @@ public class JavaClassParser {
 			builder.setClassNameIndex(in.readUnsignedShort());
 			builder.setSuperclassNameIndex(in.readUnsignedShort());
 			builder.setInterfaceCount(in.readUnsignedShort());
-			builder.setFieldsCount(in.readUnsignedShort());
+			int fieldsCount = in.readUnsignedShort();
+			builder.setFieldsCount(fieldsCount);
+			for (int i = 0; i < fieldsCount; i++) {
+				int accessFlag = in.readUnsignedShort();
+				String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
+				Constant constant = builder.getConstant(in.readUnsignedShort());
+				FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, nextTypeFromDescriptor((String) constant.getObject()));
+				int attributesCount = in.readUnsignedShort();
+				for (int j = 0; j < attributesCount; j++) {
+					in.readUnsignedShort();
+					int attributeLength = in.readInt();
+					for (int k = 0; k < attributeLength; k++) {
+						in.readByte();
+					}
+				}
+				builder.addFieldInfo(fieldInfo);
+
+			}
+
 			int methodsCount = in.readUnsignedShort();
 			builder.setMethodsCount(methodsCount);
 			for (int i = 0; i < methodsCount; i++) {
@@ -86,45 +104,41 @@ public class JavaClassParser {
 	List<String> populateMethodParameters(String descriptor) {
 		String parameterValue = descriptor.substring(descriptor.indexOf('(') + 1, descriptor.indexOf(')'));
 		List<String> parameters = new ArrayList<>();
-		// For see table 4.2 in the jvm specs
-		String result;
 		while (!parameterValue.isEmpty()) {
-			int lengthToRemove = 1;
-			switch (parameterValue.charAt(0)) {
-			case 'B':
-				result = Byte.class.getName();
-				break;
-			case 'C':
-				result = Character.class.getName();
-				break;
-			case 'D':
-				result = Double.class.getName();
-				break;
-			case 'F':
-				result = Float.class.getName();
-				break;
-			case 'I':
-				result = Integer.class.getName();
-				break;
-			case 'J':
-				result = Long.class.getName();
-				break;
-			case 'L':
-				result = parameterValue.substring(1, parameterValue.indexOf(';')).replace('/', '.');
-				lengthToRemove = result.length() + 2;
-				break;
-			case 'S':
-				result = Short.class.getName();
-				break;
-			case 'Z':
-				result = Boolean.class.getName();
-				break;
-			default:
-				throw new RuntimeException("Unkown type: " + parameterValue);
-			}
-			parameterValue = parameterValue.substring(lengthToRemove);
+			String result = nextTypeFromDescriptor(parameterValue);
+			parameterValue = parameterValue.substring(isObject(parameterValue) ? 2 + result.length() : 1);
 			parameters.add(result);
 		}
 		return parameters;
+	}
+
+	protected String nextTypeFromDescriptor(String parameterValue) {
+		// For see table 4.2 in the jvm specs
+		switch (parameterValue.charAt(0)) {
+		case 'B':
+			return Byte.class.getName();
+		case 'C':
+			return Character.class.getName();
+		case 'D':
+			return Double.class.getName();
+		case 'F':
+			return Float.class.getName();
+		case 'I':
+			return Integer.class.getName();
+		case 'J':
+			return Long.class.getName();
+		case 'L':
+			return parameterValue.substring(1, parameterValue.indexOf(';')).replace('/', '.');
+		case 'S':
+			return Short.class.getName();
+		case 'Z':
+			return Boolean.class.getName();
+		default:
+			throw new RuntimeException("Unkown type: " + parameterValue);
+		}
+	}
+
+	private boolean isObject(String parameterValue) {
+		return parameterValue.charAt(0) == 'L';
 	}
 }
