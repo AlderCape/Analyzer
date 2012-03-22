@@ -1,4 +1,4 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.reports;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import com.aldercape.internal.analyzer.ClassInfo;
+import com.aldercape.internal.analyzer.PackageInfo;
 
 public class PackageDependencyReport {
 

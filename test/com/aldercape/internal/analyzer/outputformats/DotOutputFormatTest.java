@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer.outputformats;
 
 import static org.junit.Assert.*;
 
@@ -9,9 +9,9 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.DotOutputFormat;
-import com.aldercape.internal.analyzer.PackageDependencyReport;
 import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
+import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class DotOutputFormatTest {
 

@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer.javaclass;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,8 @@ import java.io.File;
 
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.JavaClass;
-import com.aldercape.internal.analyzer.JavaClassParser;
+import com.aldercape.internal.analyzer.javaclass.JavaClass;
+import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 
 import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithOneField;

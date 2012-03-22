@@ -1,8 +1,11 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.outputformats;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.SortedSet;
+
+import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class DotOutputFormat {
 

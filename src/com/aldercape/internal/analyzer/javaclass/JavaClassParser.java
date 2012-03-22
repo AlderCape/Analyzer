@@ -1,4 +1,4 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.javaclass;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aldercape.internal.analyzer.FieldInfo;
+import com.aldercape.internal.analyzer.MethodInfo;
 
 public class JavaClassParser {
 

@@ -1,7 +1,10 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.javaclass;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aldercape.internal.analyzer.FieldInfo;
+import com.aldercape.internal.analyzer.MethodInfo;
 
 public class JavaClassBuilder {
 

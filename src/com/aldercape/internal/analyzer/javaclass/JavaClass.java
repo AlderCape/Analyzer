@@ -1,9 +1,14 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.javaclass;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.aldercape.internal.analyzer.ClassInfo;
+import com.aldercape.internal.analyzer.FieldInfo;
+import com.aldercape.internal.analyzer.MethodInfo;
+import com.aldercape.internal.analyzer.PackageInfo;
 
 public class JavaClass implements ClassInfo {
 

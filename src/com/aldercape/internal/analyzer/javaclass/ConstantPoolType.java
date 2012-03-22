@@ -1,7 +1,8 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.javaclass;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+
 
 enum ConstantPoolType {
 	Class(7) {

@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer;
 
 import static org.junit.Assert.*;
 

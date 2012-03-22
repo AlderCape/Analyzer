@@ -1,4 +1,5 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.javaclass;
+
 
 public class Constant {
 

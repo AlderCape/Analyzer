@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer.javaclass;
 
 import static org.junit.Assert.*;
 
@@ -11,9 +11,9 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.FieldInfo;
-import com.aldercape.internal.analyzer.JavaClass;
 import com.aldercape.internal.analyzer.MethodInfo;
 import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.javaclass.JavaClass;
 
 public class JavaClassTest {
 

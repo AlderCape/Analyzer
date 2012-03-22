@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer.reports;
 
 import static org.junit.Assert.*;
 
@@ -11,10 +11,10 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.JavaClass;
 import com.aldercape.internal.analyzer.MethodInfo;
-import com.aldercape.internal.analyzer.PackageDependencyReport;
 import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.javaclass.JavaClass;
+import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class PackageDependencyReportTest {
 
