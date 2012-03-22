@@ -3,6 +3,7 @@ package com.aldercape.internal.analyzer.javaclass;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,10 @@ public class JavaClassParser {
 
 	public JavaClassParser(String name) {
 		className = name;
+	}
+
+	public JavaClassParser(File file) throws FileNotFoundException {
+		parse(new FileInputStream(file));
 	}
 
 	public static File convertToFile(String name) {
@@ -32,11 +37,16 @@ public class JavaClassParser {
 
 	public JavaClass parse() {
 		try {
-			return parse(new DataInputStream(new FileInputStream(convertToFile(className))));
+			FileInputStream in = new FileInputStream(convertToFile(className));
+			return parse(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public JavaClass parse(FileInputStream in) {
+		return parse(new DataInputStream(in));
 	}
 
 	private JavaClass parse(DataInputStream in) {
