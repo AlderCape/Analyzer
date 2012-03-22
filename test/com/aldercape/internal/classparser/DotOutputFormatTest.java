@@ -9,6 +9,10 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.DotOutputFormat;
+import com.aldercape.internal.analyzer.PackageDependencyReport;
+import com.aldercape.internal.analyzer.PackageInfo;
+
 public class DotOutputFormatTest {
 
 	@Test

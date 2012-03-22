@@ -6,6 +6,9 @@ import java.io.File;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.JavaClass;
+import com.aldercape.internal.analyzer.JavaClassParser;
+
 import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;

@@ -10,6 +10,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.MethodInfo;
+import com.aldercape.internal.analyzer.PackageInfo;
+
 public class MethodInfoTest {
 
 	@Test

@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

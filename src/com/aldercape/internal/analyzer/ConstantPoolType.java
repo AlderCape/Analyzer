@@ -1,4 +1,4 @@
-package com.aldercape.internal.classparser;
+package com.aldercape.internal.analyzer;
 
 import java.io.DataInputStream;
 import java.io.IOException;

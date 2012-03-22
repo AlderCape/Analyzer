@@ -11,6 +11,11 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.JavaClass;
+import com.aldercape.internal.analyzer.MethodInfo;
+import com.aldercape.internal.analyzer.PackageDependencyReport;
+import com.aldercape.internal.analyzer.PackageInfo;
+
 public class PackageDependencyReportTest {
 
 	@Test

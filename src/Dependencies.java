@@ -1,10 +1,10 @@
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.aldercape.internal.classparser.DotOutputFormat;
-import com.aldercape.internal.classparser.JavaClass;
-import com.aldercape.internal.classparser.JavaClassParser;
-import com.aldercape.internal.classparser.PackageDependencyReport;
+import com.aldercape.internal.analyzer.DotOutputFormat;
+import com.aldercape.internal.analyzer.JavaClass;
+import com.aldercape.internal.analyzer.JavaClassParser;
+import com.aldercape.internal.analyzer.PackageDependencyReport;
 
 public class Dependencies {
 
