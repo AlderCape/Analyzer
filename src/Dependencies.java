@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
@@ -17,8 +16,8 @@ public class Dependencies {
 		Set<File> classFiles = classFinder.getClassFilesIn(new File("bin"));
 		for (File file : classFiles) {
 			try {
-				JavaClassParser parser = new JavaClassParser("");
-				report.addClass(parser.parse(new FileInputStream(file)));
+				JavaClassParser parser = new JavaClassParser();
+				report.addClass(parser.parse(file));
 			} catch (Exception e) {
 				System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");
 			}

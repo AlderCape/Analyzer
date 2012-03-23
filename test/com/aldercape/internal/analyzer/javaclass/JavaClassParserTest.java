@@ -28,8 +28,8 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesEmptyClass() {
-		JavaClass result = new JavaClassParser(EmptyClass.class.getName()).parse();
+	public void parsesEmptyClass() throws Exception {
+		JavaClass result = new JavaClassParser().parse(EmptyClass.class.getName());
 		assertEquals(0xcafebabe, result.getMagic());
 		assertEquals(0, result.getMinor());
 		assertEquals(51, result.getMajor());
@@ -45,8 +45,8 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesEmptyInterface() {
-		JavaClass result = new JavaClassParser(EmptyInterface.class.getName()).parse();
+	public void parsesEmptyInterface() throws Exception {
+		JavaClass result = new JavaClassParser().parse(EmptyInterface.class.getName());
 		assertEquals(0xcafebabe, result.getMagic());
 		assertEquals(0, result.getMinor());
 		assertEquals(51, result.getMajor());
@@ -61,16 +61,16 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesClassWithOneMethod() {
-		JavaClass result = new JavaClassParser(ClassWithOneMethod.class.getName()).parse();
+	public void parsesClassWithOneMethod() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithOneMethod.class.getName());
 		assertEquals(2, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals("test", result.getMethod(1).getName());
 	}
 
 	@Test
-	public void parsesClassWithTwoConstructors() {
-		JavaClass result = new JavaClassParser(ClassWithTwoConstructors.class.getName()).parse();
+	public void parsesClassWithTwoConstructors() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithTwoConstructors.class.getName());
 		assertEquals(2, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(0, result.getMethod(0).getParameterCount());
@@ -81,8 +81,8 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesClassWithAllPrimitivesInOneConstructor() {
-		JavaClass result = new JavaClassParser(ClassWithAllPrimitivesInOneConstructor.class.getName()).parse();
+	public void parsesClassWithAllPrimitivesInOneConstructor() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithAllPrimitivesInOneConstructor.class.getName());
 		assertEquals(1, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(8, result.getMethod(0).getParameterCount());
@@ -97,8 +97,8 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesClassWithOneField() {
-		JavaClass result = new JavaClassParser(ClassWithOneField.class.getName()).parse();
+	public void parsesClassWithOneField() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithOneField.class.getName());
 		assertEquals(1, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(1, result.getFieldsCount());
@@ -106,8 +106,8 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesClassWithOneInterface() {
-		JavaClass result = new JavaClassParser(ClassWithAnInterface.class.getName()).parse();
+	public void parsesClassWithOneInterface() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithAnInterface.class.getName());
 		assertEquals(1, result.getInterfaceCount());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
