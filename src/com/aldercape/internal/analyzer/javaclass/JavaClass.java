@@ -19,13 +19,11 @@ public class JavaClass implements ClassInfo {
 	private List<Constant> constantPool;
 	private String className;
 	private String superclassName;
-	private int interfaceCount;
-	private int fieldsCount;
-	private int methodsCount;
 	private int attributesCount;
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<MethodInfo> methods = new ArrayList<>();
 	private PackageInfo classPackage;
+	private List<String> interfaces = new ArrayList<>();
 
 	public JavaClass(int magic, int minor, int major) {
 		this.magic = magic;
@@ -71,7 +69,7 @@ public class JavaClass implements ClassInfo {
 
 	public void setClassName(String className) {
 		this.className = className;
-		classPackage = new PackageInfo(className.substring(0, className.lastIndexOf('.')));
+		classPackage = getPackage(getClassName());
 	}
 
 	public String getSuperclassName() {
@@ -83,27 +81,19 @@ public class JavaClass implements ClassInfo {
 	}
 
 	public int getInterfaceCount() {
-		return interfaceCount;
+		return interfaces.size();
 	}
 
-	public void setInterfaceCount(int interfaceCount) {
-		this.interfaceCount = interfaceCount;
+	public void setInterfaces(List<String> interfaces) {
+		this.interfaces = new ArrayList<>(interfaces);
 	}
 
 	public int getFieldsCount() {
-		return fieldsCount;
-	}
-
-	public void setFieldsCount(int fieldsCount) {
-		this.fieldsCount = fieldsCount;
+		return fields.size();
 	}
 
 	public int getMethodsCount() {
-		return methodsCount;
-	}
-
-	public void setMethodsCount(int methodsCount) {
-		this.methodsCount = methodsCount;
+		return methods.size();
 	}
 
 	public int getAttributesCount() {
@@ -130,8 +120,12 @@ public class JavaClass implements ClassInfo {
 		this.methods = new ArrayList<MethodInfo>(methods);
 	}
 
+	@Override
 	public Set<PackageInfo> getPackageDependencies() {
 		Set<PackageInfo> result = new HashSet<>();
+		for (String interfaceName : interfaces) {
+			result.add(getPackage(interfaceName));
+		}
 		for (FieldInfo field : fields) {
 			PackageInfo packageInfo = field.getDependentPackage();
 			result.add(packageInfo);
@@ -142,16 +136,17 @@ public class JavaClass implements ClassInfo {
 				result.add(packageInfo);
 			}
 		}
-		result.remove(getPackage(getClassName()));
+		result.remove(classPackage);
 		return result;
 	}
 
 	private PackageInfo getPackage(String className) {
-		return classPackage;
+		return new PackageInfo(className.substring(0, className.lastIndexOf('.')));
 	}
 
+	@Override
 	public PackageInfo getPackage() {
-		return getPackage(getClassName());
+		return classPackage;
 	}
 
 }

@@ -64,7 +64,14 @@ public class JavaClassParser {
 			builder.setAccessFlags(in.readUnsignedShort());
 			builder.setClassNameIndex(in.readUnsignedShort());
 			builder.setSuperclassNameIndex(in.readUnsignedShort());
-			builder.setInterfaceCount(in.readUnsignedShort());
+			int interfacesCount = in.readUnsignedShort();
+			builder.setInterfaceCount(interfacesCount);
+			for (int i = 0; i < interfacesCount; i++) {
+				int interfaceNameIndex = in.readUnsignedShort();
+				Constant constant = builder.getConstant(interfaceNameIndex);
+				String interfaceName = ((String) builder.getConstant(constant.getNameIndex()).getObject()).replace('/', '.');
+				builder.addInterfaceInfo(interfaceName);
+			}
 			int fieldsCount = in.readUnsignedShort();
 			builder.setFieldsCount(fieldsCount);
 			for (int i = 0; i < fieldsCount; i++) {

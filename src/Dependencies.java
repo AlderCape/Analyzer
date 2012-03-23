@@ -16,10 +16,11 @@ public class Dependencies {
 		PackageDependencyReport report = new PackageDependencyReport();
 		Set<File> classFiles = classFinder.getClassFilesIn(new File("bin"));
 		for (File file : classFiles) {
-			if (!file.getName().endsWith("JavaClass.class") && !file.getName().endsWith("ConstantPoolType.class") && !file.getName().endsWith("PackageInfo.class") && !file.getName().endsWith("Test.class") && !file.getName().endsWith("Dependencies.class") && !file.getName().endsWith("ClassFinder$1.class")) {
+			try {
 				JavaClassParser parser = new JavaClassParser("");
-				System.out.println("Parsing file: " + file.getAbsolutePath());
 				report.addClass(parser.parse(new FileInputStream(file)));
+			} catch (Exception e) {
+				System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");
 			}
 		}
 

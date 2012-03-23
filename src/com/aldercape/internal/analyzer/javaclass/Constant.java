@@ -1,6 +1,5 @@
 package com.aldercape.internal.analyzer.javaclass;
 
-
 public class Constant {
 
 	private ConstantPoolType type;
@@ -30,6 +29,10 @@ public class Constant {
 
 	public Object getObject() {
 		return object;
+	}
+
+	public int getNameIndex() {
+		return nameIndex;
 	}
 
 }

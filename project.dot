@@ -1,0 +1,26 @@
+digraph G {
+"com.aldercape.internal.analyzer";
+"com.aldercape.internal.analyzer.javaclass";
+"com.aldercape.internal.analyzer.outputformats";
+"com.aldercape.internal.analyzer.reports";
+"java.io";
+"java.lang";
+"java.util";
+"testdata";
+"testdata.filefinder.multiplefiles";
+"testdata.filefinder.singleclasspackage";
+"com.aldercape.internal.analyzer" -> "java.lang";
+"com.aldercape.internal.analyzer" -> "java.util";
+"com.aldercape.internal.analyzer.javaclass" -> "com.aldercape.internal.analyzer";
+"com.aldercape.internal.analyzer.javaclass" -> "java.io";
+"com.aldercape.internal.analyzer.javaclass" -> "java.lang";
+"com.aldercape.internal.analyzer.javaclass" -> "java.util";
+"com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer";
+"com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer.reports";
+"com.aldercape.internal.analyzer.outputformats" -> "java.io";
+"com.aldercape.internal.analyzer.outputformats" -> "java.lang";
+"com.aldercape.internal.analyzer.reports" -> "com.aldercape.internal.analyzer";
+"com.aldercape.internal.analyzer.reports" -> "java.util";
+"testdata" -> "java.lang";
+"testdata" -> "java.util";
+}

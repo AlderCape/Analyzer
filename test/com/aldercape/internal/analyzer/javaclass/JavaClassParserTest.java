@@ -3,18 +3,20 @@ package com.aldercape.internal.analyzer.javaclass;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.javaclass.JavaClass;
-import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
-
 import testdata.ClassWithAllPrimitivesInOneConstructor;
+import testdata.ClassWithAnInterface;
 import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;
 import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
+
+import com.aldercape.internal.analyzer.PackageInfo;
 
 public class JavaClassParserTest {
 
@@ -101,5 +103,15 @@ public class JavaClassParserTest {
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(1, result.getFieldsCount());
 		assertEquals(String.class.getName(), result.getField(0).getType());
+	}
+
+	@Test
+	public void parsesClassWithOneInterface() {
+		JavaClass result = new JavaClassParser(ClassWithAnInterface.class.getName()).parse();
+		assertEquals(1, result.getInterfaceCount());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 }
