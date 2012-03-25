@@ -149,4 +149,10 @@ public class JavaClass implements ClassInfo {
 		return classPackage;
 	}
 
+	@Override
+	public boolean isAbstract() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
