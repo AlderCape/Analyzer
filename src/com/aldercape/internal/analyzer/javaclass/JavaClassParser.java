@@ -93,7 +93,6 @@ public class JavaClassParser {
 
 	protected void createAndAddInterfaces(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int interfacesCount = in.readUnsignedShort();
-		builder.setInterfaceCount(interfacesCount);
 		for (int i = 0; i < interfacesCount; i++) {
 			int interfaceNameIndex = in.readUnsignedShort();
 			Constant constant = builder.getConstant(interfaceNameIndex);
@@ -104,7 +103,6 @@ public class JavaClassParser {
 
 	protected void createAndAddFields(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int fieldsCount = in.readUnsignedShort();
-		builder.setFieldsCount(fieldsCount);
 		for (int i = 0; i < fieldsCount; i++) {
 			int accessFlag = in.readUnsignedShort();
 			String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
@@ -125,7 +123,6 @@ public class JavaClassParser {
 
 	protected void createAndAddMethods(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int methodsCount = in.readUnsignedShort();
-		builder.setMethodsCount(methodsCount);
 		for (int i = 0; i < methodsCount; i++) {
 			MethodInfo info = createMethodInfo(in, builder);
 			int attributeCount = in.readUnsignedShort();

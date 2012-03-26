@@ -15,9 +15,6 @@ public class JavaClassBuilder {
 	private int accessFlags;
 	private int classNameIndex;
 	private int superclassNameIndex;
-	private int interfaceCount;
-	private int fieldsCount;
-	private int methodsCount;
 	private int attributesCount;
 	private List<MethodInfo> methods = new ArrayList<>();
 	private List<FieldInfo> fields = new ArrayList<>();
@@ -74,18 +71,6 @@ public class JavaClassBuilder {
 
 	public void setSuperclassNameIndex(int superclassNameIndex) {
 		this.superclassNameIndex = superclassNameIndex;
-	}
-
-	public void setInterfaceCount(int interfaceCount) {
-		this.interfaceCount = interfaceCount;
-	}
-
-	public void setFieldsCount(int fieldsCount) {
-		this.fieldsCount = fieldsCount;
-	}
-
-	public void setMethodsCount(int methodsCount) {
-		this.methodsCount = methodsCount;
 	}
 
 	public void setAttributesCount(int attributesCount) {
