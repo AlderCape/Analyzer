@@ -23,7 +23,7 @@ public class Dependencies {
 			}
 		}
 
-		DotOutputFormat output = new DotOutputFormat();
+		DotOutputFormat output = new DotOutputFormat(true);
 		FileWriter writer = new FileWriter("project.dot");
 		output.write(report, writer);
 		writer.flush();
