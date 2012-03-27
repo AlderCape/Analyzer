@@ -1,6 +1,6 @@
 package testdata;
 
-public class ClassWithOneField {
+public abstract class ClassWithOneField {
 
 	public String str;
 }

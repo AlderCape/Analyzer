@@ -14,6 +14,8 @@ import com.aldercape.internal.analyzer.MethodInfo;
 
 public class JavaClassParser {
 
+	private static final int ACC_ABSTRACT = 0x400;
+
 	public JavaClassParser() {
 	}
 
@@ -80,7 +82,9 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddAccessFlags(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setAccessFlags(in.readUnsignedShort());
+		int accessFlags = in.readUnsignedShort();
+		builder.setAbstract((ACC_ABSTRACT & accessFlags) != 0);
+		builder.setAccessFlags(accessFlags);
 	}
 
 	protected void createAndAddClassName(DataInputStream in, JavaClassBuilder builder) throws IOException {

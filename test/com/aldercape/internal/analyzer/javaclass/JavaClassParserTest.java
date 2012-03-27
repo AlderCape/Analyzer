@@ -42,6 +42,7 @@ public class JavaClassParserTest {
 		assertEquals(1, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(1, result.getAttributesCount());
+		assertFalse(result.isAbstract());
 	}
 
 	@Test
@@ -58,6 +59,7 @@ public class JavaClassParserTest {
 		assertEquals(0, result.getFieldsCount());
 		assertEquals(0, result.getMethodsCount());
 		assertEquals(1, result.getAttributesCount());
+		assertTrue(result.isAbstract());
 	}
 
 	@Test
@@ -97,12 +99,13 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	public void parsesClassWithOneField() throws Exception {
+	public void parsesAbstractClassWithOneField() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithOneField.class.getName());
 		assertEquals(1, result.getMethodsCount());
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(1, result.getFieldsCount());
 		assertEquals(String.class.getName(), result.getField(0).getType());
+		assertTrue(result.isAbstract());
 	}
 
 	@Test

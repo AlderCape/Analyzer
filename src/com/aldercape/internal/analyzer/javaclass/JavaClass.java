@@ -24,6 +24,7 @@ public class JavaClass implements ClassInfo {
 	private List<MethodInfo> methods = new ArrayList<>();
 	private PackageInfo classPackage;
 	private List<String> interfaces = new ArrayList<>();
+	private boolean isAbstract;
 
 	public JavaClass(int magic, int minor, int major) {
 		this.magic = magic;
@@ -151,8 +152,11 @@ public class JavaClass implements ClassInfo {
 
 	@Override
 	public boolean isAbstract() {
-		// TODO Auto-generated method stub
-		return false;
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
 	}
 
 }

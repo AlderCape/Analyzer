@@ -19,6 +19,7 @@ public class JavaClassBuilder {
 	private List<MethodInfo> methods = new ArrayList<>();
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<String> interfaces = new ArrayList<>();
+	private boolean isAbstract;
 
 	public void setMagicNumber(int magic) {
 		this.magic = magic;
@@ -27,6 +28,7 @@ public class JavaClassBuilder {
 	public JavaClass create() {
 		JavaClass result = new JavaClass(magic, minor, major);
 		result.setConstants(constantPool);
+		result.setAbstract(isAbstract);
 		result.setAccessFlags(accessFlags);
 		result.setClassName(((String) constantPool.get(classNameIndex).getObject()).replace("/", "."));
 		result.setSuperclassName(((String) constantPool.get(superclassNameIndex).getObject()).replace("/", "."));
@@ -79,6 +81,10 @@ public class JavaClassBuilder {
 
 	public void addInterfaceInfo(String interfaceName) {
 		interfaces.add(interfaceName);
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
 	}
 
 }
