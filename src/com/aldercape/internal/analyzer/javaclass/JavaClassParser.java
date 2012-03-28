@@ -65,26 +65,29 @@ public class JavaClassParser {
 	protected void createAndAddAtrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int attributeCount = in.readUnsignedShort();
 		for (int i = 0; i < attributeCount; i++) {
-			AttributeType attrType = new UndefinedAttributeType();
-			int nameIndex = in.readUnsignedShort();
-			if (nameIndex != 0) {
-				Constant type = builder.getConstant(nameIndex);
-				System.out.println(type);
-				if (type.isAnnotation()) {
-					attrType = new AnnotationAttributeType();
-				}
-			}
-			int attrLength = in.readInt();
-			byte[] values = new byte[attrLength];
-			System.out.println(attrLength);
-			for (int b = 0; b < attrLength; b++) {
-				values[b] = in.readByte();
-			}
-
-			attrType.consume(values, builder);
+			AttributeType attrType = parseAttribute(in, builder);
 			builder.addAttribute(new AttributeInfo(attrType));
 		}
 		builder.setAttributesCount(attributeCount);
+	}
+
+	protected AttributeType parseAttribute(DataInputStream in, JavaClassBuilder builder) throws IOException {
+		AttributeType attrType = new UndefinedAttributeType();
+		int nameIndex = in.readUnsignedShort();
+		if (nameIndex != 0) {
+			Constant type = builder.getConstant(nameIndex);
+			if (type.isAnnotation()) {
+				attrType = new AnnotationAttributeType();
+			}
+		}
+		int attrLength = in.readInt();
+		byte[] values = new byte[attrLength];
+		for (int b = 0; b < attrLength; b++) {
+			values[b] = in.readByte();
+		}
+
+		attrType.consume(values, builder);
+		return attrType;
 	}
 
 	protected void createAndAddVersionInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -135,11 +138,9 @@ public class JavaClassParser {
 			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, nextTypeFromDescriptor((String) constant.getObject()));
 			int attributesCount = in.readUnsignedShort();
 			for (int j = 0; j < attributesCount; j++) {
-				in.readUnsignedShort();
-				int attributeLength = in.readInt();
-				for (int k = 0; k < attributeLength; k++) {
-					in.readByte();
-				}
+				AttributeType attributeType = parseAttribute(in, builder);
+				AttributeInfo attributeInfo = new AttributeInfo(attributeType);
+				fieldInfo.setAttribute(attributeInfo);
 			}
 			builder.addFieldInfo(fieldInfo);
 

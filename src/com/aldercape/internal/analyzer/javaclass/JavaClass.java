@@ -134,8 +134,8 @@ public class JavaClass implements ClassInfo {
 			result.add(getPackage(interfaceName));
 		}
 		for (FieldInfo field : fields) {
-			PackageInfo packageInfo = field.getDependentPackage();
-			result.add(packageInfo);
+			Set<PackageInfo> packageInfo = field.getDependentPackages();
+			result.addAll(packageInfo);
 		}
 		for (MethodInfo method : methods) {
 			Set<PackageInfo> dependentPackages = method.getDependentPackages();
