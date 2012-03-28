@@ -35,4 +35,12 @@ public class Constant {
 		return nameIndex;
 	}
 
+	public ConstantPoolType getType() {
+		return type;
+	}
+
+	public boolean isAnnotation() {
+		return type == ConstantPoolType.Utf8 && "RuntimeVisibleAnnotations".equals(object);
+	}
+
 }

@@ -54,7 +54,7 @@ public class JavaClassParser {
 			createAndAddInterfaces(in, builder);
 			createAndAddFields(in, builder);
 			createAndAddMethods(in, builder);
-			createAndAddTrributes(in, builder);
+			createAndAddAtrributes(in, builder);
 			return builder.create();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,8 +62,29 @@ public class JavaClassParser {
 		return null;
 	}
 
-	protected void createAndAddTrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setAttributesCount(in.readUnsignedShort());
+	protected void createAndAddAtrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
+		int attributeCount = in.readUnsignedShort();
+		for (int i = 0; i < attributeCount; i++) {
+			AttributeType attrType = new UndefinedAttributeType();
+			int nameIndex = in.readUnsignedShort();
+			if (nameIndex != 0) {
+				Constant type = builder.getConstant(nameIndex);
+				System.out.println(type);
+				if (type.isAnnotation()) {
+					attrType = new AnnotationAttributeType();
+				}
+			}
+			int attrLength = in.readInt();
+			byte[] values = new byte[attrLength];
+			System.out.println(attrLength);
+			for (int b = 0; b < attrLength; b++) {
+				values[b] = in.readByte();
+			}
+
+			attrType.consume(values, builder);
+			builder.addAttribute(new AttributeInfo(attrType));
+		}
+		builder.setAttributesCount(attributeCount);
 	}
 
 	protected void createAndAddVersionInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -159,7 +180,7 @@ public class JavaClassParser {
 		return parameters;
 	}
 
-	protected String nextTypeFromDescriptor(String parameterValue) {
+	protected static String nextTypeFromDescriptor(String parameterValue) {
 		// For see table 4.2 in the jvm specs
 		switch (parameterValue.charAt(0)) {
 		case 'B':

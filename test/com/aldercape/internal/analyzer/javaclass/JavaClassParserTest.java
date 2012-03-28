@@ -6,12 +6,15 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithAnInterface;
+import testdata.ClassWithClassAnnotation;
 import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;
+import testdata.ClassWithRefInMethod;
 import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
@@ -112,6 +115,34 @@ public class JavaClassParserTest {
 	public void parsesClassWithOneInterface() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithAnInterface.class.getName());
 		assertEquals(1, result.getInterfaceCount());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseClassDependsOnSuperclassPackage() throws Exception {
+		JavaClass result = new JavaClassParser().parse(EmptyClass.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseClassWithAnnotation() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithClassAnnotation.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("org.junit"));
+		expectedPackages.add(new PackageInfo("java.lang"));
+		assertEquals(2, result.getAttributesCount());
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	@Ignore
+	public void parseClassWithDependencyInMethod() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithRefInMethod.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));

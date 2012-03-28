@@ -20,6 +20,7 @@ public class JavaClassBuilder {
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<String> interfaces = new ArrayList<>();
 	private boolean isAbstract;
+	private List<AttributeInfo> attributes = new ArrayList<>();
 
 	public void setMagicNumber(int magic) {
 		this.magic = magic;
@@ -36,6 +37,7 @@ public class JavaClassBuilder {
 		result.setFields(fields);
 		result.setMethods(methods);
 		result.setAttributesCount(attributesCount);
+		result.setAttributes(attributes);
 		return result;
 	}
 
@@ -85,6 +87,14 @@ public class JavaClassBuilder {
 
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
+	}
+
+	public void printConstantPool() {
+		System.out.println(constantPool);
+	}
+
+	public void addAttribute(AttributeInfo attributeInfo) {
+		this.attributes.add(attributeInfo);
 	}
 
 }

@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.aldercape.internal.analyzer.FieldInfo;
 import com.aldercape.internal.analyzer.MethodInfo;
 import com.aldercape.internal.analyzer.PackageInfo;
-import com.aldercape.internal.analyzer.javaclass.JavaClass;
 
 public class JavaClassTest {
 
@@ -21,6 +20,7 @@ public class JavaClassTest {
 	public void noDependenciesTwoMethods() {
 		JavaClass info = new JavaClass(0, 0, 0);
 		info.setClassName("testpackage.TestClass");
+		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
 		List<String> noParameters = Collections.emptyList();
@@ -34,6 +34,7 @@ public class JavaClassTest {
 	public void oneMethodWithDependenciesTwoMethods() {
 		JavaClass info = new JavaClass(0, 0, 0);
 		info.setClassName("testpackage.TestClass");
+		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
 		List<String> noParameters = Collections.emptyList();
@@ -47,6 +48,7 @@ public class JavaClassTest {
 	public void twoMethodsWithDependencies() {
 		JavaClass info = new JavaClass(0, 0, 0);
 		info.setClassName("testpackage.TestClass");
+		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
 		methods.add(new MethodInfo(0, "method1", Collections.singletonList("java.util.List")));
@@ -62,6 +64,7 @@ public class JavaClassTest {
 	public void onSamePackageGetsFiltered() {
 		JavaClass info = new JavaClass(0, 0, 0);
 		info.setClassName("testpackage.TestClass");
+		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
 		methods.add(new MethodInfo(0, "method1", Collections.singletonList("testpackage.List")));
@@ -76,6 +79,7 @@ public class JavaClassTest {
 	public void fieldsAreIncluded() {
 		JavaClass info = new JavaClass(0, 0, 0);
 		info.setClassName("testpackage.TestClass");
+		info.setSuperclassName("testpackage.A");
 
 		List<FieldInfo> fields = new ArrayList<>();
 		fields.add(new FieldInfo(0, "str", "java.lang.String"));
