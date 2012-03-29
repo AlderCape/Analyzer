@@ -8,7 +8,7 @@ import com.aldercape.internal.analyzer.javaclass.AttributeInfo;
 public class FieldInfo {
 
 	private String type;
-	private AttributeInfo attributeInfo = AttributeInfo.empty();
+	private AttributeInfo attributeInfo = new AttributeInfo();
 
 	public FieldInfo(int accessFlag, String name, String type) {
 		this.type = type;

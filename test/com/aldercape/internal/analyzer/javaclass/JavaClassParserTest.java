@@ -13,6 +13,7 @@ import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithAnInterface;
 import testdata.ClassWithClassAnnotation;
 import testdata.ClassWithFieldAnnotation;
+import testdata.ClassWithMethodAnnotation;
 import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;
 import testdata.ClassWithRefInMethod;
@@ -143,6 +144,16 @@ public class JavaClassParserTest {
 	@Test
 	public void parseFieldWithAnnotation() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithFieldAnnotation.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("org.junit"));
+		expectedPackages.add(new PackageInfo("java.lang"));
+		assertEquals(1, result.getAttributesCount());
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseMethodWithAnnotation() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithMethodAnnotation.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));

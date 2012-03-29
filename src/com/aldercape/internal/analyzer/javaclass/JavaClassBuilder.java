@@ -15,12 +15,11 @@ public class JavaClassBuilder {
 	private int accessFlags;
 	private int classNameIndex;
 	private int superclassNameIndex;
-	private int attributesCount;
 	private List<MethodInfo> methods = new ArrayList<>();
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<String> interfaces = new ArrayList<>();
 	private boolean isAbstract;
-	private List<AttributeInfo> attributes = new ArrayList<>();
+	private AttributeInfo attributes;
 
 	public void setMagicNumber(int magic) {
 		this.magic = magic;
@@ -36,7 +35,6 @@ public class JavaClassBuilder {
 		result.setInterfaces(interfaces);
 		result.setFields(fields);
 		result.setMethods(methods);
-		result.setAttributesCount(attributesCount);
 		result.setAttributes(attributes);
 		return result;
 	}
@@ -77,10 +75,6 @@ public class JavaClassBuilder {
 		this.superclassNameIndex = superclassNameIndex;
 	}
 
-	public void setAttributesCount(int attributesCount) {
-		this.attributesCount = attributesCount;
-	}
-
 	public void addInterfaceInfo(String interfaceName) {
 		interfaces.add(interfaceName);
 	}
@@ -93,8 +87,8 @@ public class JavaClassBuilder {
 		System.out.println(constantPool);
 	}
 
-	public void addAttribute(AttributeInfo attributeInfo) {
-		this.attributes.add(attributeInfo);
+	public void setAttributes(AttributeInfo attributeInfo) {
+		this.attributes = attributeInfo;
 	}
 
 }

@@ -1,25 +1,41 @@
 package com.aldercape.internal.analyzer.javaclass;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.PackageInfo;
 
 public class AttributeInfo {
 
-	private static AttributeInfo empty = new AttributeInfo(new UndefinedAttributeType());
+	private static AttributeInfo empty = new AttributeInfo();
 
-	private AttributeType attributeType;
+	private Set<AttributeType> attributes = new HashSet<>();
 
 	public AttributeInfo(AttributeType attributeType) {
-		this.attributeType = attributeType;
+		this.attributes.add(attributeType);
+	}
+
+	public AttributeInfo() {
 	}
 
 	public Set<PackageInfo> getDependentPackages() {
-		return attributeType.getDependentPackages();
+		Set<PackageInfo> result = new HashSet<>();
+		for (AttributeType attr : attributes) {
+			result.addAll(attr.getDependentPackages());
+		}
+		return result;
 	}
 
 	public static AttributeInfo empty() {
 		return empty;
+	}
+
+	public void add(AttributeType attributeType) {
+		attributes.add(attributeType);
+	}
+
+	public int size() {
+		return attributes.size();
 	}
 
 }

@@ -25,7 +25,7 @@ public class JavaClass implements ClassInfo {
 	private PackageInfo classPackage;
 	private List<String> interfaces = new ArrayList<>();
 	private boolean isAbstract;
-	private List<AttributeInfo> attributes = new ArrayList<>();
+	private AttributeInfo attributes = new AttributeInfo();
 
 	public JavaClass(int magic, int minor, int major) {
 		this.magic = magic;
@@ -99,11 +99,7 @@ public class JavaClass implements ClassInfo {
 	}
 
 	public int getAttributesCount() {
-		return attributesCount;
-	}
-
-	public void setAttributesCount(int attributesCount) {
-		this.attributesCount = attributesCount;
+		return attributes.size();
 	}
 
 	public FieldInfo getField(int i) {
@@ -122,8 +118,8 @@ public class JavaClass implements ClassInfo {
 		this.methods = new ArrayList<MethodInfo>(methods);
 	}
 
-	public void setAttributes(List<AttributeInfo> attributes) {
-		this.attributes = new ArrayList<AttributeInfo>(attributes);
+	public void setAttributes(AttributeInfo attributes) {
+		this.attributes = attributes;
 	}
 
 	@Override
@@ -143,10 +139,7 @@ public class JavaClass implements ClassInfo {
 				result.add(packageInfo);
 			}
 		}
-		for (AttributeInfo attribute : attributes) {
-			Set<PackageInfo> dependentPackages = attribute.getDependentPackages();
-			result.addAll(dependentPackages);
-		}
+		result.addAll(attributes.getDependentPackages());
 		result.remove(classPackage);
 		return result;
 	}

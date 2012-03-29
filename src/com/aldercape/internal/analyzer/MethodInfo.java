@@ -4,10 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.aldercape.internal.analyzer.javaclass.AttributeInfo;
+
 public class MethodInfo {
 
 	private String methodName;
 	private List<String> parameters;
+	private AttributeInfo attributeInfo = new AttributeInfo();
 
 	public MethodInfo(int accessFlag, String methodName, List<String> parameters) {
 		this.methodName = methodName;
@@ -36,11 +39,16 @@ public class MethodInfo {
 		for (String dependency : parameters) {
 			result.add(getPackage(dependency));
 		}
+		result.addAll(attributeInfo.getDependentPackages());
 		return result;
 	}
 
 	protected PackageInfo getPackage(String className) {
 		return new PackageInfo(className.substring(0, className.lastIndexOf('.')));
+	}
+
+	public void setAttribute(AttributeInfo attributeInfo) {
+		this.attributeInfo = attributeInfo;
 	}
 
 }

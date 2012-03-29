@@ -63,12 +63,8 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddAtrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		int attributeCount = in.readUnsignedShort();
-		for (int i = 0; i < attributeCount; i++) {
-			AttributeType attrType = parseAttribute(in, builder);
-			builder.addAttribute(new AttributeInfo(attrType));
-		}
-		builder.setAttributesCount(attributeCount);
+		AttributeInfo attributeInfo = createAttributes(in, builder);
+		builder.setAttributes(attributeInfo);
 	}
 
 	protected AttributeType parseAttribute(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -136,12 +132,8 @@ public class JavaClassParser {
 			String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
 			Constant constant = builder.getConstant(in.readUnsignedShort());
 			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, nextTypeFromDescriptor((String) constant.getObject()));
-			int attributesCount = in.readUnsignedShort();
-			for (int j = 0; j < attributesCount; j++) {
-				AttributeType attributeType = parseAttribute(in, builder);
-				AttributeInfo attributeInfo = new AttributeInfo(attributeType);
-				fieldInfo.setAttribute(attributeInfo);
-			}
+			AttributeInfo attributeInfo = createAttributes(in, builder);
+			fieldInfo.setAttribute(attributeInfo);
 			builder.addFieldInfo(fieldInfo);
 
 		}
@@ -151,16 +143,18 @@ public class JavaClassParser {
 		int methodsCount = in.readUnsignedShort();
 		for (int i = 0; i < methodsCount; i++) {
 			MethodInfo info = createMethodInfo(in, builder);
-			int attributeCount = in.readUnsignedShort();
-			for (int j = 0; j < attributeCount; j++) {
-				in.readUnsignedShort();
-				int attributeLength = in.readInt();
-				for (int k = 0; k < attributeLength; k++) {
-					in.readByte();
-				}
-			}
+			info.setAttribute(createAttributes(in, builder));
 			builder.addMethodInfo(info);
 		}
+	}
+
+	protected AttributeInfo createAttributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
+		int attributeCount = in.readUnsignedShort();
+		AttributeInfo attributeInfo = new AttributeInfo();
+		for (int j = 0; j < attributeCount; j++) {
+			attributeInfo.add(parseAttribute(in, builder));
+		}
+		return attributeInfo;
 	}
 
 	protected MethodInfo createMethodInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
