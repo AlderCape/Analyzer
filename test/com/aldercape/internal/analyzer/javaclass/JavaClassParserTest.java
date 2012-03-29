@@ -13,6 +13,7 @@ import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithAnInterface;
 import testdata.ClassWithArrays;
 import testdata.ClassWithClassAnnotation;
+import testdata.ClassWithException;
 import testdata.ClassWithFieldAnnotation;
 import testdata.ClassWithMethodAnnotation;
 import testdata.ClassWithOneField;
@@ -170,6 +171,16 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("java.util"));
 		expectedPackages.add(new PackageInfo("java.util.concurrent"));
 		assertEquals(3, result.getFieldsCount());
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseMethodException() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithException.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(2, result.getMethodsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 

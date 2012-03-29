@@ -78,8 +78,14 @@ public class JavaClassParser {
 				for (int b = 0; b < attrLength; b++) {
 					values[b] = in.readByte();
 				}
-
 				attrType = new AnnotationAttributeType(values, builder);
+			} else if (type.isException()) {
+				int attrLength = in.readInt();
+				byte[] values = new byte[attrLength];
+				for (int b = 0; b < attrLength; b++) {
+					values[b] = in.readByte();
+				}
+				attrType = new ExceptionAttributeType(values, builder);
 			} else {
 
 				int attrLength = in.readInt();

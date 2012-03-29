@@ -43,4 +43,8 @@ public class Constant {
 		return type == ConstantPoolType.Utf8 && "RuntimeVisibleAnnotations".equals(object);
 	}
 
+	public boolean isException() {
+		return type == ConstantPoolType.Utf8 && "Exceptions".equals(object);
+	}
+
 }
