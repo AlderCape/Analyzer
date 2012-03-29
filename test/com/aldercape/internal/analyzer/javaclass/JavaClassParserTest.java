@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import testdata.ClassWithAllPrimitivesInOneConstructor;
 import testdata.ClassWithAnInterface;
+import testdata.ClassWithArrayFields;
 import testdata.ClassWithClassAnnotation;
 import testdata.ClassWithFieldAnnotation;
 import testdata.ClassWithMethodAnnotation;
@@ -158,6 +159,16 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
 		assertEquals(1, result.getAttributesCount());
+		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseFieldArray() throws Exception {
+		JavaClass result = new JavaClassParser().parse(ClassWithArrayFields.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(3, result.getFieldsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 

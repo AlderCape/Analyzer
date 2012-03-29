@@ -198,6 +198,8 @@ public class JavaClassParser {
 			return Long.class.getName();
 		case 'L':
 			return parameterValue.substring(1, parameterValue.indexOf(';')).replace('/', '.');
+		case '[':
+			return nextTypeFromDescriptor(parameterValue.substring(1));
 		case 'S':
 			return Short.class.getName();
 		case 'Z':

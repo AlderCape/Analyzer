@@ -20,6 +20,7 @@ public class Dependencies {
 				report.addClass(parser.parse(file));
 			} catch (Exception e) {
 				System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");
+				e.printStackTrace();
 			}
 		}
 
