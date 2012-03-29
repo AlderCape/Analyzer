@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class DotOutputFormatTest {

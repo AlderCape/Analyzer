@@ -10,8 +10,8 @@ import java.util.SortedSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.ClassInfo;
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class PackageDependencyReportTest {
 

@@ -1,4 +1,4 @@
-package com.aldercape.internal.analyzer;
+package com.aldercape.internal.analyzer.classmodel;
 
 public class PackageInfo implements Comparable<PackageInfo> {
 

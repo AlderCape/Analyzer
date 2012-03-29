@@ -6,14 +6,18 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.AttributeType;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class AnnotationAttributeType implements AttributeType {
 
 	private String className;
 
-	@Override
-	public void consume(byte[] values, JavaClassBuilder builder) throws IOException {
+	public AnnotationAttributeType(byte[] values, JavaClassBuilder builder) throws IOException {
+		consume(values, builder);
+	}
+
+	private void consume(byte[] values, JavaClassBuilder builder) throws IOException {
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(values));
 		int numAnnotations = in.readUnsignedShort();
 		for (int i = 0; i < numAnnotations; i++) {

@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.aldercape.internal.analyzer.ClassInfo;
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class PackageDependencyReport {
 

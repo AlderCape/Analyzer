@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.SortedSet;
 
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class DotOutputFormat {

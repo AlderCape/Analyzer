@@ -9,12 +9,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aldercape.internal.analyzer.FieldInfo;
-import com.aldercape.internal.analyzer.MethodInfo;
+import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.AttributeType;
+import com.aldercape.internal.analyzer.classmodel.FieldInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public class JavaClassParser {
-
-	private static final int ACC_ABSTRACT = 0x400;
 
 	public JavaClassParser() {
 	}
@@ -73,23 +73,30 @@ public class JavaClassParser {
 		if (nameIndex != 0) {
 			Constant type = builder.getConstant(nameIndex);
 			if (type.isAnnotation()) {
-				attrType = new AnnotationAttributeType();
+				int attrLength = in.readInt();
+				byte[] values = new byte[attrLength];
+				for (int b = 0; b < attrLength; b++) {
+					values[b] = in.readByte();
+				}
+
+				attrType = new AnnotationAttributeType(values, builder);
+			} else {
+
+				int attrLength = in.readInt();
+				byte[] values = new byte[attrLength];
+				for (int b = 0; b < attrLength; b++) {
+					values[b] = in.readByte();
+				}
 			}
 		}
-		int attrLength = in.readInt();
-		byte[] values = new byte[attrLength];
-		for (int b = 0; b < attrLength; b++) {
-			values[b] = in.readByte();
-		}
-
-		attrType.consume(values, builder);
 		return attrType;
 	}
 
 	protected void createAndAddVersionInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setMagicNumber(in.readInt());
-		builder.setMinorVersion(in.readUnsignedShort());
-		builder.setMajorVersion(in.readUnsignedShort());
+		int magicNumber = in.readInt();
+		int minorVersion = in.readUnsignedShort();
+		int majorVersion = in.readUnsignedShort();
+		builder.setVersionInfo(new VersionInfo(magicNumber, minorVersion, majorVersion));
 	}
 
 	protected void createAndAddConstantPool(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -103,7 +110,6 @@ public class JavaClassParser {
 
 	protected void createAndAddAccessFlags(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int accessFlags = in.readUnsignedShort();
-		builder.setAbstract((ACC_ABSTRACT & accessFlags) != 0);
 		builder.setAccessFlags(accessFlags);
 	}
 

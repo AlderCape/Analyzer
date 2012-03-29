@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
+
 public class PackageInfoTest {
 
 	@Test

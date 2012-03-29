@@ -21,7 +21,7 @@ import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
 
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class JavaClassParserTest {
 

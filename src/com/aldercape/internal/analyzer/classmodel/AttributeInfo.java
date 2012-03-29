@@ -1,9 +1,8 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.classmodel;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.PackageInfo;
 
 public class AttributeInfo {
 

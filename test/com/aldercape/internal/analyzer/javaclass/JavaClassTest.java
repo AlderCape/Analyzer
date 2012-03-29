@@ -10,15 +10,15 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.FieldInfo;
-import com.aldercape.internal.analyzer.MethodInfo;
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.FieldInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class JavaClassTest {
 
 	@Test
 	public void noDependenciesTwoMethods() {
-		JavaClass info = new JavaClass(0, 0, 0);
+		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
 		info.setClassName("testpackage.TestClass");
 		info.setSuperclassName("testpackage.A");
 
@@ -32,7 +32,7 @@ public class JavaClassTest {
 
 	@Test
 	public void oneMethodWithDependenciesTwoMethods() {
-		JavaClass info = new JavaClass(0, 0, 0);
+		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
 		info.setClassName("testpackage.TestClass");
 		info.setSuperclassName("testpackage.A");
 
@@ -46,7 +46,7 @@ public class JavaClassTest {
 
 	@Test
 	public void twoMethodsWithDependencies() {
-		JavaClass info = new JavaClass(0, 0, 0);
+		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
 		info.setClassName("testpackage.TestClass");
 		info.setSuperclassName("testpackage.A");
 
@@ -62,7 +62,7 @@ public class JavaClassTest {
 
 	@Test
 	public void onSamePackageGetsFiltered() {
-		JavaClass info = new JavaClass(0, 0, 0);
+		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
 		info.setClassName("testpackage.TestClass");
 		info.setSuperclassName("testpackage.A");
 
@@ -77,7 +77,7 @@ public class JavaClassTest {
 
 	@Test
 	public void fieldsAreIncluded() {
-		JavaClass info = new JavaClass(0, 0, 0);
+		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
 		info.setClassName("testpackage.TestClass");
 		info.setSuperclassName("testpackage.A");
 

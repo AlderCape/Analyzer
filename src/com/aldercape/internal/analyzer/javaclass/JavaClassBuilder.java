@@ -3,35 +3,30 @@ package com.aldercape.internal.analyzer.javaclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aldercape.internal.analyzer.FieldInfo;
-import com.aldercape.internal.analyzer.MethodInfo;
+import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.FieldInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public class JavaClassBuilder {
 
-	private int magic;
-	private int major;
-	private int minor;
+	private ConstantPoolInfo constants = new ConstantPoolInfo();
+	private VersionInfo versionInfo;
 	private List<Constant> constantPool = new ArrayList<>();
 	private int accessFlags;
 	private int classNameIndex;
+
 	private int superclassNameIndex;
 	private List<MethodInfo> methods = new ArrayList<>();
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<String> interfaces = new ArrayList<>();
-	private boolean isAbstract;
 	private AttributeInfo attributes;
 
-	public void setMagicNumber(int magic) {
-		this.magic = magic;
-	}
-
 	public JavaClass create() {
-		JavaClass result = new JavaClass(magic, minor, major);
-		result.setConstants(constantPool);
-		result.setAbstract(isAbstract);
+		JavaClass result = new JavaClass(versionInfo);
+		result.setConstants(constants);
 		result.setAccessFlags(accessFlags);
-		result.setClassName(((String) constantPool.get(classNameIndex).getObject()).replace("/", "."));
-		result.setSuperclassName(((String) constantPool.get(superclassNameIndex).getObject()).replace("/", "."));
+		result.setClassName(constants.getConstantClassName(classNameIndex + 1));
+		result.setSuperclassName(constants.getConstantClassName(superclassNameIndex + 1));
 		result.setInterfaces(interfaces);
 		result.setFields(fields);
 		result.setMethods(methods);
@@ -39,24 +34,17 @@ public class JavaClassBuilder {
 		return result;
 	}
 
-	public void setMinorVersion(int minor) {
-		this.minor = minor;
-	}
-
-	public void setMajorVersion(int major) {
-		this.major = major;
-	}
-
 	public void setAccessFlags(int accessFlags) {
 		this.accessFlags = accessFlags;
 	}
 
 	public void addConstant(Constant constant) {
+		constants.add(constant);
 		this.constantPool.add(constant);
 	}
 
 	public Constant getConstant(int index) {
-		return constantPool.get(index - 1);
+		return constants.get(index);
 	}
 
 	public void addMethodInfo(MethodInfo info) {
@@ -79,16 +67,12 @@ public class JavaClassBuilder {
 		interfaces.add(interfaceName);
 	}
 
-	public void setAbstract(boolean isAbstract) {
-		this.isAbstract = isAbstract;
-	}
-
-	public void printConstantPool() {
-		System.out.println(constantPool);
-	}
-
 	public void setAttributes(AttributeInfo attributeInfo) {
 		this.attributes = attributeInfo;
+	}
+
+	public void setVersionInfo(VersionInfo info) {
+		this.versionInfo = info;
 	}
 
 }

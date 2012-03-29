@@ -5,32 +5,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.ClassInfo;
-import com.aldercape.internal.analyzer.FieldInfo;
-import com.aldercape.internal.analyzer.MethodInfo;
-import com.aldercape.internal.analyzer.PackageInfo;
+import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.FieldInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class JavaClass implements ClassInfo {
 
-	private int magic;
-	private int minor;
-	private int major;
-	private int accessFlags;
-	private List<Constant> constantPool;
+	private AccessInfo accessInfo;
+	private ConstantPoolInfo constantPool;
 	private String className;
 	private String superclassName;
-	private int attributesCount;
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<MethodInfo> methods = new ArrayList<>();
 	private PackageInfo classPackage;
 	private List<String> interfaces = new ArrayList<>();
-	private boolean isAbstract;
 	private AttributeInfo attributes = new AttributeInfo();
+	private VersionInfo version;
 
-	public JavaClass(int magic, int minor, int major) {
-		this.magic = magic;
-		this.minor = minor;
-		this.major = major;
+	public JavaClass(VersionInfo version) {
+		this.version = version;
 	}
 
 	public String getClassName() {
@@ -38,15 +33,15 @@ public class JavaClass implements ClassInfo {
 	}
 
 	public int getMagic() {
-		return magic;
+		return version.getMagicNumber();
 	}
 
 	public int getMinor() {
-		return minor;
+		return version.getMinorVersion();
 	}
 
 	public int getMajor() {
-		return major;
+		return version.getMajorVersion();
 	}
 
 	public int getConstantPoolSize() {
@@ -54,19 +49,19 @@ public class JavaClass implements ClassInfo {
 	}
 
 	public int getAccessFlags() {
-		return accessFlags;
+		return accessInfo.getRawValue();
 	}
 
 	public void setAccessFlags(int accessFlags) {
-		this.accessFlags = accessFlags;
+		accessInfo = new AccessInfo(accessFlags);
 	}
 
 	public boolean isPublic() {
 		return true;
 	}
 
-	public void setConstants(List<Constant> constantPool) {
-		this.constantPool = new ArrayList<Constant>(constantPool);
+	public void setConstants(ConstantPoolInfo constants) {
+		this.constantPool = constants;
 	}
 
 	public void setClassName(String className) {
@@ -155,11 +150,6 @@ public class JavaClass implements ClassInfo {
 
 	@Override
 	public boolean isAbstract() {
-		return isAbstract;
+		return accessInfo.isAbstract();
 	}
-
-	public void setAbstract(boolean isAbstract) {
-		this.isAbstract = isAbstract;
-	}
-
 }
