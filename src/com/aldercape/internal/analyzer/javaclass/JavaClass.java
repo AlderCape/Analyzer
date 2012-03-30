@@ -1,6 +1,7 @@
 package com.aldercape.internal.analyzer.javaclass;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -151,5 +152,10 @@ public class JavaClass implements ClassInfo {
 	@Override
 	public boolean isAbstract() {
 		return accessInfo.isAbstract();
+	}
+
+	@Override
+	public Set<ClassInfo> getClassDependencies() {
+		return Collections.emptySet();
 	}
 }

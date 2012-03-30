@@ -10,44 +10,9 @@ import java.util.SortedSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class PackageDependencyReportTest {
-
-	public static class ClassInfoStub implements ClassInfo {
-		private boolean isAbstract;
-		private Set<PackageInfo> dependencies = new HashSet<>();
-		private String packageName;
-
-		public ClassInfoStub(boolean isAbstract) {
-			this.isAbstract = isAbstract;
-			packageName = "base";
-		}
-
-		@Override
-		public PackageInfo getPackage() {
-			return new PackageInfo(packageName);
-		}
-
-		@Override
-		public Set<PackageInfo> getPackageDependencies() {
-			return dependencies;
-		}
-
-		@Override
-		public boolean isAbstract() {
-			return isAbstract;
-		}
-
-		public void setDependencies(Set<PackageInfo> dependencies) {
-			this.dependencies = dependencies;
-		}
-
-		public void setPackageName(String packageName) {
-			this.packageName = packageName;
-		}
-	}
 
 	private ClassInfoStub abstractClass;
 	private ClassInfoStub concreteClass;

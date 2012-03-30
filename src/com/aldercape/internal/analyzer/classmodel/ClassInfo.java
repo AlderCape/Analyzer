@@ -8,6 +8,8 @@ public interface ClassInfo {
 
 	public Set<PackageInfo> getPackageDependencies();
 
+	public Set<ClassInfo> getClassDependencies();
+
 	public boolean isAbstract();
 
 }
