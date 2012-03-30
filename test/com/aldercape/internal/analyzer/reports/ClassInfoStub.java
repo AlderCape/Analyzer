@@ -11,10 +11,15 @@ public class ClassInfoStub implements ClassInfo {
 	private Set<PackageInfo> dependencies = new HashSet<>();
 	private String packageName;
 	private Set<ClassInfo> classDependencies = new HashSet<>();
+	private String className;
 
 	public ClassInfoStub(boolean isAbstract) {
 		this.isAbstract = isAbstract;
 		packageName = "base";
+	}
+
+	public ClassInfoStub(String className) {
+		this.className = className;
 	}
 
 	@Override
@@ -47,5 +52,15 @@ public class ClassInfoStub implements ClassInfo {
 
 	public void setClassDependency(Set<ClassInfo> classDependencies) {
 		this.classDependencies = classDependencies;
+	}
+
+	@Override
+	public String getName() {
+		return className;
+	}
+
+	@Override
+	public int compareTo(ClassInfo o) {
+		return getName().compareTo(o.getName());
 	}
 }

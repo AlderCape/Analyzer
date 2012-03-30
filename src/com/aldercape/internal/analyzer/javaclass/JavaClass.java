@@ -158,4 +158,15 @@ public class JavaClass implements ClassInfo {
 	public Set<ClassInfo> getClassDependencies() {
 		return Collections.emptySet();
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(ClassInfo o) {
+		return getName().compareTo(o.getName());
+	}
 }

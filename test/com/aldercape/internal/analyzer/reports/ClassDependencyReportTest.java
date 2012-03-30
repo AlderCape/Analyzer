@@ -15,7 +15,7 @@ public class ClassDependencyReportTest {
 	@Test
 	public void singleClass() {
 		ClassDependencyReport report = new ClassDependencyReport();
-		ClassInfoStub classInfo1 = new ClassInfoStub(true);
+		ClassInfoStub classInfo1 = new ClassInfoStub("FirstClass");
 		report.addClass(classInfo1);
 		assertEquals(Collections.singleton(classInfo1), report.getClasses());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));
@@ -25,8 +25,8 @@ public class ClassDependencyReportTest {
 	@Test
 	public void twoClassesNoDependencies() {
 		ClassDependencyReport report = new ClassDependencyReport();
-		ClassInfo classInfo1 = new ClassInfoStub(true);
-		ClassInfo classInfo2 = new ClassInfoStub(true);
+		ClassInfo classInfo1 = new ClassInfoStub("FirstClass");
+		ClassInfo classInfo2 = new ClassInfoStub("SecondClass");
 		report.addClass(classInfo1);
 		report.addClass(classInfo2);
 		Set<ClassInfo> expected = new HashSet<>();
@@ -42,8 +42,8 @@ public class ClassDependencyReportTest {
 	@Test
 	public void twoClassesOneDependencies() {
 		ClassDependencyReport report = new ClassDependencyReport();
-		ClassInfoStub classInfo1 = new ClassInfoStub(true);
-		ClassInfo classInfo2 = new ClassInfoStub(true);
+		ClassInfoStub classInfo1 = new ClassInfoStub("FirstClass");
+		ClassInfo classInfo2 = new ClassInfoStub("SecondClass");
 		classInfo1.setClassDependency(Collections.singleton(classInfo2));
 		report.addClass(classInfo1);
 		report.addClass(classInfo2);
