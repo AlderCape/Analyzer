@@ -132,8 +132,7 @@ public class JavaClassParser {
 		for (int i = 0; i < interfacesCount; i++) {
 			int interfaceNameIndex = in.readUnsignedShort();
 			Constant constant = builder.getConstant(interfaceNameIndex);
-			String interfaceName = ((String) builder.getConstant(constant.getNameIndex()).getObject()).replace('/', '.');
-			builder.addInterfaceInfo(interfaceName);
+			builder.addInterfaceInfo(constant.getName(builder).replace('/', '.'));
 		}
 	}
 

@@ -4,22 +4,20 @@ public class Constant {
 
 	private ConstantPoolType type;
 	private int nameIndex;
-	private int typeIndex;
 	private Object object;
 
 	@Override
 	public String toString() {
-		return "Constant [type=" + type + ", nameIndex=" + nameIndex + ", typeIndex=" + typeIndex + ", object=" + object + "]";
+		return "Constant [type=" + type + ", nameIndex=" + nameIndex + ", object=" + object + "]";
 	}
 
 	public Constant(ConstantPoolType type, int nameIndex, int typeIndex) {
-		this.type = type;
-		this.nameIndex = nameIndex;
-		this.typeIndex = typeIndex;
+		this(type, nameIndex);
 	}
 
 	public Constant(ConstantPoolType type, int nameIndex) {
-		this(type, nameIndex, 0);
+		this.type = type;
+		this.nameIndex = nameIndex;
 	}
 
 	public Constant(ConstantPoolType type, Object object) {
@@ -45,6 +43,10 @@ public class Constant {
 
 	public boolean isException() {
 		return type == ConstantPoolType.Utf8 && "Exceptions".equals(object);
+	}
+
+	protected String getName(JavaClassBuilder builder) {
+		return (String) builder.getConstant(getNameIndex()).getObject();
 	}
 
 }

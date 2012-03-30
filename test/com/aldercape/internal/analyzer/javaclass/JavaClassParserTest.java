@@ -180,6 +180,8 @@ public class JavaClassParserTest {
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
+		expectedPackages.add(new PackageInfo("java.util.concurrent"));
+
 		assertEquals(2, result.getMethodsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
