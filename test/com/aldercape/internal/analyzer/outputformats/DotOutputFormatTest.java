@@ -29,7 +29,7 @@ public class DotOutputFormatTest {
 			}
 
 			@Override
-			public SortedSet<PackageInfo> getEfferentFor(PackageInfo packageName) {
+			public SortedSet<PackageInfo> getChildrenFor(PackageInfo packageName) {
 				SortedSet<PackageInfo> result = new TreeSet<>();
 				;
 				if (packageName.equals(new PackageInfo("java.lang"))) {
@@ -41,7 +41,7 @@ public class DotOutputFormatTest {
 			}
 
 			@Override
-			public SortedSet<PackageInfo> getAfferentFor(PackageInfo packageName) {
+			public SortedSet<PackageInfo> getParentsFor(PackageInfo packageName) {
 				SortedSet<PackageInfo> result = new TreeSet<>();
 				if (packageName.equals(new PackageInfo("java.lang"))) {
 					result.add(new PackageInfo("java.lang"));

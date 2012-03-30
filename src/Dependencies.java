@@ -3,16 +3,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
 
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.javaclass.ClassFinder;
 import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
-import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
+import com.aldercape.internal.analyzer.reports.FilteredPackageDependencyReport;
 
 public class Dependencies {
 
 	public static void main(String[] args) throws IOException {
 		ClassFinder classFinder = new ClassFinder();
-		PackageDependencyReport report = new PackageDependencyReport();
+		FilteredPackageDependencyReport report = new FilteredPackageDependencyReport();
+		report.ignorePackage(new PackageInfo("java.lang"));
 		Set<File> classFiles = classFinder.getClassFilesIn(new File("bin"));
 		for (File file : classFiles) {
 			try {

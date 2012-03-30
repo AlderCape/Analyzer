@@ -32,7 +32,7 @@ public class DotOutputFormat {
 	}
 
 	protected void writePackageDependencies(PackageDependencyReport report, Writer outRaw, PackageInfo packageInfo) throws IOException {
-		for (PackageInfo depPackage : report.getEfferentFor(packageInfo)) {
+		for (PackageInfo depPackage : report.getChildrenFor(packageInfo)) {
 			writeLine(outRaw, makeQuotaded(packageInfo.getName()) + " -> " + makeQuotaded(depPackage.getName()) + ";");
 		}
 	}
@@ -47,8 +47,8 @@ public class DotOutputFormat {
 	protected String createLabel(PackageDependencyReport report, PackageInfo packageInfo) {
 		String name;
 		if (withMetrics) {
-			String ca = new MessageFormat("Ca {0}").format(new Object[] { report.getAfferentFor(packageInfo).size() });
-			String ce = new MessageFormat("Ce {0}").format(new Object[] { report.getEfferentFor(packageInfo).size() });
+			String ca = new MessageFormat("Ca {0}").format(new Object[] { report.getParentsFor(packageInfo).size() });
+			String ce = new MessageFormat("Ce {0}").format(new Object[] { report.getChildrenFor(packageInfo).size() });
 			String a = new MessageFormat("A {0,number,0.0}").format(new Object[] { new Double(report.getAbstractness(packageInfo)) });
 			String i = new MessageFormat("I {0,number,0.0}").format(new Object[] { new Double(report.getInstability(packageInfo)) });
 			String d = new MessageFormat("D {0,number,0.0}").format(new Object[] { new Double(report.getDistance(packageInfo)) });

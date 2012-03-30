@@ -1,6 +1,5 @@
 package com.aldercape.internal.analyzer.reports;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -29,14 +28,22 @@ public class PackageDependencyReport {
 	}
 
 	public SortedSet<PackageInfo> getPackages() {
-		return Collections.unmodifiableSortedSet(new TreeSet<>(packageDependencyInfos.keySet()));
+		return new TreeSet<>(packageDependencyInfos.keySet());
 	}
 
-	public SortedSet<PackageInfo> getEfferentFor(PackageInfo packageInfo) {
+	public SortedSet<PackageInfo> getChildrenFor(PackageInfo packageInfo) {
+		return getEfferent(packageInfo);
+	}
+
+	protected SortedSet<PackageInfo> getEfferent(PackageInfo packageInfo) {
 		return packageDependencyInfoFor(packageInfo).efferentSet();
 	}
 
-	public SortedSet<PackageInfo> getAfferentFor(PackageInfo packageInfo) {
+	public SortedSet<PackageInfo> getParentsFor(PackageInfo packageInfo) {
+		return getAfferent(packageInfo);
+	}
+
+	protected TreeSet<PackageInfo> getAfferent(PackageInfo packageInfo) {
 		return packageDependencyInfoFor(packageInfo).getAfferent();
 	}
 
