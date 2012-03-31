@@ -5,65 +5,72 @@ import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.SortedSet;
 
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
-import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
+import com.aldercape.internal.analyzer.classmodel.TypeInfo;
+import com.aldercape.internal.analyzer.reports.DependencyReport;
 
-public class DotOutputFormat {
+public class DotOutputFormat<T extends TypeInfo> {
 
-	private boolean withMetrics;
-
-	public DotOutputFormat(boolean withMetrics) {
-		this.withMetrics = withMetrics;
-	}
+	protected boolean withMetrics;
 
 	public DotOutputFormat() {
 		this(false);
 	}
 
-	public void write(PackageDependencyReport report, Writer outRaw) throws IOException {
+	public DotOutputFormat(boolean withMetrics) {
+		this.withMetrics = withMetrics;
+	}
+
+	public void write(DependencyReport<T> report, Writer outRaw) throws IOException {
 		writeLine(outRaw, "digraph G {");
-		SortedSet<PackageInfo> packages = writeIncludedPackages(report, outRaw);
+		writeIncludedTypes(outRaw, report.getIncludedTypes(), report);
 
-		for (PackageInfo packageInfo : packages) {
-			writePackageDependencies(report, outRaw, packageInfo);
+		for (T packageInfo : report.getIncludedTypes()) {
+			writeDependencies(report, outRaw, packageInfo);
 		}
-
 		writeLine(outRaw, "}");
 	}
 
-	protected void writePackageDependencies(PackageDependencyReport report, Writer outRaw, PackageInfo packageInfo) throws IOException {
-		for (PackageInfo depPackage : report.getChildrenFor(packageInfo)) {
-			writeLine(outRaw, makeQuotaded(packageInfo.getName()) + " -> " + makeQuotaded(depPackage.getName()) + ";");
+	protected final void writeIncludedTypes(Writer outRaw, SortedSet<T> includedTypes, DependencyReport<T> report) throws IOException {
+		for (T packageInfo : includedTypes) {
+			writeLine(outRaw, makeQuotaded(createRefName(packageInfo)) + " [label=" + makeQuotaded(createLabel(packageInfo, report)) + "]" + ";");
 		}
 	}
 
-	protected SortedSet<PackageInfo> writeIncludedPackages(PackageDependencyReport report, Writer outRaw) throws IOException {
-		for (PackageInfo packageInfo : report.getPackages()) {
-			writeLine(outRaw, makeQuotaded(packageInfo.getName()) + " [label=" + createLabel(report, packageInfo) + "]" + ";");
+	protected final void writeDependencies(DependencyReport<T> report, Writer outRaw, T packageInfo) throws IOException {
+		for (T depPackage : report.getChildrenFor(packageInfo)) {
+			writeLine(outRaw, makeQuotaded(createRefName(packageInfo)) + " -> " + makeQuotaded(createRefName(depPackage)) + ";");
 		}
-		return report.getPackages();
 	}
 
-	protected String createLabel(PackageDependencyReport report, PackageInfo packageInfo) {
-		String name;
+	protected String createLabel(T packageInfo, DependencyReport<T> report) {
 		if (withMetrics) {
-			String ca = new MessageFormat("Ca {0}").format(new Object[] { report.getParentsFor(packageInfo).size() });
-			String ce = new MessageFormat("Ce {0}").format(new Object[] { report.getChildrenFor(packageInfo).size() });
-			String a = new MessageFormat("A {0,number,0.0}").format(new Object[] { new Double(report.getAbstractness(packageInfo)) });
-			String i = new MessageFormat("I {0,number,0.0}").format(new Object[] { new Double(report.getInstability(packageInfo)) });
-			String d = new MessageFormat("D {0,number,0.0}").format(new Object[] { new Double(report.getDistance(packageInfo)) });
-			name = makeQuotaded(packageInfo.getName() + "\\n(" + ca + ", " + ce + ", " + a + ", " + i + ", " + d + ")");
+			return detailedLabel(packageInfo, report);
 		} else {
-			name = makeQuotaded(packageInfo.getName());
+			return createRefName(packageInfo);
 		}
-		return name;
 	}
 
-	private String makeQuotaded(String value) {
+	protected final String detailedLabel(T packageInfo, DependencyReport<T> report) {
+		String metricsStr = "";
+		for (DependencyReport.MetricPair metric : report.getMetricsPair(packageInfo)) {
+			metricsStr += ", " + new MessageFormat(metric.getMessage()).format(new Object[] { metric.getValue() });
+		}
+		if (metricsStr.length() > 0) {
+			metricsStr = metricsStr.substring(2);
+			return createRefName(packageInfo) + "\\n(" + metricsStr + ")";
+		}
+		return createRefName(packageInfo);
+	}
+
+	protected String createRefName(T packageInfo) {
+		return packageInfo.getName();
+	}
+
+	protected String makeQuotaded(String value) {
 		return "\"" + value + "\"";
 	}
 
-	private void writeLine(Writer outRaw, String value) throws IOException {
+	protected void writeLine(Writer outRaw, String value) throws IOException {
 		outRaw.write(value + "\n");
 	}
 

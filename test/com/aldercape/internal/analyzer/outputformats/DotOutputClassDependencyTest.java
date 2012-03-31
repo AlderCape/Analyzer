@@ -19,7 +19,7 @@ public class DotOutputClassDependencyTest {
 
 	@Test
 	public void simpleOutput() throws IOException {
-		DotOutputClassDependencyFormat format = new DotOutputClassDependencyFormat();
+		DotOutputFormat<ClassInfo> format = new DotOutputFormat<>();
 		StringWriter writer = new StringWriter();
 		ClassDependencyReport report = new ClassDependencyReport() {
 			@Override

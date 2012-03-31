@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
-public class DotOutputFormatTest {
+public class DotOutputPackageDependencyFormatTest {
 
 	private PackageDependencyReport report;
 
@@ -82,7 +82,7 @@ public class DotOutputFormatTest {
 
 	@Test
 	public void simpleOutput() throws IOException {
-		DotOutputFormat format = new DotOutputFormat();
+		DotOutputFormat<PackageInfo> format = new DotOutputFormat<>();
 		StringWriter writer = new StringWriter();
 		format.write(report, writer);
 		String expected = "digraph G {\n";
@@ -98,7 +98,7 @@ public class DotOutputFormatTest {
 
 	@Test
 	public void metricOutput() throws IOException {
-		DotOutputFormat format = new DotOutputFormat(true);
+		DotOutputFormat<PackageInfo> format = new DotOutputFormat<>(true);
 		StringWriter writer = new StringWriter();
 		format.write(report, writer);
 		String expected = "digraph G {\n";

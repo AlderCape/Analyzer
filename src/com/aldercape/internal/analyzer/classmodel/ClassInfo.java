@@ -2,7 +2,7 @@ package com.aldercape.internal.analyzer.classmodel;
 
 import java.util.Set;
 
-public interface ClassInfo extends Comparable<ClassInfo> {
+public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 
 	public PackageInfo getPackage();
 

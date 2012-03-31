@@ -1,6 +1,8 @@
 package com.aldercape.internal.analyzer.reports;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -8,7 +10,7 @@ import java.util.TreeSet;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
-public class PackageDependencyReport {
+public class PackageDependencyReport implements DependencyReport<PackageInfo> {
 
 	private Map<PackageInfo, PackageDependencyInfo> packageDependencyInfos = new HashMap<>();
 
@@ -31,6 +33,7 @@ public class PackageDependencyReport {
 		return new TreeSet<>(packageDependencyInfos.keySet());
 	}
 
+	@Override
 	public SortedSet<PackageInfo> getChildrenFor(PackageInfo packageInfo) {
 		return getEfferent(packageInfo);
 	}
@@ -57,5 +60,21 @@ public class PackageDependencyReport {
 
 	public float getDistance(PackageInfo packageInfo) {
 		return packageDependencyInfoFor(packageInfo).getDistance();
+	}
+
+	@Override
+	public SortedSet<PackageInfo> getIncludedTypes() {
+		return getPackages();
+	}
+
+	@Override
+	public List<DependencyReport.MetricPair> getMetricsPair(PackageInfo packageInfo) {
+		List<MetricPair> metrics = new ArrayList<>();
+		metrics.add(new MetricPair("Ca {0}", getParentsFor(packageInfo).size()));
+		metrics.add(new MetricPair("Ce {0}", getChildrenFor(packageInfo).size()));
+		metrics.add(new MetricPair("A {0,number,0.0}", getAbstractness(packageInfo)));
+		metrics.add(new MetricPair("I {0,number,0.0}", getInstability(packageInfo)));
+		metrics.add(new MetricPair("D {0,number,0.0}", getDistance(packageInfo)));
+		return metrics;
 	}
 }

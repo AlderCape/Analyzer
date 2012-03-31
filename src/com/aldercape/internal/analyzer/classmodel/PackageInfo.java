@@ -1,6 +1,6 @@
 package com.aldercape.internal.analyzer.classmodel;
 
-public class PackageInfo implements Comparable<PackageInfo> {
+public class PackageInfo implements Comparable<PackageInfo>, TypeInfo {
 
 	private String name;
 
