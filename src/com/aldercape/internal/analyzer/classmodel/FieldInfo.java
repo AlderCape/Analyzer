@@ -3,6 +3,7 @@ package com.aldercape.internal.analyzer.classmodel;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.aldercape.internal.analyzer.javaclass.SimpleClassInfo;
 
 public class FieldInfo {
 
@@ -30,5 +31,13 @@ public class FieldInfo {
 
 	public void setAttribute(AttributeInfo attributeInfo) {
 		this.attributeInfo = attributeInfo;
+	}
+
+	public Set<ClassInfo> getDependentClasses() {
+		ClassInfo o = new SimpleClassInfo(type);
+		Set<ClassInfo> result = new HashSet<>();
+		result.add(o);
+		result.addAll(attributeInfo.getDependentClasses());
+		return result;
 	}
 }

@@ -1,7 +1,6 @@
 package com.aldercape.internal.analyzer.javaclass;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -156,17 +155,38 @@ public class JavaClass implements ClassInfo {
 
 	@Override
 	public Set<ClassInfo> getClassDependencies() {
-		return Collections.emptySet();
+		Set<ClassInfo> result = new HashSet<>();
+		result.add(new SimpleClassInfo(superclassName));
+		// for (String interfaceName : interfaces) {
+		// result.add(new ClassInfoStub(interfaceName));
+		// }
+		for (FieldInfo field : fields) {
+			Set<ClassInfo> packageInfo = field.getDependentClasses();
+			result.addAll(packageInfo);
+		}
+		for (MethodInfo method : methods) {
+			Set<ClassInfo> dependentPackages = method.getDependentClasses();
+			for (ClassInfo packageInfo : dependentPackages) {
+				result.add(packageInfo);
+			}
+		}
+		// result.addAll(attributes.getDependentClasses());
+		// result.remove(classPackage);
+		return result;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return getClassName();
 	}
 
 	@Override
 	public int compareTo(ClassInfo o) {
 		return getName().compareTo(o.getName());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return getName().equals(((ClassInfo) obj).getName());
 	}
 }

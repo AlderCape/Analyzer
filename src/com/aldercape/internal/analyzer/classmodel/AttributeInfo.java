@@ -3,7 +3,6 @@ package com.aldercape.internal.analyzer.classmodel;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class AttributeInfo {
 
 	private static AttributeInfo empty = new AttributeInfo();
@@ -35,6 +34,14 @@ public class AttributeInfo {
 
 	public int size() {
 		return attributes.size();
+	}
+
+	public Set<? extends ClassInfo> getDependentClasses() {
+		Set<ClassInfo> result = new HashSet<>();
+		for (AttributeType attr : attributes) {
+			result.addAll(attr.getDependentClasses());
+		}
+		return result;
 	}
 
 }

@@ -63,4 +63,20 @@ public class ClassInfoStub implements ClassInfo {
 	public int compareTo(ClassInfo o) {
 		return getName().compareTo(o.getName());
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		ClassInfo other = (ClassInfo) obj;
+		return getName().equals(other.getName());
+	}
+
+	@Override
+	public String toString() {
+		return className + " (ClassInfoStub)";
+	}
+
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
+	}
 }

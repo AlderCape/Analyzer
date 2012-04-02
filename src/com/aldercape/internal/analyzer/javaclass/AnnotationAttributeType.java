@@ -3,10 +3,12 @@ package com.aldercape.internal.analyzer.javaclass;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class AnnotationAttributeType implements AttributeType {
@@ -34,5 +36,10 @@ public class AnnotationAttributeType implements AttributeType {
 	@Override
 	public Set<PackageInfo> getDependentPackages() {
 		return Collections.singleton(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
+	}
+
+	@Override
+	public Collection<? extends ClassInfo> getDependentClasses() {
+		return Collections.singleton(new SimpleClassInfo(className));
 	}
 }
