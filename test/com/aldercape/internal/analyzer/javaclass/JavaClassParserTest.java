@@ -23,7 +23,9 @@ import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
 
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
+import com.aldercape.internal.analyzer.reports.ClassInfoStub;
 
 public class JavaClassParserTest {
 
@@ -42,7 +44,7 @@ public class JavaClassParserTest {
 		assertEquals(51, result.getMajor());
 		assertEquals(15, result.getConstantPoolSize());
 		assertTrue(result.isPublic());
-		assertEquals(EmptyClass.class.getName(), result.getClassName());
+		assertEquals(EmptyClass.class.getName(), result.getName());
 		assertEquals(EmptyClass.class.getSuperclass().getName(), result.getSuperclassName());
 		assertEquals(0, result.getInterfaceCount());
 		assertEquals(0, result.getFieldsCount());
@@ -60,7 +62,7 @@ public class JavaClassParserTest {
 		assertEquals(51, result.getMajor());
 		assertEquals(6, result.getConstantPoolSize());
 		assertTrue(result.isPublic());
-		assertEquals(EmptyInterface.class.getName(), result.getClassName());
+		assertEquals(EmptyInterface.class.getName(), result.getName());
 		assertEquals(Object.class.getName(), result.getSuperclassName());
 		assertEquals(0, result.getInterfaceCount());
 		assertEquals(0, result.getFieldsCount());
@@ -123,6 +125,10 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
 		assertEquals(expectedPackages, result.getPackageDependencies());
+		Set<ClassInfo> expectedClasses = new HashSet<>();
+		expectedClasses.add(new ClassInfoStub("java.lang.Object"));
+		expectedClasses.add(new ClassInfoStub("java.util.Comparator"));
+		assertEquals(expectedClasses, result.getClassDependencies());
 	}
 
 	@Test

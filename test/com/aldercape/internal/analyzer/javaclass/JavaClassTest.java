@@ -19,8 +19,7 @@ public class JavaClassTest {
 
 	@Test
 	public void noDependenciesTwoMethods() {
-		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
-		info.setClassName("testpackage.TestClass");
+		JavaClass info = new JavaClass("testpackage.TestClass", new VersionInfo(0, 0, 0));
 		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
@@ -34,8 +33,7 @@ public class JavaClassTest {
 
 	@Test
 	public void oneMethodWithDependenciesTwoMethods() {
-		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
-		info.setClassName("testpackage.TestClass");
+		JavaClass info = new JavaClass("testpackage.TestClass", new VersionInfo(0, 0, 0));
 		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
@@ -52,8 +50,7 @@ public class JavaClassTest {
 
 	@Test
 	public void twoMethodsWithDependencies() {
-		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
-		info.setClassName("testpackage.TestClass");
+		JavaClass info = new JavaClass("testpackage.TestClass", new VersionInfo(0, 0, 0));
 		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
@@ -73,8 +70,7 @@ public class JavaClassTest {
 
 	@Test
 	public void onSamePackageGetsFiltered() {
-		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
-		info.setClassName("testpackage.TestClass");
+		JavaClass info = new JavaClass("testpackage.TestClass", new VersionInfo(0, 0, 0));
 		info.setSuperclassName("testpackage.A");
 
 		List<MethodInfo> methods = new ArrayList<>();
@@ -94,8 +90,7 @@ public class JavaClassTest {
 
 	@Test
 	public void fieldsAreIncluded() {
-		JavaClass info = new JavaClass(new VersionInfo(0, 0, 0));
-		info.setClassName("testpackage.TestClass");
+		JavaClass info = new JavaClass("testpackage.TestClass", new VersionInfo(0, 0, 0));
 		info.setSuperclassName("testpackage.A");
 
 		List<FieldInfo> fields = new ArrayList<>();

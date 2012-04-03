@@ -22,10 +22,9 @@ public class JavaClassBuilder {
 	private AttributeInfo attributes;
 
 	public JavaClass create() {
-		JavaClass result = new JavaClass(versionInfo);
+		JavaClass result = new JavaClass(constants.getConstantClassName(classNameIndex + 1), versionInfo);
 		result.setConstants(constants);
 		result.setAccessFlags(accessFlags);
-		result.setClassName(constants.getConstantClassName(classNameIndex + 1));
 		result.setSuperclassName(constants.getConstantClassName(superclassNameIndex + 1));
 		result.setInterfaces(interfaces);
 		result.setFields(fields);

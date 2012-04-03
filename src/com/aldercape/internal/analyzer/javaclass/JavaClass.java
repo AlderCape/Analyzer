@@ -11,25 +11,22 @@ import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
-public class JavaClass implements ClassInfo {
+public class JavaClass extends ClassInfoBase implements ClassInfo {
+
+	private String superclassName;
 
 	private AccessInfo accessInfo;
 	private ConstantPoolInfo constantPool;
-	private String className;
-	private String superclassName;
-	private List<FieldInfo> fields = new ArrayList<>();
-	private List<MethodInfo> methods = new ArrayList<>();
-	private PackageInfo classPackage;
-	private List<String> interfaces = new ArrayList<>();
-	private AttributeInfo attributes = new AttributeInfo();
 	private VersionInfo version;
 
-	public JavaClass(VersionInfo version) {
-		this.version = version;
-	}
+	private List<FieldInfo> fields = new ArrayList<>();
+	private List<MethodInfo> methods = new ArrayList<>();
+	private List<String> interfaces = new ArrayList<>();
+	private AttributeInfo attributes = new AttributeInfo();
 
-	public String getClassName() {
-		return className;
+	public JavaClass(String className, VersionInfo version) {
+		super(className);
+		this.version = version;
 	}
 
 	public int getMagic() {
@@ -62,11 +59,6 @@ public class JavaClass implements ClassInfo {
 
 	public void setConstants(ConstantPoolInfo constants) {
 		this.constantPool = constants;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-		classPackage = getPackage(getClassName());
 	}
 
 	public String getSuperclassName() {
@@ -120,32 +112,12 @@ public class JavaClass implements ClassInfo {
 	@Override
 	public Set<PackageInfo> getPackageDependencies() {
 		Set<PackageInfo> result = new HashSet<>();
-		result.add(getPackage(superclassName));
-		for (String interfaceName : interfaces) {
-			result.add(getPackage(interfaceName));
+		Set<ClassInfo> classDependencies = getClassDependencies();
+		for (ClassInfo classInfo : classDependencies) {
+			result.add(classInfo.getPackage());
 		}
-		for (FieldInfo field : fields) {
-			Set<PackageInfo> packageInfo = field.getDependentPackages();
-			result.addAll(packageInfo);
-		}
-		for (MethodInfo method : methods) {
-			Set<PackageInfo> dependentPackages = method.getDependentPackages();
-			for (PackageInfo packageInfo : dependentPackages) {
-				result.add(packageInfo);
-			}
-		}
-		result.addAll(attributes.getDependentPackages());
-		result.remove(classPackage);
+		result.remove(getPackage());
 		return result;
-	}
-
-	private PackageInfo getPackage(String className) {
-		return new PackageInfo(className.substring(0, className.lastIndexOf('.')));
-	}
-
-	@Override
-	public PackageInfo getPackage() {
-		return classPackage;
 	}
 
 	@Override
@@ -157,9 +129,9 @@ public class JavaClass implements ClassInfo {
 	public Set<ClassInfo> getClassDependencies() {
 		Set<ClassInfo> result = new HashSet<>();
 		result.add(new SimpleClassInfo(superclassName));
-		// for (String interfaceName : interfaces) {
-		// result.add(new ClassInfoStub(interfaceName));
-		// }
+		for (String interfaceName : interfaces) {
+			result.add(new SimpleClassInfo(interfaceName));
+		}
 		for (FieldInfo field : fields) {
 			Set<ClassInfo> packageInfo = field.getDependentClasses();
 			result.addAll(packageInfo);
@@ -170,14 +142,9 @@ public class JavaClass implements ClassInfo {
 				result.add(packageInfo);
 			}
 		}
-		// result.addAll(attributes.getDependentClasses());
-		// result.remove(classPackage);
+		result.addAll(attributes.getDependentClasses());
+		result.remove(this);
 		return result;
-	}
-
-	@Override
-	public String getName() {
-		return getClassName();
 	}
 
 	@Override
@@ -188,5 +155,10 @@ public class JavaClass implements ClassInfo {
 	@Override
 	public boolean equals(Object obj) {
 		return getName().equals(((ClassInfo) obj).getName());
+	}
+
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
 	}
 }
