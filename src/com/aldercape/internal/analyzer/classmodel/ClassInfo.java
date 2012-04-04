@@ -12,6 +12,9 @@ public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 
 	public boolean isAbstract();
 
+	@Override
 	public String getName();
+
+	public boolean isInnerClass();
 
 }

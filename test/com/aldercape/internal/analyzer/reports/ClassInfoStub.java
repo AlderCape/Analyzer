@@ -79,4 +79,9 @@ public class ClassInfoStub implements ClassInfo {
 	public int hashCode() {
 		return getName().hashCode();
 	}
+
+	@Override
+	public boolean isInnerClass() {
+		return false;
+	}
 }

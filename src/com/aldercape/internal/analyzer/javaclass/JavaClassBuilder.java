@@ -22,6 +22,7 @@ public class JavaClassBuilder {
 	private AttributeInfo attributes;
 
 	public JavaClass create() {
+		System.out.println(constantPool);
 		JavaClass result = new JavaClass(constants.getConstantClassName(classNameIndex + 1), versionInfo);
 		result.setConstants(constants);
 		result.setAccessFlags(accessFlags);

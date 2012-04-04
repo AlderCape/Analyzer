@@ -45,6 +45,10 @@ public class Constant {
 		return type == ConstantPoolType.Utf8 && "Exceptions".equals(object);
 	}
 
+	public boolean isInnerClass() {
+		return type == ConstantPoolType.Utf8 && "InnerClasses".equals(object);
+	}
+
 	protected String getName(JavaClassBuilder builder) {
 		return (String) builder.getConstant(getNameIndex()).getObject();
 	}

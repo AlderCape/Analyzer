@@ -128,9 +128,9 @@ public class JavaClass extends ClassInfoBase implements ClassInfo {
 	@Override
 	public Set<ClassInfo> getClassDependencies() {
 		Set<ClassInfo> result = new HashSet<>();
-		result.add(new SimpleClassInfo(superclassName));
+		result.add(new ClassInfoBase(superclassName));
 		for (String interfaceName : interfaces) {
-			result.add(new SimpleClassInfo(interfaceName));
+			result.add(new ClassInfoBase(interfaceName));
 		}
 		for (FieldInfo field : fields) {
 			Set<ClassInfo> packageInfo = field.getDependentClasses();
@@ -160,5 +160,10 @@ public class JavaClass extends ClassInfoBase implements ClassInfo {
 	@Override
 	public int hashCode() {
 		return getName().hashCode();
+	}
+
+	@Override
+	public boolean isInnerClass() {
+		return attributes.isInnerClass();
 	}
 }

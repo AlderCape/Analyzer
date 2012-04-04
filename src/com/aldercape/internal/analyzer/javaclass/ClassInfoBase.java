@@ -1,11 +1,15 @@
 package com.aldercape.internal.analyzer.javaclass;
 
+import java.util.Set;
+
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
-abstract class ClassInfoBase implements ClassInfo {
+public class ClassInfoBase implements ClassInfo {
 
 	private String className;
+
+	private ClassDetails details = ClassDetails.Unparsed;
 
 	public ClassInfoBase(String className) {
 		this.className = className;
@@ -39,6 +43,26 @@ abstract class ClassInfoBase implements ClassInfo {
 	@Override
 	public int hashCode() {
 		return getName().hashCode();
+	}
+
+	@Override
+	public Set<PackageInfo> getPackageDependencies() {
+		return details.getPackageDependencies();
+	}
+
+	@Override
+	public Set<ClassInfo> getClassDependencies() {
+		return details.getClassDependencies();
+	}
+
+	@Override
+	public boolean isAbstract() {
+		return details.isAbstract();
+	}
+
+	@Override
+	public boolean isInnerClass() {
+		return details.isInnerClass();
 	}
 
 }

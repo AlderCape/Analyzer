@@ -3,15 +3,13 @@ package com.aldercape.internal.analyzer.javaclass;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
-public class ExceptionAttributeType implements AttributeType {
+public class ExceptionAttributeType extends AttributeTypeAdapter {
 
 	private Set<PackageInfo> exceptions = new HashSet<>();
 	private Set<ClassInfo> exceptionClasses = new HashSet<>();
@@ -23,7 +21,7 @@ public class ExceptionAttributeType implements AttributeType {
 			Constant classConstant = builder.getConstant(in.readUnsignedShort());
 			String className = JavaClassParser.nextTypeFromDescriptor("L" + classConstant.getName(builder) + ";");
 			exceptions.add(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
-			exceptionClasses.add(new SimpleClassInfo(className));
+			exceptionClasses.add(new ClassInfoBase(className));
 		}
 	}
 
@@ -33,7 +31,7 @@ public class ExceptionAttributeType implements AttributeType {
 	}
 
 	@Override
-	public Collection<? extends ClassInfo> getDependentClasses() {
+	public Set<? extends ClassInfo> getDependentClasses() {
 		return exceptionClasses;
 	}
 

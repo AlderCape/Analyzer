@@ -86,8 +86,14 @@ public class JavaClassParser {
 					values[b] = in.readByte();
 				}
 				attrType = new ExceptionAttributeType(values, builder);
+			} else if (type.isInnerClass()) {
+				int attrLength = in.readInt();
+				byte[] values = new byte[attrLength];
+				for (int b = 0; b < attrLength; b++) {
+					values[b] = in.readByte();
+				}
+				attrType = new InnerClassAttributeType(values, builder);
 			} else {
-
 				int attrLength = in.readInt();
 				byte[] values = new byte[attrLength];
 				for (int b = 0; b < attrLength; b++) {

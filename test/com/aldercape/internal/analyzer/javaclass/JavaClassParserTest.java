@@ -15,6 +15,7 @@ import testdata.ClassWithArrays;
 import testdata.ClassWithClassAnnotation;
 import testdata.ClassWithException;
 import testdata.ClassWithFieldAnnotation;
+import testdata.ClassWithInnerClass;
 import testdata.ClassWithMethodAnnotation;
 import testdata.ClassWithOneField;
 import testdata.ClassWithOneMethod;
@@ -52,6 +53,7 @@ public class JavaClassParserTest {
 		assertEquals("<init>", result.getMethod(0).getName());
 		assertEquals(1, result.getAttributesCount());
 		assertFalse(result.isAbstract());
+		assertFalse(result.isInnerClass());
 	}
 
 	@Test
@@ -190,6 +192,16 @@ public class JavaClassParserTest {
 
 		assertEquals(2, result.getMethodsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
+	}
+
+	@Test
+	public void parseInnerClass() throws Exception {
+		ClassInfo result = new JavaClassParser().parse(ClassWithInnerClass.InnerStatic.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(expectedPackages, result.getPackageDependencies());
+		assertTrue(result.isInnerClass());
 	}
 
 	@Test

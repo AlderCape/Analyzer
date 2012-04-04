@@ -44,4 +44,13 @@ public class AttributeInfo {
 		return result;
 	}
 
+	public boolean isInnerClass() {
+		for (AttributeType attr : attributes) {
+			if (attr.isInnerClass()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
