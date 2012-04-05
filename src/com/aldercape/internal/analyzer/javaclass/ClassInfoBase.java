@@ -15,6 +15,11 @@ public class ClassInfoBase implements ClassInfo {
 		this.className = className;
 	}
 
+	public ClassInfoBase(String className, ClassDetails details) {
+		this.className = className;
+		this.details = details;
+	}
+
 	@Override
 	public String getName() {
 		return className;
@@ -47,12 +52,12 @@ public class ClassInfoBase implements ClassInfo {
 
 	@Override
 	public Set<PackageInfo> getPackageDependencies() {
-		return details.getPackageDependencies();
+		return details.getPackageDependencies(this);
 	}
 
 	@Override
 	public Set<ClassInfo> getClassDependencies() {
-		return details.getClassDependencies();
+		return details.getClassDependencies(this);
 	}
 
 	@Override

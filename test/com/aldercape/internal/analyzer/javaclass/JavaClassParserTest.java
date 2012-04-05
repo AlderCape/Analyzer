@@ -3,6 +3,7 @@ package com.aldercape.internal.analyzer.javaclass;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,17 +44,11 @@ public class JavaClassParserTest {
 		assertEquals(0xcafebabe, result.getMagic());
 		assertEquals(0, result.getMinor());
 		assertEquals(51, result.getMajor());
-		assertEquals(15, result.getConstantPoolSize());
 		assertTrue(result.isPublic());
 		assertEquals(EmptyClass.class.getName(), result.getName());
-		assertEquals(EmptyClass.class.getSuperclass().getName(), result.getSuperclassName());
-		assertEquals(0, result.getInterfaceCount());
-		assertEquals(0, result.getFieldsCount());
-		assertEquals(1, result.getMethodsCount());
-		assertEquals("<init>", result.getMethod(0).getName());
-		assertEquals(1, result.getAttributesCount());
 		assertFalse(result.isAbstract());
 		assertFalse(result.isInnerClass());
+		assertEquals(Collections.singleton(new ClassInfoStub("java.lang.Object")), result.getClassDependencies());
 	}
 
 	@Test
@@ -62,67 +57,58 @@ public class JavaClassParserTest {
 		assertEquals(0xcafebabe, result.getMagic());
 		assertEquals(0, result.getMinor());
 		assertEquals(51, result.getMajor());
-		assertEquals(6, result.getConstantPoolSize());
 		assertTrue(result.isPublic());
 		assertEquals(EmptyInterface.class.getName(), result.getName());
-		assertEquals(Object.class.getName(), result.getSuperclassName());
-		assertEquals(0, result.getInterfaceCount());
-		assertEquals(0, result.getFieldsCount());
-		assertEquals(0, result.getMethodsCount());
-		assertEquals(1, result.getAttributesCount());
 		assertTrue(result.isAbstract());
 	}
 
 	@Test
 	public void parsesClassWithOneMethod() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithOneMethod.class.getName());
-		assertEquals(2, result.getMethodsCount());
-		assertEquals("<init>", result.getMethod(0).getName());
-		assertEquals("test", result.getMethod(1).getName());
+		assertEquals(Collections.singleton(new ClassInfoStub("java.lang.Object")), result.getClassDependencies());
 	}
 
 	@Test
 	public void parsesClassWithTwoConstructors() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithTwoConstructors.class.getName());
-		assertEquals(2, result.getMethodsCount());
-		assertEquals("<init>", result.getMethod(0).getName());
-		assertEquals(0, result.getMethod(0).getParameterCount());
-		assertEquals("<init>", result.getMethod(1).getName());
-		assertEquals(2, result.getMethod(1).getParameterCount());
-		assertEquals("java.lang.String", result.getMethod(1).getParameterType(0));
-		assertEquals("java.lang.Integer", result.getMethod(1).getParameterType(1));
+
+		Set<ClassInfo> expected = new HashSet<>();
+		expected.add(new ClassInfoStub(String.class.getName()));
+		expected.add(new ClassInfoStub(Object.class.getName()));
+		expected.add(new ClassInfoStub(Integer.class.getName()));
+
+		assertEquals(expected, result.getClassDependencies());
 	}
 
 	@Test
 	public void parsesClassWithAllPrimitivesInOneConstructor() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithAllPrimitivesInOneConstructor.class.getName());
-		assertEquals(1, result.getMethodsCount());
-		assertEquals("<init>", result.getMethod(0).getName());
-		assertEquals(8, result.getMethod(0).getParameterCount());
-		assertEquals(Byte.class.getName(), result.getMethod(0).getParameterType(0));
-		assertEquals(Short.class.getName(), result.getMethod(0).getParameterType(1));
-		assertEquals(Integer.class.getName(), result.getMethod(0).getParameterType(2));
-		assertEquals(Long.class.getName(), result.getMethod(0).getParameterType(3));
-		assertEquals(Double.class.getName(), result.getMethod(0).getParameterType(4));
-		assertEquals(Float.class.getName(), result.getMethod(0).getParameterType(5));
-		assertEquals(Character.class.getName(), result.getMethod(0).getParameterType(6));
-		assertEquals(Boolean.class.getName(), result.getMethod(0).getParameterType(7));
+		Set<ClassInfo> expected = new HashSet<>();
+		expected.add(new ClassInfoStub(Byte.class.getName()));
+		expected.add(new ClassInfoStub(Short.class.getName()));
+		expected.add(new ClassInfoStub(Integer.class.getName()));
+		expected.add(new ClassInfoStub(Long.class.getName()));
+		expected.add(new ClassInfoStub(Double.class.getName()));
+		expected.add(new ClassInfoStub(Float.class.getName()));
+		expected.add(new ClassInfoStub(Character.class.getName()));
+		expected.add(new ClassInfoStub(Boolean.class.getName()));
+		expected.add(new ClassInfoStub(Object.class.getName()));
+		assertEquals(expected, result.getClassDependencies());
 	}
 
 	@Test
 	public void parsesAbstractClassWithOneField() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithOneField.class.getName());
-		assertEquals(1, result.getMethodsCount());
-		assertEquals("<init>", result.getMethod(0).getName());
-		assertEquals(1, result.getFieldsCount());
-		assertEquals(String.class.getName(), result.getField(0).getType());
+		Set<ClassInfo> expectedClasses = new HashSet<>();
+		expectedClasses.add(new ClassInfoStub("java.lang.Object"));
+		expectedClasses.add(new ClassInfoStub("java.lang.String"));
+		assertEquals(expectedClasses, result.getClassDependencies());
 		assertTrue(result.isAbstract());
 	}
 
 	@Test
 	public void parsesClassWithOneInterface() throws Exception {
 		JavaClass result = new JavaClassParser().parse(ClassWithAnInterface.class.getName());
-		assertEquals(1, result.getInterfaceCount());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
@@ -147,7 +133,6 @@ public class JavaClassParserTest {
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
-		assertEquals(2, result.getAttributesCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 
@@ -157,7 +142,6 @@ public class JavaClassParserTest {
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
-		assertEquals(1, result.getAttributesCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 
@@ -167,7 +151,6 @@ public class JavaClassParserTest {
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
-		assertEquals(1, result.getAttributesCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 
@@ -178,7 +161,6 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
 		expectedPackages.add(new PackageInfo("java.util.concurrent"));
-		assertEquals(3, result.getFieldsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 
@@ -190,7 +172,6 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("java.util"));
 		expectedPackages.add(new PackageInfo("java.util.concurrent"));
 
-		assertEquals(2, result.getMethodsCount());
 		assertEquals(expectedPackages, result.getPackageDependencies());
 	}
 
