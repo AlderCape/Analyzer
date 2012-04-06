@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collections;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -23,11 +22,12 @@ public class DotOutputClassDependencyTest {
 		StringWriter writer = new StringWriter();
 		ClassDependencyReport report = new ClassDependencyReport() {
 			@Override
-			public Set<? extends ClassInfo> getChildrenFor(ClassInfo classInfo) {
+			public SortedSet<ClassInfo> getChildrenFor(ClassInfo classInfo) {
+
 				if (classInfo.getName().equals("FirstClass")) {
-					return Collections.singleton(new ClassInfoBase("SecondClass"));
+					return new TreeSet<ClassInfo>(Collections.singleton(new ClassInfoBase("SecondClass")));
 				}
-				return Collections.singleton(new ClassInfoBase("FirstClass"));
+				return new TreeSet<ClassInfo>(Collections.singleton(new ClassInfoBase("FirstClass")));
 			}
 
 			@Override

@@ -1,9 +1,7 @@
 package com.aldercape.internal.analyzer.reports;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -22,12 +20,12 @@ public class ClassDependencyReport implements DependencyReport<ClassInfo> {
 	}
 
 	@Override
-	public Set<? extends ClassInfo> getChildrenFor(ClassInfo classInfo) {
-		return classInfo.getClassDependencies();
+	public SortedSet<ClassInfo> getChildrenFor(ClassInfo classInfo) {
+		return new TreeSet<ClassInfo>(classInfo.getClassDependencies());
 	}
 
-	public Set<ClassInfo> getParentsFor(ClassInfo classInfo) {
-		Set<ClassInfo> result = new HashSet<>();
+	public SortedSet<ClassInfo> getParentsFor(ClassInfo classInfo) {
+		SortedSet<ClassInfo> result = new TreeSet<>();
 		for (ClassInfo otherClass : classes) {
 			if (otherClass.getClassDependencies().contains(classInfo)) {
 				result.add(otherClass);

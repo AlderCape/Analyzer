@@ -54,6 +54,10 @@ public class ClassInfoStub implements ClassInfo {
 		this.classDependencies = classDependencies;
 	}
 
+	public void addClassDependency(ClassInfo dependency) {
+		this.classDependencies.add(dependency);
+	}
+
 	@Override
 	public String getName() {
 		return className;

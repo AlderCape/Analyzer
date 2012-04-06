@@ -9,7 +9,7 @@ import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.javaclass.ClassFinder;
 import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
-import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
+import com.aldercape.internal.analyzer.reports.FilteredClassDependencyReport;
 import com.aldercape.internal.analyzer.reports.FilteredPackageDependencyReport;
 
 public class Dependencies {
@@ -20,12 +20,15 @@ public class Dependencies {
 
 		DotOutputFormat<ClassInfo> classOutput = new DotOutputFormat<ClassInfo>(true);
 		writeClassDependencyReport(classFinder, classOutput, ClassInfo.class.getPackage().getName());
+		writeClassDependencyReport(classFinder, classOutput, JavaClassParser.class.getPackage().getName());
 	}
 
 	protected static void writeClassDependencyReport(ClassFinder classFinder, DotOutputFormat<ClassInfo> classOutput, String packageName) throws IOException {
 		Writer writer = new FileWriter(packageName + ".dot");
 		String fileName = packageName.replace('.', '/');
-		ClassDependencyReport report = new ClassDependencyReport();
+		FilteredClassDependencyReport report = new FilteredClassDependencyReport();
+		report.ignorePackage(new PackageInfo("java.lang"));
+		report.ignorePackage(new PackageInfo("java.util"));
 		Set<File> classFiles = classFinder.getClassFilesIn(new File("bin/" + fileName));
 		for (File file : classFiles) {
 			try {

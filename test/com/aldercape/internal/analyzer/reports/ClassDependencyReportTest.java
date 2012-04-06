@@ -9,6 +9,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.PackageInfo;
+import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
 
 public class ClassDependencyReportTest {
 
@@ -57,4 +59,24 @@ public class ClassDependencyReportTest {
 		assertEquals(Collections.singleton(classInfo1), report.getParentsFor(classInfo2));
 	}
 
+	@Test
+	public void ignoresSpecifiedPackages() {
+		FilteredClassDependencyReport report = new FilteredClassDependencyReport();
+		report.ignorePackage(new PackageInfo("java.lang"));
+		report.ignorePackage(new PackageInfo("other"));
+		ClassInfoStub concreteClass = new ClassInfoStub("test.FirstClass");
+		concreteClass.setPackageName("test");
+		ClassInfoStub abstractClass = new ClassInfoStub("other.SecondClass");
+		abstractClass.setPackageName("other");
+
+		concreteClass.addClassDependency(new ClassInfoBase("java.lang.String"));
+		report.addClass(concreteClass);
+		abstractClass.setDependencies(Collections.singleton(new PackageInfo("base")));
+		report.addClass(abstractClass);
+
+		assertEquals(Collections.singleton(new ClassInfoBase("test.FirstClass")), report.getClasses());
+		assertEquals(Collections.emptySet(), report.getChildrenFor(concreteClass));
+		assertEquals(Collections.emptySet(), report.getParentsFor(concreteClass));
+
+	}
 }
