@@ -12,8 +12,8 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
-import com.aldercape.internal.analyzer.reports.ClassInfoStub;
 
 public class DotOutputClassDependencyTest {
 
@@ -25,16 +25,16 @@ public class DotOutputClassDependencyTest {
 			@Override
 			public Set<? extends ClassInfo> getChildrenFor(ClassInfo classInfo) {
 				if (classInfo.getName().equals("FirstClass")) {
-					return Collections.singleton(new ClassInfoStub("SecondClass"));
+					return Collections.singleton(new ClassInfoBase("SecondClass"));
 				}
-				return Collections.singleton(new ClassInfoStub("FirstClass"));
+				return Collections.singleton(new ClassInfoBase("FirstClass"));
 			}
 
 			@Override
 			public SortedSet<ClassInfo> getClasses() {
 				SortedSet<ClassInfo> result = new TreeSet<>();
-				result.add(new ClassInfoStub("FirstClass"));
-				result.add(new ClassInfoStub("SecondClass"));
+				result.add(new ClassInfoBase("FirstClass"));
+				result.add(new ClassInfoBase("SecondClass"));
 				return result;
 			}
 		};

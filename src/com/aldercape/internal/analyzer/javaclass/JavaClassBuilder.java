@@ -21,9 +21,10 @@ public class JavaClassBuilder {
 	private List<String> interfaces = new ArrayList<>();
 	private AttributeInfo attributes;
 
-	public JavaClass create() {
-		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, constants.getConstantClassName(superclassNameIndex + 1), interfaces, fields, methods, attributes);
-		JavaClass result = new JavaClass(constants.getConstantClassName(classNameIndex + 1), versionInfo, parsedClassDetails);
+	public ClassInfoBase create() {
+		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, ClassRepository.getClass(constants.getConstantClassName(superclassNameIndex + 1)), interfaces, fields, methods, attributes, versionInfo);
+		ClassInfoBase result = ClassRepository.getClass(constants.getConstantClassName(classNameIndex + 1));
+		result.setDetails(parsedClassDetails);
 		return result;
 	}
 

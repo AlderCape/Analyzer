@@ -70,4 +70,8 @@ public class ClassInfoBase implements ClassInfo {
 		return details.isInnerClass();
 	}
 
+	public void setDetails(ParsedClassDetails details) {
+		this.details = details;
+	}
+
 }

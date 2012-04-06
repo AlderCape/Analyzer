@@ -21,7 +21,7 @@ public class ExceptionAttributeType extends AttributeTypeAdapter {
 			Constant classConstant = builder.getConstant(in.readUnsignedShort());
 			String className = JavaClassParser.nextTypeFromDescriptor("L" + classConstant.getName(builder) + ";");
 			exceptions.add(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
-			exceptionClasses.add(new ClassInfoBase(className));
+			exceptionClasses.add(ClassRepository.getClass(className));
 		}
 	}
 

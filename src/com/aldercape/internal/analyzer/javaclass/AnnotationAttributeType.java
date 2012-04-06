@@ -38,6 +38,6 @@ public class AnnotationAttributeType extends AttributeTypeAdapter {
 
 	@Override
 	public Set<? extends ClassInfo> getDependentClasses() {
-		return Collections.singleton(new ClassInfoBase(className));
+		return Collections.singleton(ClassRepository.getClass(className));
 	}
 }

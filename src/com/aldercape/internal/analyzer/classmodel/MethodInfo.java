@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
+import com.aldercape.internal.analyzer.javaclass.ClassRepository;
 
 public class MethodInfo {
 
@@ -54,7 +54,7 @@ public class MethodInfo {
 	public Set<ClassInfo> getDependentClasses() {
 		Set<ClassInfo> result = new HashSet<>();
 		for (String dependency : parameters) {
-			result.add(new ClassInfoBase(dependency));
+			result.add(ClassRepository.getClass(dependency));
 		}
 		result.addAll(attributeInfo.getDependentClasses());
 		return result;

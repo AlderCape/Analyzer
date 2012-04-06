@@ -15,7 +15,7 @@ public class ClassDependencyReportTest {
 	@Test
 	public void singleClass() {
 		ClassDependencyReport report = new ClassDependencyReport();
-		ClassInfoStub classInfo1 = new ClassInfoStub("FirstClass");
+		ClassInfo classInfo1 = new ClassInfoStub("FirstClass");
 		report.addClass(classInfo1);
 		assertEquals(Collections.singleton(classInfo1), report.getClasses());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));

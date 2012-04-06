@@ -19,15 +19,15 @@ public class JavaClassParser {
 	public JavaClassParser() {
 	}
 
-	public JavaClass parse(String name) throws FileNotFoundException {
+	public ClassInfoBase parse(String name) throws FileNotFoundException {
 		return parse(convertToFile(name));
 	}
 
-	public JavaClass parse(File file) throws FileNotFoundException {
+	public ClassInfoBase parse(File file) throws FileNotFoundException {
 		return parse(new FileInputStream(file));
 	}
 
-	public JavaClass parse(InputStream in) {
+	public ClassInfoBase parse(InputStream in) {
 		return parse(new DataInputStream(in));
 	}
 
@@ -43,7 +43,7 @@ public class JavaClassParser {
 		return null;
 	}
 
-	private JavaClass parse(DataInputStream in) {
+	private ClassInfoBase parse(DataInputStream in) {
 		try {
 			JavaClassBuilder builder = new JavaClassBuilder();
 			createAndAddVersionInfo(in, builder);

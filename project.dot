@@ -2,13 +2,13 @@ digraph G {
 "com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 1, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.classmodel" [label="com.aldercape.internal.analyzer.classmodel\n(Ca 3, Ce 1, A 0.4, I 0.4, D 0.2)"];
 "com.aldercape.internal.analyzer.javaclass" [label="com.aldercape.internal.analyzer.javaclass\n(Ca 0, Ce 4, A 0.1, I 1.0, D 0.1)"];
-"com.aldercape.internal.analyzer.outputformats" [label="com.aldercape.internal.analyzer.outputformats\n(Ca 0, Ce 5, A 0.0, I 1.0, D 0.0)"];
+"com.aldercape.internal.analyzer.outputformats" [label="com.aldercape.internal.analyzer.outputformats\n(Ca 0, Ce 4, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.reports" [label="com.aldercape.internal.analyzer.reports\n(Ca 1, Ce 3, A 0.1, I 0.8, D 0.1)"];
 "java.io" [label="java.io\n(Ca 2, Ce 0, A ?, I 0.0, D ?)"];
 "java.util" [label="java.util\n(Ca 5, Ce 0, A ?, I 0.0, D ?)"];
 "java.util.concurrent" [label="java.util.concurrent\n(Ca 1, Ce 0, A ?, I 0.0, D ?)"];
-"org.junit" [label="org.junit\n(Ca 5, Ce 0, A ?, I 0.0, D ?)"];
-"testdata" [label="testdata\n(Ca 0, Ce 3, A 0.2, I 1.0, D 0.2)"];
+"org.junit" [label="org.junit\n(Ca 4, Ce 0, A ?, I 0.0, D ?)"];
+"testdata" [label="testdata\n(Ca 0, Ce 3, A 0.1, I 1.0, D 0.1)"];
 "testdata.filefinder.multiplefiles" [label="testdata.filefinder.multiplefiles\n(Ca 0, Ce 0, A 0.0, I 1.0, D 0.0)"];
 "testdata.filefinder.singleclasspackage" [label="testdata.filefinder.singleclasspackage\n(Ca 0, Ce 0, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer" -> "org.junit";
@@ -21,7 +21,6 @@ digraph G {
 "com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer.reports";
 "com.aldercape.internal.analyzer.outputformats" -> "java.io";
 "com.aldercape.internal.analyzer.outputformats" -> "java.util";
-"com.aldercape.internal.analyzer.outputformats" -> "org.junit";
 "com.aldercape.internal.analyzer.reports" -> "com.aldercape.internal.analyzer.classmodel";
 "com.aldercape.internal.analyzer.reports" -> "java.util";
 "com.aldercape.internal.analyzer.reports" -> "org.junit";
