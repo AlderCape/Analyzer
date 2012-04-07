@@ -8,6 +8,7 @@ public class PackageInfo implements Comparable<PackageInfo>, TypeInfo {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -34,6 +35,11 @@ public class PackageInfo implements Comparable<PackageInfo>, TypeInfo {
 	@Override
 	public int compareTo(PackageInfo o) {
 		return getName().compareTo(o.getName());
+	}
+
+	@Override
+	public PackageInfo getPackage() {
+		return this;
 	}
 
 }

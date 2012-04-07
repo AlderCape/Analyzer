@@ -61,7 +61,8 @@ public class ClassDependencyReportTest {
 
 	@Test
 	public void ignoresSpecifiedPackages() {
-		FilteredClassDependencyReport report = new FilteredClassDependencyReport();
+		ClassDependencyReport baseReport = new ClassDependencyReport();
+		FilteredDependencyReport<ClassInfo> report = new FilteredDependencyReport<>(baseReport);
 		report.ignorePackage(new PackageInfo("java.lang"));
 		report.ignorePackage(new PackageInfo("other"));
 		ClassInfoStub concreteClass = new ClassInfoStub("test.FirstClass");
@@ -70,11 +71,11 @@ public class ClassDependencyReportTest {
 		abstractClass.setPackageName("other");
 
 		concreteClass.addClassDependency(new ClassInfoBase("java.lang.String"));
-		report.addClass(concreteClass);
+		baseReport.addClass(concreteClass);
 		abstractClass.setDependencies(Collections.singleton(new PackageInfo("base")));
-		report.addClass(abstractClass);
+		baseReport.addClass(abstractClass);
 
-		assertEquals(Collections.singleton(new ClassInfoBase("test.FirstClass")), report.getClasses());
+		assertEquals(Collections.singleton(new ClassInfoBase("test.FirstClass")), report.getIncludedTypes());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(concreteClass));
 		assertEquals(Collections.emptySet(), report.getParentsFor(concreteClass));
 

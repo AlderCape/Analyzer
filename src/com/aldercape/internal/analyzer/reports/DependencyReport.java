@@ -1,7 +1,6 @@
 package com.aldercape.internal.analyzer.reports;
 
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 
 public interface DependencyReport<T> {
@@ -26,10 +25,12 @@ public interface DependencyReport<T> {
 
 	}
 
-	public Set<? extends T> getChildrenFor(T type);
+	public SortedSet<? extends T> getChildrenFor(T type);
+
+	public SortedSet<T> getParentsFor(T type);
 
 	public SortedSet<T> getIncludedTypes();
 
-	List<MetricPair> getMetricsPair(T type);
+	public List<MetricPair> getMetricsPair(T type);
 
 }

@@ -4,4 +4,6 @@ public interface TypeInfo {
 
 	public String getName();
 
+	public PackageInfo getPackage();
+
 }
