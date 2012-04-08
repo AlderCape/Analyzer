@@ -69,4 +69,8 @@ public class JavaClassBuilder {
 		this.versionInfo = info;
 	}
 
+	public ConstantPoolInfo getConstants() {
+		return constants;
+	}
+
 }

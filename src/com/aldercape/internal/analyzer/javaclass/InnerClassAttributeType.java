@@ -14,7 +14,6 @@ public class InnerClassAttributeType extends AttributeTypeAdapter {
 			int outerClassInfo = in.readUnsignedShort();
 			int innerName = in.readUnsignedShort();
 			int accessFlags = in.readUnsignedShort();
-			System.out.println(builder.getConstant(innerClassInfo).getName(builder) + " " + builder.getConstant(outerClassInfo).getName(builder) + " " + builder.getConstant(innerName).getObject());
 		}
 	}
 

@@ -49,8 +49,8 @@ public class Constant {
 		return type == ConstantPoolType.Utf8 && "InnerClasses".equals(object);
 	}
 
-	protected String getName(JavaClassBuilder builder) {
-		return (String) builder.getConstant(getNameIndex()).getObject();
+	protected String getName(ConstantPoolInfo constants) {
+		return (String) constants.get(getNameIndex()).getObject();
 	}
 
 }
