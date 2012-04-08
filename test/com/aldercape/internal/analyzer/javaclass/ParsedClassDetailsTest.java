@@ -15,7 +15,6 @@ import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ParsedClassDetailsTest {
 
@@ -39,8 +38,6 @@ public class ParsedClassDetailsTest {
 		methods.add(new MethodInfo(0, "method2", noParameters));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
-
-		assertTrue(classDetails.getPackageDependencies(currentClass).isEmpty());
 		assertEquals(Collections.singleton(new ClassInfoBase("testpackage.A")), classDetails.getClassDependencies(currentClass));
 	}
 
@@ -53,7 +50,6 @@ public class ParsedClassDetailsTest {
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
-		assertEquals(Collections.singleton(new PackageInfo("java.lang")), classDetails.getPackageDependencies(currentClass));
 		Set<ClassInfoBase> expectedClassDependencies = new HashSet<>();
 		expectedClassDependencies.add(new ClassInfoBase("testpackage.A"));
 		expectedClassDependencies.add(new ClassInfoBase("java.lang.String"));
@@ -67,10 +63,6 @@ public class ParsedClassDetailsTest {
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
-		Set<PackageInfo> expected = new HashSet<>();
-		expected.add(new PackageInfo("java.lang"));
-		expected.add(new PackageInfo("java.util"));
-		assertEquals(expected, classDetails.getPackageDependencies(currentClass));
 		Set<ClassInfoBase> expectedClassDependencies = new HashSet<>();
 		expectedClassDependencies.add(new ClassInfoBase("testpackage.A"));
 		expectedClassDependencies.add(new ClassInfoBase("java.util.List"));
@@ -85,10 +77,6 @@ public class ParsedClassDetailsTest {
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
-		Set<PackageInfo> expected = new HashSet<>();
-		expected.add(new PackageInfo("java.lang"));
-		assertEquals(expected, classDetails.getPackageDependencies(currentClass));
-
 		Set<ClassInfoBase> expectedClassDependencies = new HashSet<>();
 		expectedClassDependencies.add(new ClassInfoBase("testpackage.A"));
 		expectedClassDependencies.add(new ClassInfoBase("testpackage.List"));
@@ -101,10 +89,6 @@ public class ParsedClassDetailsTest {
 		fields.add(new FieldInfo(0, "str", "java.lang.String"));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
-
-		Set<PackageInfo> expected = new HashSet<>();
-		expected.add(new PackageInfo("java.lang"));
-		assertEquals(expected, classDetails.getPackageDependencies(currentClass));
 
 		Set<ClassInfoBase> expectedClassDependencies = new HashSet<>();
 		expectedClassDependencies.add(new ClassInfoBase("testpackage.A"));

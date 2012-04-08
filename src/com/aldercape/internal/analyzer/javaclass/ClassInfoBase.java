@@ -1,5 +1,6 @@
 package com.aldercape.internal.analyzer.javaclass;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
@@ -10,6 +11,8 @@ public class ClassInfoBase implements ClassInfo {
 	private String className;
 
 	private ClassDetails details = ClassDetails.Unparsed;
+
+	private Set<ClassInfo> innerClasses = new HashSet<>();
 
 	public ClassInfoBase(String className) {
 		this.className = className;
@@ -52,12 +55,21 @@ public class ClassInfoBase implements ClassInfo {
 
 	@Override
 	public Set<PackageInfo> getPackageDependencies() {
-		return details.getPackageDependencies(this);
+		Set<PackageInfo> result = new HashSet<>();
+
+		for (ClassInfo classInfo : getClassDependencies()) {
+			result.add(classInfo.getPackage());
+		}
+		return result;
 	}
 
 	@Override
 	public Set<ClassInfo> getClassDependencies() {
-		return details.getClassDependencies(this);
+		Set<ClassInfo> result = new HashSet<>(details.getClassDependencies(this));
+		for (ClassInfo innerClass : innerClasses) {
+			result.addAll(innerClass.getClassDependencies());
+		}
+		return result;
 	}
 
 	@Override
@@ -72,6 +84,16 @@ public class ClassInfoBase implements ClassInfo {
 
 	public void setDetails(ParsedClassDetails details) {
 		this.details = details;
+	}
+
+	@Override
+	public ClassInfo getEnclosingClass() {
+		return details.getEnclosingClass();
+	}
+
+	@Override
+	public void addInnerClass(ClassInfo innerClass) {
+		innerClasses.add(innerClass);
 	}
 
 }

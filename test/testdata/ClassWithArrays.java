@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 
 public class ClassWithArrays {
 
-	public List[] str;
+	public List<?>[] str;
 	public int[] ints;
 	public char[] chars;
 

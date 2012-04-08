@@ -4,7 +4,10 @@ import java.util.Set;
 
 public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 
+	@Override
 	public PackageInfo getPackage();
+
+	public ClassInfo getEnclosingClass();
 
 	public Set<PackageInfo> getPackageDependencies();
 
@@ -16,5 +19,7 @@ public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 	public String getName();
 
 	public boolean isInnerClass();
+
+	public void addInnerClass(ClassInfo innerClass);
 
 }

@@ -24,4 +24,9 @@ abstract class AttributeTypeAdapter implements AttributeType {
 		return Collections.emptySet();
 	}
 
+	@Override
+	public ClassInfo getEnclosingClass() {
+		return null;
+	}
+
 }

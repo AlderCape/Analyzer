@@ -88,4 +88,14 @@ public class ClassInfoStub implements ClassInfo {
 	public boolean isInnerClass() {
 		return false;
 	}
+
+	@Override
+	public ClassInfo getEnclosingClass() {
+		return null;
+	}
+
+	@Override
+	public void addInnerClass(ClassInfo result) {
+
+	}
 }

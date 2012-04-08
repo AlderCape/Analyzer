@@ -53,4 +53,12 @@ public class AttributeInfo {
 		return false;
 	}
 
+	public ClassInfo getEnclosingClass() {
+		for (AttributeType attr : attributes) {
+			if (attr.isInnerClass()) {
+				return attr.getEnclosingClass();
+			}
+		}
+		return null;
+	}
 }

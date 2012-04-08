@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public interface ClassDetails {
 
@@ -26,8 +25,8 @@ public interface ClassDetails {
 		}
 
 		@Override
-		public Set<PackageInfo> getPackageDependencies(ClassInfo baseClass) {
-			return Collections.emptySet();
+		public ClassInfo getEnclosingClass() {
+			return null;
 		}
 
 	};
@@ -38,5 +37,5 @@ public interface ClassDetails {
 
 	public Set<ClassInfo> getClassDependencies(ClassInfo baseClass);
 
-	public Set<PackageInfo> getPackageDependencies(ClassInfo baseClass);
+	public ClassInfo getEnclosingClass();
 }

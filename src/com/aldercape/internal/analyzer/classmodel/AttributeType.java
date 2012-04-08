@@ -10,4 +10,6 @@ public interface AttributeType {
 
 	boolean isInnerClass();
 
+	ClassInfo getEnclosingClass();
+
 }

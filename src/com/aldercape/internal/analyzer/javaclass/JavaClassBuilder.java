@@ -25,6 +25,9 @@ public class JavaClassBuilder {
 		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, ClassRepository.getClass(constants.getConstantClassName(superclassNameIndex + 1)), interfaces, fields, methods, attributes, versionInfo);
 		ClassInfoBase result = ClassRepository.getClass(constants.getConstantClassName(classNameIndex + 1));
 		result.setDetails(parsedClassDetails);
+		if (result.isInnerClass() && !result.equals(result.getEnclosingClass())) {
+			result.getEnclosingClass().addInnerClass(result);
+		}
 		return result;
 	}
 

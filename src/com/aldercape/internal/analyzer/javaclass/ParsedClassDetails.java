@@ -9,7 +9,6 @@ import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ParsedClassDetails implements ClassDetails {
 
@@ -45,6 +44,11 @@ public class ParsedClassDetails implements ClassDetails {
 	}
 
 	@Override
+	public ClassInfo getEnclosingClass() {
+		return attributes.getEnclosingClass();
+	}
+
+	@Override
 	public boolean isInnerClass() {
 		return attributes.isInnerClass();
 	}
@@ -73,17 +77,6 @@ public class ParsedClassDetails implements ClassDetails {
 		}
 		result.addAll(attributes.getDependentClasses());
 		result.remove(baseClass);
-		return result;
-	}
-
-	@Override
-	public Set<PackageInfo> getPackageDependencies(ClassInfo baseClass) {
-		Set<PackageInfo> result = new HashSet<>();
-		Set<ClassInfo> classDependencies = getClassDependencies(baseClass);
-		for (ClassInfo classInfo : classDependencies) {
-			result.add(classInfo.getPackage());
-		}
-		result.remove(baseClass.getPackage());
 		return result;
 	}
 

@@ -44,6 +44,7 @@ public class JavaClassParserTest {
 		assertFalse(result.isAbstract());
 		assertFalse(result.isInnerClass());
 		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.Object")), result.getClassDependencies());
+		assertNull(result.getEnclosingClass());
 	}
 
 	@Test
@@ -174,6 +175,27 @@ public class JavaClassParserTest {
 		expectedPackages.add(new PackageInfo("java.util"));
 		assertEquals(expectedPackages, result.getPackageDependencies());
 		assertTrue(result.isInnerClass());
+		assertEquals(new ClassInfoBase(ClassWithInnerClass.class.getName()), result.getEnclosingClass());
+	}
+
+	@Test
+	public void parseInnerClassAndOuter() throws Exception {
+		ClassInfo innerResult = new JavaClassParser().parse(ClassWithInnerClass.InnerStatic.class.getName());
+		ClassInfo outerResult = new JavaClassParser().parse(ClassWithInnerClass.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		expectedPackages.add(new PackageInfo("java.util"));
+		assertEquals(expectedPackages, innerResult.getPackageDependencies());
+		Set<ClassInfo> expectedClasses = new HashSet<>();
+		expectedClasses.add(new ClassInfoBase("java.lang.Object"));
+		expectedClasses.add(new ClassInfoBase("java.util.List"));
+		assertEquals(expectedClasses, innerResult.getClassDependencies());
+
+		assertTrue(innerResult.isInnerClass());
+		assertEquals(new ClassInfoBase(ClassWithInnerClass.class.getName()), innerResult.getEnclosingClass());
+
+		assertEquals(expectedPackages, outerResult.getPackageDependencies());
+		assertEquals(expectedClasses, outerResult.getClassDependencies());
 	}
 
 	@Test
