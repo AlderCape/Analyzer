@@ -79,7 +79,7 @@ public class ClassInfoBase implements ClassInfo {
 
 	@Override
 	public boolean isInnerClass() {
-		return details.isInnerClass();
+		return details.isInnerClass() && !details.getEnclosingClass().equals(this);
 	}
 
 	public void setDetails(ParsedClassDetails details) {

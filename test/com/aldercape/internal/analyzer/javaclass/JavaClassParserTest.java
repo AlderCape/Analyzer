@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -29,6 +30,11 @@ import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class JavaClassParserTest {
+
+	@Before
+	public void setUp() {
+		ClassRepository.reset();
+	}
 
 	@Test
 	public void convertToFile() {
@@ -179,19 +185,32 @@ public class JavaClassParserTest {
 	}
 
 	@Test
+	public void parseOuterClass() throws Exception {
+		ClassInfo result = new JavaClassParser().parse(ClassWithInnerClass.class.getName());
+		Set<PackageInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new PackageInfo("java.lang"));
+		assertEquals(expectedPackages, result.getPackageDependencies());
+		assertFalse(result.isInnerClass());
+		assertEquals(new ClassInfoBase(ClassWithInnerClass.class.getName()), result.getEnclosingClass());
+	}
+
+	@Test
 	public void parseInnerClassAndOuter() throws Exception {
 		ClassInfo innerResult = new JavaClassParser().parse(ClassWithInnerClass.InnerStatic.class.getName());
 		ClassInfo outerResult = new JavaClassParser().parse(ClassWithInnerClass.class.getName());
+
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
 		assertEquals(expectedPackages, innerResult.getPackageDependencies());
+
 		Set<ClassInfo> expectedClasses = new HashSet<>();
 		expectedClasses.add(new ClassInfoBase("java.lang.Object"));
 		expectedClasses.add(new ClassInfoBase("java.util.List"));
 		assertEquals(expectedClasses, innerResult.getClassDependencies());
 
 		assertTrue(innerResult.isInnerClass());
+		assertFalse(outerResult.isInnerClass());
 		assertEquals(new ClassInfoBase(ClassWithInnerClass.class.getName()), innerResult.getEnclosingClass());
 
 		assertEquals(expectedPackages, outerResult.getPackageDependencies());

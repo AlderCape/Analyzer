@@ -12,7 +12,9 @@ public class ClassDependencyReport implements DependencyReport<ClassInfo> {
 	private SortedSet<ClassInfo> classes = new TreeSet<>();
 
 	public void addClass(ClassInfo classInfo) {
-		classes.add(classInfo);
+		if (!classInfo.isInnerClass()) {
+			classes.add(classInfo);
+		}
 	}
 
 	public SortedSet<ClassInfo> getClasses() {
@@ -24,6 +26,7 @@ public class ClassDependencyReport implements DependencyReport<ClassInfo> {
 		return new TreeSet<ClassInfo>(classInfo.getClassDependencies());
 	}
 
+	@Override
 	public SortedSet<ClassInfo> getParentsFor(ClassInfo classInfo) {
 		SortedSet<ClassInfo> result = new TreeSet<>();
 		for (ClassInfo otherClass : classes) {

@@ -18,7 +18,13 @@ public class InnerClassAttributeType extends AttributeTypeAdapter {
 			int outerClassInfo = in.readUnsignedShort();
 			int innerName = in.readUnsignedShort();
 			int accessFlags = in.readUnsignedShort();
-			outerClass = ClassRepository.getClass(builder.getConstant(outerClassInfo).getName(builder.getConstants()).replace('/', '.'));
+			if (outerClassInfo > 0) {
+				outerClass = ClassRepository.getClass(builder.getConstant(outerClassInfo).getName(builder.getConstants()).replace('/', '.'));
+			} else {
+				String innerClassName = builder.getConstant(innerClassInfo).getName(builder.getConstants());
+				outerClass = ClassRepository.getClass(innerClassName.substring(0, innerClassName.indexOf('$')).replace('/', '.'));
+				System.out.println(innerClassInfo + " " + outerClassInfo + " " + innerName + " " + accessFlags);
+			}
 		}
 	}
 
