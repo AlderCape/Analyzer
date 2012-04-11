@@ -22,4 +22,6 @@ public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 
 	public void addInnerClass(ClassInfo innerClass);
 
+	public Set<MethodInfo> getMethods();
+
 }

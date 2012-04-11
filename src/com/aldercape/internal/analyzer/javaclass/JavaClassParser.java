@@ -12,7 +12,6 @@ import java.util.List;
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
-import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public class JavaClassParser {
 
@@ -159,7 +158,7 @@ public class JavaClassParser {
 	protected void createAndAddMethods(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int methodsCount = in.readUnsignedShort();
 		for (int i = 0; i < methodsCount; i++) {
-			MethodInfo info = createMethodInfo(in, builder);
+			ParsedMethodInfo info = createMethodInfo(in, builder);
 			info.setAttribute(createAttributes(in, builder));
 			builder.addMethodInfo(info);
 		}
@@ -174,11 +173,11 @@ public class JavaClassParser {
 		return attributeInfo;
 	}
 
-	protected MethodInfo createMethodInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
+	protected ParsedMethodInfo createMethodInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int accessFlag = in.readUnsignedShort();
 		String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
 		Constant constant = builder.getConstant(in.readUnsignedShort());
-		return new MethodInfo(accessFlag, methodName, populateMethodParameters((String) constant.getObject()));
+		return new ParsedMethodInfo(accessFlag, methodName, populateMethodParameters((String) constant.getObject()));
 	}
 
 	List<String> populateMethodParameters(String descriptor) {

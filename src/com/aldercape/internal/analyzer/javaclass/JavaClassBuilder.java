@@ -1,7 +1,9 @@
 package com.aldercape.internal.analyzer.javaclass;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
@@ -16,7 +18,7 @@ public class JavaClassBuilder {
 	private int classNameIndex;
 
 	private int superclassNameIndex;
-	private List<MethodInfo> methods = new ArrayList<>();
+	private Set<MethodInfo> methods = new HashSet<>();
 	private List<FieldInfo> fields = new ArrayList<>();
 	private List<String> interfaces = new ArrayList<>();
 	private AttributeInfo attributes;
@@ -25,9 +27,9 @@ public class JavaClassBuilder {
 		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, ClassRepository.getClass(constants.getConstantClassName(superclassNameIndex + 1)), interfaces, fields, methods, attributes, versionInfo);
 		ClassInfoBase result = ClassRepository.getClass(constants.getConstantClassName(classNameIndex + 1));
 		result.setDetails(parsedClassDetails);
-		if (result.isInnerClass()) {
-			result.getEnclosingClass().addInnerClass(result);
-		}
+		// if (result.isInnerClass()) {
+		// result.getEnclosingClass().addInnerClass(result);
+		// }
 		return result;
 	}
 

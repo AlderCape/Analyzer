@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public interface ClassDetails {
 
@@ -29,6 +30,11 @@ public interface ClassDetails {
 			return null;
 		}
 
+		@Override
+		public Set<MethodInfo> getMethods() {
+			return Collections.emptySet();
+		}
+
 	};
 
 	public boolean isInnerClass();
@@ -38,4 +44,6 @@ public interface ClassDetails {
 	public Set<ClassInfo> getClassDependencies(ClassInfo baseClass);
 
 	public ClassInfo getEnclosingClass();
+
+	public Set<MethodInfo> getMethods();
 }

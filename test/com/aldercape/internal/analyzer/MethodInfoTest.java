@@ -10,23 +10,25 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
+import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
+import com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo;
 
 public class MethodInfoTest {
 
 	@Test
 	public void noDependencies() {
 		List<String> parameters = new ArrayList<String>();
-		MethodInfo methodInfo = new MethodInfo(-1, "testMethod", parameters);
-		assertEquals(Collections.emptySet(), methodInfo.getDependentPackages());
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		assertEquals(Collections.emptySet(), methodInfo.getDependentClasses());
 	}
 
 	@Test
 	public void dependsOnJavaLang() {
 		List<String> parameters = Collections.singletonList("java.lang.String");
-		MethodInfo methodInfo = new MethodInfo(-1, "testMethod", parameters);
-		assertEquals(Collections.singleton(new PackageInfo("java.lang")), methodInfo.getDependentPackages());
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.String")), methodInfo.getDependentClasses());
 	}
 
 	@Test
@@ -34,11 +36,11 @@ public class MethodInfoTest {
 		List<String> parameters = new ArrayList<>();
 		parameters.add("java.lang.String");
 		parameters.add("java.util.List");
-		Set<PackageInfo> expected = new HashSet<>();
-		expected.add(new PackageInfo("java.lang"));
-		expected.add(new PackageInfo("java.util"));
+		Set<ClassInfo> expected = new HashSet<>();
+		expected.add(new ClassInfoBase("java.lang.String"));
+		expected.add(new ClassInfoBase("java.util.List"));
 
-		MethodInfo methodInfo = new MethodInfo(-1, "testMethod", parameters);
-		assertEquals(expected, methodInfo.getDependentPackages());
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		assertEquals(expected, methodInfo.getDependentClasses());
 	}
 }

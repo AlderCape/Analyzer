@@ -19,7 +19,7 @@ public class ClassDependencyReportTest {
 		ClassDependencyReport report = new ClassDependencyReport();
 		ClassInfo classInfo1 = new ClassInfoStub("FirstClass");
 		report.addClass(classInfo1);
-		assertEquals(Collections.singleton(classInfo1), report.getClasses());
+		assertEquals(Collections.singleton(classInfo1), report.getIncludedTypes());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));
 		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
 	}
@@ -34,7 +34,7 @@ public class ClassDependencyReportTest {
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(classInfo1);
 		expected.add(classInfo2);
-		assertEquals(expected, report.getClasses());
+		assertEquals(expected, report.getIncludedTypes());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));
 		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo2));
@@ -52,7 +52,7 @@ public class ClassDependencyReportTest {
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(classInfo1);
 		expected.add(classInfo2);
-		assertEquals(expected, report.getClasses());
+		assertEquals(expected, report.getIncludedTypes());
 		assertEquals(Collections.singleton(classInfo2), report.getChildrenFor(classInfo1));
 		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
 		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo2));

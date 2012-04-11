@@ -9,6 +9,5 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.AttributeInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeType";
 "com.aldercape.internal.analyzer.classmodel.ClassInfo" -> "com.aldercape.internal.analyzer.classmodel.TypeInfo";
 "com.aldercape.internal.analyzer.classmodel.FieldInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
-"com.aldercape.internal.analyzer.classmodel.MethodInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
 "com.aldercape.internal.analyzer.classmodel.PackageInfo" -> "com.aldercape.internal.analyzer.classmodel.TypeInfo";
 }

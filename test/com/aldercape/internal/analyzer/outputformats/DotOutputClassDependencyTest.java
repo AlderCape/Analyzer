@@ -31,7 +31,7 @@ public class DotOutputClassDependencyTest {
 			}
 
 			@Override
-			public SortedSet<ClassInfo> getClasses() {
+			public SortedSet<ClassInfo> getIncludedTypes() {
 				SortedSet<ClassInfo> result = new TreeSet<>();
 				result.add(new ClassInfoBase("FirstClass"));
 				result.add(new ClassInfoBase("SecondClass"));

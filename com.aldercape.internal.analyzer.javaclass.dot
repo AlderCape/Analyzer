@@ -23,10 +23,7 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.AnnotationAttributeType" -> "java.io.IOException";
 "com.aldercape.internal.analyzer.javaclass.AttributeTypeAdapter" -> "com.aldercape.internal.analyzer.classmodel.AttributeType";
 "com.aldercape.internal.analyzer.javaclass.ClassDetails" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
-"com.aldercape.internal.analyzer.javaclass.ClassDetails" -> "com.aldercape.internal.analyzer.javaclass.ClassDetails";
-"com.aldercape.internal.analyzer.javaclass.ClassFinder" -> "com.aldercape.internal.analyzer.javaclass.ClassFinder";
 "com.aldercape.internal.analyzer.javaclass.ClassFinder" -> "java.io.File";
-"com.aldercape.internal.analyzer.javaclass.ClassFinder" -> "java.io.FileFilter";
 "com.aldercape.internal.analyzer.javaclass.ClassFinderTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.javaclass.ClassInfoBase" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.javaclass.ClassInfoBase" -> "com.aldercape.internal.analyzer.javaclass.ClassDetails";
@@ -34,7 +31,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.Constant" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo";
 "com.aldercape.internal.analyzer.javaclass.Constant" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolType";
 "com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo" -> "com.aldercape.internal.analyzer.javaclass.Constant";
-"com.aldercape.internal.analyzer.javaclass.ConstantPoolType" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolType";
 "com.aldercape.internal.analyzer.javaclass.ConstantPoolType" -> "java.io.DataInputStream";
 "com.aldercape.internal.analyzer.javaclass.ConstantPoolType" -> "java.io.IOException";
 "com.aldercape.internal.analyzer.javaclass.ExceptionAttributeType" -> "com.aldercape.internal.analyzer.javaclass.AttributeTypeAdapter";
@@ -60,6 +56,7 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.javaclass.AccessInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.javaclass.ClassDetails";
+"com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails$MethodFilter";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.javaclass.VersionInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetailsTest" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetailsTest" -> "org.junit.Before";

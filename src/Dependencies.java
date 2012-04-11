@@ -7,6 +7,7 @@ import java.util.Set;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.javaclass.ClassFinder;
+import com.aldercape.internal.analyzer.javaclass.ClassRepository;
 import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
@@ -25,6 +26,7 @@ public class Dependencies {
 	}
 
 	protected static void writeClassDependencyReport(ClassFinder classFinder, DotOutputFormat<ClassInfo> classOutput, String packageName) throws IOException {
+		ClassRepository.reset();
 		Writer writer = new FileWriter(packageName + ".dot");
 
 		String fileName = packageName.replace('.', '/');

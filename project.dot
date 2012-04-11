@@ -1,9 +1,9 @@
 digraph G {
 "com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 2, A 0.0, I 1.0, D 0.0)"];
-"com.aldercape.internal.analyzer.classmodel" [label="com.aldercape.internal.analyzer.classmodel\n(Ca 4, Ce 3, A 0.4, I 0.4, D 0.1)"];
-"com.aldercape.internal.analyzer.javaclass" [label="com.aldercape.internal.analyzer.javaclass\n(Ca 1, Ce 6, A 0.1, I 0.9, D 0.1)"];
+"com.aldercape.internal.analyzer.classmodel" [label="com.aldercape.internal.analyzer.classmodel\n(Ca 4, Ce 3, A 0.5, I 0.4, D 0.1)"];
+"com.aldercape.internal.analyzer.javaclass" [label="com.aldercape.internal.analyzer.javaclass\n(Ca 1, Ce 6, A 0.1, I 0.9, D 0.0)"];
 "com.aldercape.internal.analyzer.outputformats" [label="com.aldercape.internal.analyzer.outputformats\n(Ca 1, Ce 7, A 0.0, I 0.9, D 0.1)"];
-"com.aldercape.internal.analyzer.reports" [label="com.aldercape.internal.analyzer.reports\n(Ca 2, Ce 6, A 0.1, I 0.8, D 0.1)"];
+"com.aldercape.internal.analyzer.reports" [label="com.aldercape.internal.analyzer.reports\n(Ca 2, Ce 5, A 0.1, I 0.7, D 0.2)"];
 "java.io" [label="java.io\n(Ca 2, Ce 0, A ?, I 0.0, D ?)"];
 "java.util" [label="java.util\n(Ca 5, Ce 0, A ?, I 0.0, D ?)"];
 "java.util.concurrent" [label="java.util.concurrent\n(Ca 1, Ce 0, A ?, I 0.0, D ?)"];
@@ -27,7 +27,6 @@ digraph G {
 "com.aldercape.internal.analyzer.outputformats" -> "org.junit";
 "com.aldercape.internal.analyzer.reports" -> "com.aldercape.internal.analyzer.classmodel";
 "com.aldercape.internal.analyzer.reports" -> "com.aldercape.internal.analyzer.reports";
-"com.aldercape.internal.analyzer.reports" -> "java.io";
 "com.aldercape.internal.analyzer.reports" -> "java.util";
 "com.aldercape.internal.analyzer.reports" -> "org.junit";
 "testdata" -> "java.util";

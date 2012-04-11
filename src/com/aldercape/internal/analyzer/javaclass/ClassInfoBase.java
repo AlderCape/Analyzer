@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ClassInfoBase implements ClassInfo {
@@ -94,6 +95,11 @@ public class ClassInfoBase implements ClassInfo {
 	@Override
 	public void addInnerClass(ClassInfo innerClass) {
 		innerClasses.add(innerClass);
+	}
+
+	@Override
+	public Set<MethodInfo> getMethods() {
+		return details.getMethods();
 	}
 
 }

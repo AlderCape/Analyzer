@@ -7,18 +7,11 @@ import java.util.TreeSet;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 
-public class ClassDependencyReport implements DependencyReport<ClassInfo> {
+public class ClassDependencyReport extends SingleClassReport implements DependencyReport<ClassInfo> {
 
-	private SortedSet<ClassInfo> classes = new TreeSet<>();
-
-	public void addClass(ClassInfo classInfo) {
-		if (!classInfo.isInnerClass()) {
-			classes.add(classInfo);
-		}
-	}
-
-	public SortedSet<ClassInfo> getClasses() {
-		return Collections.unmodifiableSortedSet(classes);
+	@Override
+	protected boolean isValidClass(ClassInfo classInfo) {
+		return !classInfo.isInnerClass();
 	}
 
 	@Override
@@ -35,11 +28,6 @@ public class ClassDependencyReport implements DependencyReport<ClassInfo> {
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public SortedSet<ClassInfo> getIncludedTypes() {
-		return getClasses();
 	}
 
 	@Override

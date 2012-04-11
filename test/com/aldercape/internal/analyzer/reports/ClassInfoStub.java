@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ClassInfoStub implements ClassInfo {
@@ -12,6 +13,7 @@ public class ClassInfoStub implements ClassInfo {
 	private String packageName;
 	private Set<ClassInfo> classDependencies = new HashSet<>();
 	private String className;
+	private Set<MethodInfo> methods;
 
 	public ClassInfoStub(boolean isAbstract) {
 		this.isAbstract = isAbstract;
@@ -97,5 +99,14 @@ public class ClassInfoStub implements ClassInfo {
 	@Override
 	public void addInnerClass(ClassInfo result) {
 
+	}
+
+	public void setMethods(Set<MethodInfo> publicMethods) {
+		this.methods = publicMethods;
+	}
+
+	@Override
+	public Set<MethodInfo> getMethods() {
+		return methods;
 	}
 }
