@@ -61,6 +61,7 @@ public class ClassInfoBase implements ClassInfo {
 		for (ClassInfo classInfo : getClassDependencies()) {
 			result.add(classInfo.getPackage());
 		}
+		result.remove(getPackage());
 		return result;
 	}
 
