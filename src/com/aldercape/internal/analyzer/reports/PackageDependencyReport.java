@@ -10,10 +10,11 @@ import java.util.TreeSet;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
-public class PackageDependencyReport implements DependencyReport<PackageInfo> {
+public class PackageDependencyReport implements DependencyReport<PackageInfo>, ClassConsumer {
 
 	private Map<PackageInfo, PackageDependencyInfo> packageDependencyInfos = new HashMap<>();
 
+	@Override
 	public void addClass(ClassInfo info) {
 		packageDependencyInfoFor(info.getPackage()).add(info);
 
@@ -42,6 +43,7 @@ public class PackageDependencyReport implements DependencyReport<PackageInfo> {
 		return packageDependencyInfoFor(packageInfo).efferentSet();
 	}
 
+	@Override
 	public SortedSet<PackageInfo> getParentsFor(PackageInfo packageInfo) {
 		return getAfferent(packageInfo);
 	}

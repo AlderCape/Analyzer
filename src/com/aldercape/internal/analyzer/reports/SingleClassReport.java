@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 
-public class SingleClassReport {
+public class SingleClassReport implements ClassConsumer {
 
 	protected SortedSet<ClassInfo> classes = new TreeSet<>();
 
@@ -14,6 +14,7 @@ public class SingleClassReport {
 		return Collections.unmodifiableSortedSet(classes);
 	}
 
+	@Override
 	public void addClass(ClassInfo classInfo) {
 		if (isValidClass(classInfo)) {
 			classes.add(classInfo);

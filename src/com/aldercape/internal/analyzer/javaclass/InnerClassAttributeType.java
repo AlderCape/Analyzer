@@ -23,7 +23,6 @@ public class InnerClassAttributeType extends AttributeTypeAdapter {
 			} else {
 				String innerClassName = builder.getConstant(innerClassInfo).getName(builder.getConstants());
 				outerClass = ClassRepository.getClass(innerClassName.substring(0, innerClassName.indexOf('$')).replace('/', '.'));
-				System.out.println(innerClassInfo + " " + outerClassInfo + " " + innerName + " " + accessFlags);
 			}
 		}
 	}

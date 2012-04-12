@@ -39,6 +39,10 @@ public class ClassInfoStub implements ClassInfo {
 		return classDependencies;
 	}
 
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+
 	@Override
 	public boolean isAbstract() {
 		return isAbstract;
