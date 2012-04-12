@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
+import java.util.SortedSet;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
@@ -12,6 +13,7 @@ import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
 import com.aldercape.internal.analyzer.reports.ClassConsumer;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
+import com.aldercape.internal.analyzer.reports.DependencyInversionReport;
 import com.aldercape.internal.analyzer.reports.DependencyReport;
 import com.aldercape.internal.analyzer.reports.FilteredDependencyReport;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
@@ -24,6 +26,22 @@ public class Dependencies {
 		writePackageDependencyReport(classFinder);
 		writeClassDependencyReport(classFinder, ClassInfo.class.getPackage().getName());
 		writeClassDependencyReport(classFinder, JavaClassParser.class.getPackage().getName());
+		writeClassDependencyInversion(classFinder, JavaClassParser.class.getPackage().getName());
+	}
+
+	private static void writeClassDependencyInversion(ClassFinder classFinder, String packageName) {
+		DependencyInversionReport baseReport = new DependencyInversionReport();
+		ClassRepository.reset();
+		addClassesToReport(classFinder, baseReport, "bin/" + packageName.replace('.', '/'));
+
+		writeContentToConsole(baseReport, packageName + ".txt");
+	}
+
+	private static void writeContentToConsole(DependencyInversionReport report, String string) {
+		SortedSet<ClassInfo> classes = report.getIncludedTypes();
+		for (ClassInfo info : classes) {
+			System.out.println(info.getName() + " " + report.getDependencyInversionFor(info));
+		}
 	}
 
 	protected static void writeClassDependencyReport(ClassFinder classFinder, String packageName) throws IOException {
