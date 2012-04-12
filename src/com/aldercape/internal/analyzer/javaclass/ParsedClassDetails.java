@@ -1,5 +1,6 @@
 package com.aldercape.internal.analyzer.javaclass;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -7,7 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassDetails;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo.AccessModifier;

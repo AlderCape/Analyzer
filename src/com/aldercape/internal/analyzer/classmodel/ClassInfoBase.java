@@ -1,11 +1,9 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.classmodel;
+
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.classmodel.MethodInfo;
-import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ClassInfoBase implements ClassInfo {
 
@@ -84,7 +82,7 @@ public class ClassInfoBase implements ClassInfo {
 		return details.isInnerClass() && !details.getEnclosingClass().equals(this);
 	}
 
-	public void setDetails(ParsedClassDetails details) {
+	public void setDetails(ClassDetails details) {
 		this.details = details;
 	}
 

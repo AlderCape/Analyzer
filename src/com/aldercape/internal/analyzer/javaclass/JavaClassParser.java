@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 
 public class JavaClassParser {

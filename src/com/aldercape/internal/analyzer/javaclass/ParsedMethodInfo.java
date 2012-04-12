@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo.AccessModifier;

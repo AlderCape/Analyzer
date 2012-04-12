@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 

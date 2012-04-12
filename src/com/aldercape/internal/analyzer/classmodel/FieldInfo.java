@@ -3,7 +3,6 @@ package com.aldercape.internal.analyzer.classmodel;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.javaclass.ClassRepository;
 
 public class FieldInfo {
 

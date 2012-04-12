@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class AnnotationAttributeType extends AttributeTypeAdapter {

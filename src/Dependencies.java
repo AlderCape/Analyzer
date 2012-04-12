@@ -5,10 +5,10 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.classmodel.TypeInfo;
 import com.aldercape.internal.analyzer.javaclass.ClassFinder;
-import com.aldercape.internal.analyzer.javaclass.ClassRepository;
 import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
 import com.aldercape.internal.analyzer.reports.ClassConsumer;

@@ -10,10 +10,10 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
-import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
 import com.aldercape.internal.analyzer.javaclass.ParsedClassDetails;
 import com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo;
 import com.aldercape.internal.analyzer.javaclass.VersionInfo;

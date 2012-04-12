@@ -11,7 +11,7 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
 
 public class DotOutputClassDependencyTest {

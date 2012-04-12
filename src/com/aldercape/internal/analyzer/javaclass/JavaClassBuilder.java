@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 

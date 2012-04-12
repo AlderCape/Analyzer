@@ -1,10 +1,9 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.classmodel;
+
 
 import java.util.Collections;
 import java.util.Set;
 
-import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public interface ClassDetails {
 

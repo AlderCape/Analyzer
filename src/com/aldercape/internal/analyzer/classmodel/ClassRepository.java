@@ -1,7 +1,8 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.classmodel;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class ClassRepository {
 

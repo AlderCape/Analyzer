@@ -27,6 +27,8 @@ import testdata.EmptyClass;
 import testdata.EmptyInterface;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class JavaClassParserTest {

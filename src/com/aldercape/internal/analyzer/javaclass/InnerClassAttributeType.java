@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 
 public class InnerClassAttributeType extends AttributeTypeAdapter {
 

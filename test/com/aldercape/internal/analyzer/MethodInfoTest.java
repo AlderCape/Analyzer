@@ -11,8 +11,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
-import com.aldercape.internal.analyzer.javaclass.ClassInfoBase;
 import com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo;
 
 public class MethodInfoTest {
