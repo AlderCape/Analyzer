@@ -5,6 +5,7 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.ClassInfo" [label="com.aldercape.internal.analyzer.classmodel.ClassInfo"];
 "com.aldercape.internal.analyzer.classmodel.ClassInfoBase" [label="com.aldercape.internal.analyzer.classmodel.ClassInfoBase"];
 "com.aldercape.internal.analyzer.classmodel.ClassRepository" [label="com.aldercape.internal.analyzer.classmodel.ClassRepository"];
+"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" [label="com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest"];
 "com.aldercape.internal.analyzer.classmodel.FieldInfo" [label="com.aldercape.internal.analyzer.classmodel.FieldInfo"];
 "com.aldercape.internal.analyzer.classmodel.MethodInfo" [label="com.aldercape.internal.analyzer.classmodel.MethodInfo"];
 "com.aldercape.internal.analyzer.classmodel.PackageInfo" [label="com.aldercape.internal.analyzer.classmodel.PackageInfo"];
@@ -14,6 +15,10 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.ClassInfo" -> "com.aldercape.internal.analyzer.classmodel.TypeInfo";
 "com.aldercape.internal.analyzer.classmodel.ClassInfoBase" -> "com.aldercape.internal.analyzer.classmodel.ClassDetails";
 "com.aldercape.internal.analyzer.classmodel.ClassInfoBase" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
+"com.aldercape.internal.analyzer.classmodel.ClassRepository" -> "com.aldercape.internal.analyzer.classmodel.ClassInfoBase";
+"com.aldercape.internal.analyzer.classmodel.ClassRepository" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener";
+"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "org.junit.Before";
+"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.classmodel.FieldInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
 "com.aldercape.internal.analyzer.classmodel.PackageInfo" -> "com.aldercape.internal.analyzer.classmodel.TypeInfo";
 }
