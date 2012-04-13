@@ -18,6 +18,11 @@ public class FilteredDependencyReport<T extends TypeInfo> implements DependencyR
 		this.baseReport = baseReport;
 	}
 
+	public FilteredDependencyReport(DependencyReport<T> baseReport, Set<PackageInfo> ignoredPackages) {
+		this.baseReport = baseReport;
+		this.ignoredPackages.addAll(ignoredPackages);
+	}
+
 	public SortedSet<T> filter(SortedSet<? extends T> original) {
 		SortedSet<T> result = new TreeSet<>();
 		for (T info : original) {

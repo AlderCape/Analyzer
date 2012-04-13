@@ -1,6 +1,9 @@
+package com.aldercape.internal.analyzer;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -22,13 +25,16 @@ public class Dependencies {
 
 	public static void main(String[] args) throws IOException {
 		ClassFinder classFinder = new ClassFinder();
+		Set<PackageInfo> ignoredPackagesForClassDependencies = new HashSet<>();
+		ignoredPackagesForClassDependencies.add(new PackageInfo("java.lang"));
+		ignoredPackagesForClassDependencies.add(new PackageInfo("java.util"));
 
-		DependencyReport<PackageInfo> writePackageDependencyReport = writePackageDependencyReport(classFinder);
-		DependencyReport<ClassInfo> classInfoPackageDependencyReport = writeClassDependencyReport(classFinder, ClassInfo.class.getPackage().getName());
-		DependencyReport<ClassInfo> javaClassParserPackageDependencyReport = writeClassDependencyReport(classFinder, JavaClassParser.class.getPackage().getName());
-		DependencyInversionReport classDependencyInversion = writeClassDependencyInversion(classFinder, JavaClassParser.class.getPackage().getName());
+		DependencyReport<PackageInfo> writePackageDependencyReport = createPackageDependencyReport(classFinder);
+		DependencyReport<ClassInfo> classInfoPackageDependencyReport = createClassDependencyReport(classFinder, ClassInfo.class.getPackage().getName(), ignoredPackagesForClassDependencies);
+		DependencyReport<ClassInfo> javaClassParserPackageDependencyReport = createClassDependencyReport(classFinder, JavaClassParser.class.getPackage().getName(), ignoredPackagesForClassDependencies);
+		DependencyInversionReport classDependencyInversion = createClassDependencyInversion(classFinder, JavaClassParser.class.getPackage().getName());
 
-		addClassesToReport(classFinder, "bin");
+		parseClasses(classFinder, "bin");
 
 		writeContentToDotFile(writePackageDependencyReport, "project.dot");
 		writeContentToDotFile(classInfoPackageDependencyReport, ClassInfo.class.getPackage().getName() + ".dot");
@@ -37,13 +43,13 @@ public class Dependencies {
 
 	}
 
-	private static DependencyInversionReport writeClassDependencyInversion(ClassFinder classFinder, final String packageName) {
+	private static DependencyInversionReport createClassDependencyInversion(ClassFinder classFinder, final String packageName) {
 		final DependencyInversionReport baseReport = new DependencyInversionReport();
 		ClassRepository.addListener(new ClassRepositoryListener() {
 
 			@Override
 			public void classCreated(ClassInfo newClass) {
-				if (newClass.getPackage().equals(packageName)) {
+				if (newClass.getPackage().equals(new PackageInfo(packageName))) {
 					baseReport.addClass(newClass);
 				}
 			}
@@ -58,26 +64,22 @@ public class Dependencies {
 		}
 	}
 
-	protected static DependencyReport<ClassInfo> writeClassDependencyReport(ClassFinder classFinder, final String packageName) throws IOException {
+	protected static DependencyReport<ClassInfo> createClassDependencyReport(ClassFinder classFinder, final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {
 		final ClassDependencyReport baseReport = new ClassDependencyReport();
 		ClassRepository.addListener(new ClassRepositoryListener() {
 
 			@Override
 			public void classCreated(ClassInfo newClass) {
-				if (newClass.getPackage().equals(packageName)) {
+				if (newClass.getPackage().equals(new PackageInfo(packageName))) {
 					baseReport.addClass(newClass);
 				}
 			}
 		});
 
-		FilteredDependencyReport<ClassInfo> report = new FilteredDependencyReport<>(baseReport);
-		report.ignorePackage(new PackageInfo("java.lang"));
-		report.ignorePackage(new PackageInfo("java.util"));
-
-		return report;
+		return new FilteredDependencyReport<>(baseReport, ignoredPackages);
 	}
 
-	protected static DependencyReport<PackageInfo> writePackageDependencyReport(ClassFinder classFinder) throws IOException {
+	protected static DependencyReport<PackageInfo> createPackageDependencyReport(ClassFinder classFinder) throws IOException {
 		final PackageDependencyReport baseReport = new PackageDependencyReport();
 		ClassRepository.addListener(new ClassRepositoryListener() {
 			@Override
@@ -98,17 +100,20 @@ public class Dependencies {
 		writer.close();
 	}
 
-	private static void addClassesToReport(ClassFinder classFinder, String baseFolder) {
-		Set<File> classFiles = classFinder.getClassFilesIn(new File(baseFolder));
-		for (File file : classFiles) {
-			try {
-				JavaClassParser parser = new JavaClassParser();
-				parser.parse(file);
-			} catch (Exception e) {
-				System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");
-				e.printStackTrace();
-			}
+	private static void parseClasses(ClassFinder classFinder, String baseFolder) {
+		for (File file : classFinder.getClassFilesIn(new File(baseFolder))) {
+			parseFile(file);
 		}
 
+	}
+
+	protected static void parseFile(File file) {
+		try {
+			JavaClassParser parser = new JavaClassParser();
+			parser.parse(file);
+		} catch (Exception e) {
+			System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");
+			e.printStackTrace();
+		}
 	}
 }
