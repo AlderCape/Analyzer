@@ -57,4 +57,9 @@ public class FilteredDependencyReport<T extends TypeInfo> implements DependencyR
 		return baseReport.getMetricsPair(type);
 	}
 
+	@Override
+	public String getReportName() {
+		return baseReport.getReportName();
+	}
+
 }

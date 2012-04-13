@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
@@ -14,54 +15,58 @@ import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class ClassDependencyReportTest {
 
+	private ClassDependencyReport baseReport;
+
+	@Before
+	public void setUp() {
+		baseReport = new ClassDependencyReport("Report name");
+	}
+
 	@Test
 	public void singleClass() {
-		ClassDependencyReport report = new ClassDependencyReport();
 		ClassInfo classInfo1 = new ClassInfoStub("FirstClass");
-		report.addClass(classInfo1);
-		assertEquals(Collections.singleton(classInfo1), report.getIncludedTypes());
-		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));
-		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
+		baseReport.addClass(classInfo1);
+		assertEquals("Report name", baseReport.getReportName());
+		assertEquals(Collections.singleton(classInfo1), baseReport.getIncludedTypes());
+		assertEquals(Collections.emptySet(), baseReport.getChildrenFor(classInfo1));
+		assertEquals(Collections.emptySet(), baseReport.getParentsFor(classInfo1));
 	}
 
 	@Test
 	public void twoClassesNoDependencies() {
-		ClassDependencyReport report = new ClassDependencyReport();
 		ClassInfo classInfo1 = new ClassInfoStub("FirstClass");
 		ClassInfo classInfo2 = new ClassInfoStub("SecondClass");
-		report.addClass(classInfo1);
-		report.addClass(classInfo2);
+		baseReport.addClass(classInfo1);
+		baseReport.addClass(classInfo2);
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(classInfo1);
 		expected.add(classInfo2);
-		assertEquals(expected, report.getIncludedTypes());
-		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo1));
-		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
-		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo2));
-		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo2));
+		assertEquals(expected, baseReport.getIncludedTypes());
+		assertEquals(Collections.emptySet(), baseReport.getChildrenFor(classInfo1));
+		assertEquals(Collections.emptySet(), baseReport.getParentsFor(classInfo1));
+		assertEquals(Collections.emptySet(), baseReport.getChildrenFor(classInfo2));
+		assertEquals(Collections.emptySet(), baseReport.getParentsFor(classInfo2));
 	}
 
 	@Test
 	public void twoClassesOneDependencies() {
-		ClassDependencyReport report = new ClassDependencyReport();
 		ClassInfoStub classInfo1 = new ClassInfoStub("FirstClass");
 		ClassInfo classInfo2 = new ClassInfoStub("SecondClass");
 		classInfo1.setClassDependency(Collections.singleton(classInfo2));
-		report.addClass(classInfo1);
-		report.addClass(classInfo2);
+		baseReport.addClass(classInfo1);
+		baseReport.addClass(classInfo2);
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(classInfo1);
 		expected.add(classInfo2);
-		assertEquals(expected, report.getIncludedTypes());
-		assertEquals(Collections.singleton(classInfo2), report.getChildrenFor(classInfo1));
-		assertEquals(Collections.emptySet(), report.getParentsFor(classInfo1));
-		assertEquals(Collections.emptySet(), report.getChildrenFor(classInfo2));
-		assertEquals(Collections.singleton(classInfo1), report.getParentsFor(classInfo2));
+		assertEquals(expected, baseReport.getIncludedTypes());
+		assertEquals(Collections.singleton(classInfo2), baseReport.getChildrenFor(classInfo1));
+		assertEquals(Collections.emptySet(), baseReport.getParentsFor(classInfo1));
+		assertEquals(Collections.emptySet(), baseReport.getChildrenFor(classInfo2));
+		assertEquals(Collections.singleton(classInfo1), baseReport.getParentsFor(classInfo2));
 	}
 
 	@Test
 	public void ignoresSpecifiedPackages() {
-		ClassDependencyReport baseReport = new ClassDependencyReport();
 		FilteredDependencyReport<ClassInfo> report = new FilteredDependencyReport<>(baseReport);
 		report.ignorePackage(new PackageInfo("java.lang"));
 		report.ignorePackage(new PackageInfo("other"));

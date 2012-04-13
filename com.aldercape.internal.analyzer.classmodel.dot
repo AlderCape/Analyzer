@@ -24,8 +24,6 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.ClassRepository" -> "com.aldercape.internal.analyzer.classmodel.ClassInfoBase";
 "com.aldercape.internal.analyzer.classmodel.ClassRepository" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener";
 "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
-"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "org.junit.Before";
-"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest";

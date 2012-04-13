@@ -20,7 +20,7 @@ public class DotOutputClassDependencyTest {
 	public void simpleOutput() throws IOException {
 		DotOutputFormat<ClassInfo> format = new DotOutputFormat<>();
 		StringWriter writer = new StringWriter();
-		ClassDependencyReport report = new ClassDependencyReport() {
+		ClassDependencyReport report = new ClassDependencyReport("Report name") {
 			@Override
 			public SortedSet<ClassInfo> getChildrenFor(ClassInfo classInfo) {
 

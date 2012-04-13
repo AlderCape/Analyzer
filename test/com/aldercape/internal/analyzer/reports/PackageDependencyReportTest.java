@@ -16,26 +16,27 @@ public class PackageDependencyReportTest {
 
 	private ClassInfoStub abstractClass;
 	private ClassInfoStub concreteClass;
+	private PackageDependencyReport report;
 
 	@Before
 	public void setUp() {
 		abstractClass = new ClassInfoStub(true);
 		concreteClass = new ClassInfoStub(false);
+		report = new PackageDependencyReport("Report name");
 	}
 
 	@Test
 	public void noDependenciesOneClass() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(concreteClass);
 
 		Set<PackageInfo> expected = Collections.singleton(new PackageInfo("base"));
+		assertEquals("Report name", report.getReportName());
 		assertEquals(expected, report.getPackages());
 		assertEquals(0, report.getInstability(new PackageInfo("base")), 0);
 	}
 
 	@Test
 	public void dependsOnJavaLangOneClass() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		concreteClass.setDependencies(Collections.singleton(new PackageInfo("java.lang")));
 		report.addClass(concreteClass);
 
@@ -52,7 +53,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void oneEfferentAndOneAfferent() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		concreteClass.setDependencies(Collections.singleton(new PackageInfo("java.lang")));
 		report.addClass(concreteClass);
 		abstractClass.setPackageName("other");
@@ -72,7 +72,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void abstractnessOneConcreteClass() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(concreteClass);
 
 		Set<PackageInfo> packages = report.getPackages();
@@ -82,7 +81,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void abstractnessOneAbstractClass() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(abstractClass);
 
 		Set<PackageInfo> packages = report.getPackages();
@@ -92,7 +90,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void abstractnessOneConcreteOneAbstractClass() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(concreteClass);
 		report.addClass(abstractClass);
 
@@ -103,7 +100,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void testDistanceStableConcrete() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(concreteClass);
 
 		assertEquals(1f, report.getDistance(new PackageInfo("base")), 0);
@@ -112,7 +108,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void testDistanceStableAbstract() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		report.addClass(abstractClass);
 
 		assertEquals(0f, report.getDistance(new PackageInfo("base")), 0);
@@ -121,7 +116,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void testDistanceInstableConcrete() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		concreteClass.setDependencies(Collections.singleton(new PackageInfo("java.lang")));
 		report.addClass(concreteClass);
 
@@ -131,7 +125,6 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void testDistanceInstableAbstract() {
-		PackageDependencyReport report = new PackageDependencyReport();
 		abstractClass.setDependencies(Collections.singleton(new PackageInfo("java.lang")));
 		report.addClass(abstractClass);
 
@@ -140,20 +133,19 @@ public class PackageDependencyReportTest {
 
 	@Test
 	public void ignoresSpecifiedPackages() {
-		PackageDependencyReport baseReport = new PackageDependencyReport();
-		FilteredDependencyReport<PackageInfo> report = new FilteredDependencyReport<PackageInfo>(baseReport);
-		report.ignorePackage(new PackageInfo("java.lang"));
-		report.ignorePackage(new PackageInfo("other"));
+		FilteredDependencyReport<PackageInfo> filteredReport = new FilteredDependencyReport<PackageInfo>(report);
+		filteredReport.ignorePackage(new PackageInfo("java.lang"));
+		filteredReport.ignorePackage(new PackageInfo("other"));
 		concreteClass.setDependencies(Collections.singleton(new PackageInfo("java.lang")));
-		baseReport.addClass(concreteClass);
+		report.addClass(concreteClass);
 		abstractClass.setPackageName("other");
 		abstractClass.setDependencies(Collections.singleton(new PackageInfo("base")));
-		baseReport.addClass(abstractClass);
+		report.addClass(abstractClass);
 
-		assertEquals(Collections.singleton(new PackageInfo("base")), report.getIncludedTypes());
-		assertEquals(Collections.emptySet(), report.getChildrenFor(new PackageInfo("base")));
-		assertEquals(Collections.emptySet(), report.getParentsFor(new PackageInfo("base")));
-		assertEquals(0.5, baseReport.getInstability(new PackageInfo("base")), 0);
+		assertEquals(Collections.singleton(new PackageInfo("base")), filteredReport.getIncludedTypes());
+		assertEquals(Collections.emptySet(), filteredReport.getChildrenFor(new PackageInfo("base")));
+		assertEquals(Collections.emptySet(), filteredReport.getParentsFor(new PackageInfo("base")));
+		assertEquals(0.5, report.getInstability(new PackageInfo("base")), 0);
 
 	}
 }

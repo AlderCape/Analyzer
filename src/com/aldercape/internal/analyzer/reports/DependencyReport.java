@@ -33,4 +33,6 @@ public interface DependencyReport<T> {
 
 	public List<MetricPair> getMetricsPair(T type);
 
+	public String getReportName();
+
 }

@@ -9,6 +9,12 @@ import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 
 public class ClassDependencyReport extends SingleClassReport implements DependencyReport<ClassInfo> {
 
+	private String reportName;
+
+	public ClassDependencyReport(String reportName) {
+		this.reportName = reportName;
+	}
+
 	@Override
 	protected boolean isValidClass(ClassInfo classInfo) {
 		return !classInfo.isInnerClass();
@@ -33,6 +39,11 @@ public class ClassDependencyReport extends SingleClassReport implements Dependen
 	@Override
 	public List<DependencyReport.MetricPair> getMetricsPair(ClassInfo type) {
 		return Collections.emptyList();
+	}
+
+	@Override
+	public String getReportName() {
+		return reportName;
 	}
 
 }

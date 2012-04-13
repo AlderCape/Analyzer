@@ -19,7 +19,7 @@ public class DotOutputPackageDependencyFormatTest {
 
 	@Before
 	public void setUp() {
-		report = new PackageDependencyReport() {
+		report = new PackageDependencyReport("Report name") {
 			@Override
 			public SortedSet<PackageInfo> getPackages() {
 				TreeSet<PackageInfo> result = new TreeSet<>();

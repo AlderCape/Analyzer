@@ -13,6 +13,11 @@ import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 public class PackageDependencyReport implements DependencyReport<PackageInfo>, ClassConsumer {
 
 	private Map<PackageInfo, PackageDependencyInfo> packageDependencyInfos = new HashMap<>();
+	private String reportName;
+
+	public PackageDependencyReport(String reportName) {
+		this.reportName = reportName;
+	}
 
 	@Override
 	public void addClass(ClassInfo info) {
@@ -78,5 +83,9 @@ public class PackageDependencyReport implements DependencyReport<PackageInfo>, C
 		metrics.add(new MetricPair("I {0,number,0.0}", getInstability(packageInfo)));
 		metrics.add(new MetricPair("D {0,number,0.0}", getDistance(packageInfo)));
 		return metrics;
+	}
+
+	public String getReportName() {
+		return reportName;
 	}
 }

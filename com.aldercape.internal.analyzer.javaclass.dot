@@ -44,7 +44,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.ClassFinder$1" -> "com.aldercape.internal.analyzer.javaclass.ClassFinder";
 "com.aldercape.internal.analyzer.javaclass.ClassFinder$1" -> "java.io.File";
 "com.aldercape.internal.analyzer.javaclass.ClassFinder$1" -> "java.io.FileFilter";
-"com.aldercape.internal.analyzer.javaclass.ClassFinderTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.javaclass.Constant" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo";
 "com.aldercape.internal.analyzer.javaclass.Constant" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolType";
 "com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo" -> "com.aldercape.internal.analyzer.javaclass.Constant";
@@ -111,9 +110,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.JavaClassParser" -> "java.io.FileNotFoundException";
 "com.aldercape.internal.analyzer.javaclass.JavaClassParser" -> "java.io.IOException";
 "com.aldercape.internal.analyzer.javaclass.JavaClassParser" -> "java.io.InputStream";
-"com.aldercape.internal.analyzer.javaclass.JavaClassParserTest" -> "org.junit.Before";
-"com.aldercape.internal.analyzer.javaclass.JavaClassParserTest" -> "org.junit.Ignore";
-"com.aldercape.internal.analyzer.javaclass.JavaClassParserTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.classmodel.ClassDetails";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
@@ -131,8 +127,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails$3" -> "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails$MethodFilter";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetails$MethodFilter" -> "com.aldercape.internal.analyzer.classmodel.MethodInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedClassDetailsTest" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
-"com.aldercape.internal.analyzer.javaclass.ParsedClassDetailsTest" -> "org.junit.Before";
-"com.aldercape.internal.analyzer.javaclass.ParsedClassDetailsTest" -> "org.junit.Test";
 "com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
 "com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo" -> "com.aldercape.internal.analyzer.classmodel.MethodInfo";
 "com.aldercape.internal.analyzer.javaclass.UndefinedAttributeType" -> "com.aldercape.internal.analyzer.javaclass.AttributeTypeAdapter";

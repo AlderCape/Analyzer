@@ -1,31 +1,14 @@
 digraph G {
-"com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 2, A 0.0, I 1.0, D 0.0)"];
+"com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 7, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.classmodel" [label="com.aldercape.internal.analyzer.classmodel\n(Ca 0, Ce 3, A 0.4, I 1.0, D 0.4)"];
 "com.aldercape.internal.analyzer.javaclass" [label="com.aldercape.internal.analyzer.javaclass\n(Ca 0, Ce 5, A 0.1, I 1.0, D 0.1)"];
 "com.aldercape.internal.analyzer.outputformats" [label="com.aldercape.internal.analyzer.outputformats\n(Ca 0, Ce 6, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.reports" [label="com.aldercape.internal.analyzer.reports\n(Ca 0, Ce 4, A 0.1, I 1.0, D 0.1)"];
-"java.io" [label="java.io\n(Ca 0, Ce 0, A 0.0, I 0.0, D 1.0)"];
-"java.util" [label="java.util\n(Ca 0, Ce 0, A 0.0, I 0.0, D 1.0)"];
-"java.util.concurrent" [label="java.util.concurrent\n(Ca 0, Ce 0, A 0.0, I 0.0, D 1.0)"];
-"testdata" [label="testdata\n(Ca 0, Ce 4, A 0.1, I 1.0, D 0.1)"];
-"testdata.filefinder.multiplefiles" [label="testdata.filefinder.multiplefiles\n(Ca 0, Ce 1, A 0.0, I 1.0, D 0.0)"];
-"testdata.filefinder.singleclasspackage" [label="testdata.filefinder.singleclasspackage\n(Ca 0, Ce 1, A 0.0, I 1.0, D 0.0)"];
-"com.aldercape.internal.analyzer" -> "org.junit";
-"com.aldercape.internal.analyzer.classmodel" -> "java.util";
-"com.aldercape.internal.analyzer.classmodel" -> "org.junit";
+"com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.classmodel";
+"com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.javaclass";
+"com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.reports";
 "com.aldercape.internal.analyzer.javaclass" -> "com.aldercape.internal.analyzer.classmodel";
-"com.aldercape.internal.analyzer.javaclass" -> "java.io";
-"com.aldercape.internal.analyzer.javaclass" -> "java.util";
-"com.aldercape.internal.analyzer.javaclass" -> "org.junit";
 "com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer.classmodel";
 "com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer.reports";
-"com.aldercape.internal.analyzer.outputformats" -> "java.io";
-"com.aldercape.internal.analyzer.outputformats" -> "java.util";
-"com.aldercape.internal.analyzer.outputformats" -> "org.junit";
 "com.aldercape.internal.analyzer.reports" -> "com.aldercape.internal.analyzer.classmodel";
-"com.aldercape.internal.analyzer.reports" -> "java.util";
-"com.aldercape.internal.analyzer.reports" -> "org.junit";
-"testdata" -> "java.util";
-"testdata" -> "java.util.concurrent";
-"testdata" -> "org.junit";
 }
