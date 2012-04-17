@@ -3,7 +3,9 @@ package com.aldercape.internal.analyzer;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -22,33 +24,58 @@ import com.aldercape.internal.analyzer.reports.FilteredDependencyReport;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 
 public class Dependencies {
+	private List<DependencyReport<? extends TypeInfo>> dependencyReports = new ArrayList<>();
+	private Set<PackageInfo> baseIgnoredPackages;
+	private DependencyInversionReport classDependencyInversion;
 
 	public static void main(String[] args) throws IOException {
-		ClassFinder classFinder = new ClassFinder();
-		Set<PackageInfo> ignoredPackagesForClassDependencies = new HashSet<>();
-		ignoredPackagesForClassDependencies.add(new PackageInfo("java.lang"));
-		ignoredPackagesForClassDependencies.add(new PackageInfo("java.util"));
-		ignoredPackagesForClassDependencies.add(new PackageInfo("org.junit"));
-
-		DependencyReport<PackageInfo> writePackageDependencyReport = createPackageDependencyReport(classFinder, "project");
-		DependencyReport<ClassInfo> classInfoPackageDependencyReport = createClassDependencyReport(classFinder, getPackageName(ClassInfo.class), ignoredPackagesForClassDependencies);
-		DependencyReport<ClassInfo> javaClassParserPackageDependencyReport = createClassDependencyReport(classFinder, getPackageName(JavaClassParser.class), ignoredPackagesForClassDependencies);
-		DependencyInversionReport classDependencyInversion = createClassDependencyInversion(classFinder, getPackageName(JavaClassParser.class));
-
-		parseClasses(classFinder, "bin");
-
-		writeContentToDotFile(writePackageDependencyReport);
-		writeContentToDotFile(classInfoPackageDependencyReport);
-		writeContentToDotFile(javaClassParserPackageDependencyReport);
-		writeContentToConsole(classDependencyInversion);
-
+		new Dependencies().run();
 	}
 
-	protected static String getPackageName(Class<?> clazz) {
+	public Dependencies() {
+		baseIgnoredPackages = new HashSet<>();
+		baseIgnoredPackages.add(new PackageInfo("java.lang"));
+		baseIgnoredPackages.add(new PackageInfo("java.util"));
+		baseIgnoredPackages.add(new PackageInfo("org.junit"));
+	}
+
+	public Set<PackageInfo> getBaseIgnoredPackages() {
+		return baseIgnoredPackages;
+	}
+
+	private void run() throws IOException {
+		createReports();
+		parseClasses("bin");
+		writeReports();
+	}
+
+	protected void writeReports() throws IOException {
+		writeDotFiles();
+		writeMetrics();
+	}
+
+	protected void writeMetrics() {
+		writeContentToConsole(classDependencyInversion);
+	}
+
+	protected void writeDotFiles() throws IOException {
+		for (DependencyReport<? extends TypeInfo> report : dependencyReports) {
+			writeContentToDotFile(report);
+		}
+	}
+
+	protected void createReports() throws IOException {
+		dependencyReports.add(createPackageDependencyReport("project"));
+		dependencyReports.add(createClassDependencyReport(getPackageName(ClassInfo.class), getBaseIgnoredPackages()));
+		dependencyReports.add(createClassDependencyReport(getPackageName(JavaClassParser.class), getBaseIgnoredPackages()));
+		classDependencyInversion = createClassDependencyInversion(getPackageName(JavaClassParser.class));
+	}
+
+	protected String getPackageName(Class<?> clazz) {
 		return clazz.getPackage().getName();
 	}
 
-	private static DependencyInversionReport createClassDependencyInversion(ClassFinder classFinder, final String packageName) {
+	private DependencyInversionReport createClassDependencyInversion(final String packageName) {
 		final DependencyInversionReport baseReport = new DependencyInversionReport();
 		ClassRepository.addListener(new ClassRepositoryListener() {
 
@@ -62,14 +89,14 @@ public class Dependencies {
 		return baseReport;
 	}
 
-	private static void writeContentToConsole(DependencyInversionReport report) {
+	private void writeContentToConsole(DependencyInversionReport report) {
 		SortedSet<ClassInfo> classes = report.getIncludedTypes();
 		for (ClassInfo info : classes) {
 			System.out.println(info.getName() + " " + report.getDependencyInversionFor(info));
 		}
 	}
 
-	protected static DependencyReport<ClassInfo> createClassDependencyReport(ClassFinder classFinder, final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {
+	protected DependencyReport<ClassInfo> createClassDependencyReport(final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {
 		final ClassDependencyReport baseReport = new ClassDependencyReport(packageName);
 		ClassRepository.addListener(new ClassRepositoryListener() {
 
@@ -84,7 +111,7 @@ public class Dependencies {
 		return new FilteredDependencyReport<>(baseReport, ignoredPackages);
 	}
 
-	protected static DependencyReport<PackageInfo> createPackageDependencyReport(ClassFinder classFinder, String reportName) throws IOException {
+	protected DependencyReport<PackageInfo> createPackageDependencyReport(String reportName) throws IOException {
 		final PackageDependencyReport baseReport = new PackageDependencyReport(reportName);
 		ClassRepository.addListener(new ClassRepositoryListener() {
 			@Override
@@ -105,7 +132,7 @@ public class Dependencies {
 		return report;
 	}
 
-	protected static <T extends TypeInfo> void writeContentToDotFile(DependencyReport<T> report) throws IOException {
+	protected <T extends TypeInfo> void writeContentToDotFile(DependencyReport<T> report) throws IOException {
 		DotOutputFormat<T> output = new DotOutputFormat<>(true);
 		FileWriter writer = new FileWriter(report.getReportName() + ".dot");
 		output.write(report, writer);
@@ -113,14 +140,15 @@ public class Dependencies {
 		writer.close();
 	}
 
-	private static void parseClasses(ClassFinder classFinder, String baseFolder) {
+	private void parseClasses(String baseFolder) {
+		ClassFinder classFinder = new ClassFinder();
 		for (File file : classFinder.getClassFilesIn(new File(baseFolder))) {
 			parseFile(file);
 		}
 
 	}
 
-	protected static void parseFile(File file) {
+	protected void parseFile(File file) {
 		try {
 			JavaClassParser parser = new JavaClassParser();
 			parser.parse(file);

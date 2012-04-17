@@ -23,9 +23,14 @@ public class AnnotationAttributeType extends AttributeTypeAdapter {
 		int numAnnotations = in.readUnsignedShort();
 		for (int i = 0; i < numAnnotations; i++) {
 			int annTypeIndex = in.readUnsignedShort();
-			className = JavaClassParser.nextTypeFromDescriptor((String) builder.getConstant(annTypeIndex).getObject());
+			TypeParser parser = new TypeParser(builder);
+			className = parser.parseTypeFromIndex(annTypeIndex);
 			int numNameValuePairs = in.readUnsignedShort();
 		}
+	}
+
+	protected String getConstantAsString(JavaClassBuilder builder, int annTypeIndex) {
+		return (String) builder.getConstant(annTypeIndex).getObject();
 	}
 
 	public String getClassName() {

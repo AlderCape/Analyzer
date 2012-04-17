@@ -5,16 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
-import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 
 public class JavaClassParser {
+
+	private DataInputStream in;
 
 	public JavaClassParser() {
 	}
@@ -24,11 +22,8 @@ public class JavaClassParser {
 	}
 
 	public ClassInfoBase parse(File file) throws FileNotFoundException {
-		return parse(new FileInputStream(file));
-	}
-
-	public ClassInfoBase parse(InputStream in) {
-		return parse(new DataInputStream(in));
+		in = new DataInputStream(new FileInputStream(file));
+		return parse();
 	}
 
 	public static File convertToFile(String name) {
@@ -43,7 +38,7 @@ public class JavaClassParser {
 		return null;
 	}
 
-	private ClassInfoBase parse(DataInputStream in) {
+	private ClassInfoBase parse() {
 		try {
 			JavaClassBuilder builder = new JavaClassBuilder();
 			createAndAddVersionInfo(in, builder);
@@ -63,45 +58,7 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddAtrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		AttributeInfo attributeInfo = createAttributes(in, builder);
-		builder.setAttributes(attributeInfo);
-	}
-
-	protected AttributeType parseAttribute(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		AttributeType attrType = new UndefinedAttributeType();
-		int nameIndex = in.readUnsignedShort();
-		if (nameIndex != 0) {
-			Constant type = builder.getConstant(nameIndex);
-			if (type.isAnnotation()) {
-				int attrLength = in.readInt();
-				byte[] values = new byte[attrLength];
-				for (int b = 0; b < attrLength; b++) {
-					values[b] = in.readByte();
-				}
-				attrType = new AnnotationAttributeType(values, builder);
-			} else if (type.isException()) {
-				int attrLength = in.readInt();
-				byte[] values = new byte[attrLength];
-				for (int b = 0; b < attrLength; b++) {
-					values[b] = in.readByte();
-				}
-				attrType = new ExceptionAttributeType(values, builder);
-			} else if (type.isInnerClass()) {
-				int attrLength = in.readInt();
-				byte[] values = new byte[attrLength];
-				for (int b = 0; b < attrLength; b++) {
-					values[b] = in.readByte();
-				}
-				attrType = new InnerClassAttributeType(values, builder);
-			} else {
-				int attrLength = in.readInt();
-				byte[] values = new byte[attrLength];
-				for (int b = 0; b < attrLength; b++) {
-					values[b] = in.readByte();
-				}
-			}
-		}
-		return attrType;
+		builder.setAttributes(new AttributeParser(builder).createAttributes(in));
 	}
 
 	protected void createAndAddVersionInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -147,9 +104,8 @@ public class JavaClassParser {
 		for (int i = 0; i < fieldsCount; i++) {
 			int accessFlag = in.readUnsignedShort();
 			String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
-			Constant constant = builder.getConstant(in.readUnsignedShort());
-			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, nextTypeFromDescriptor((String) constant.getObject()));
-			AttributeInfo attributeInfo = createAttributes(in, builder);
+			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, new TypeParser(builder).parseTypeFromIndex(in.readUnsignedShort()));
+			AttributeInfo attributeInfo = new AttributeParser(builder).createAttributes(in);
 			fieldInfo.setAttribute(attributeInfo);
 			builder.addFieldInfo(fieldInfo);
 
@@ -160,68 +116,15 @@ public class JavaClassParser {
 		int methodsCount = in.readUnsignedShort();
 		for (int i = 0; i < methodsCount; i++) {
 			ParsedMethodInfo info = createMethodInfo(in, builder);
-			info.setAttribute(createAttributes(in, builder));
+			info.setAttribute(new AttributeParser(builder).createAttributes(in));
 			builder.addMethodInfo(info);
 		}
-	}
-
-	protected AttributeInfo createAttributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		int attributeCount = in.readUnsignedShort();
-		AttributeInfo attributeInfo = new AttributeInfo();
-		for (int j = 0; j < attributeCount; j++) {
-			attributeInfo.add(parseAttribute(in, builder));
-		}
-		return attributeInfo;
 	}
 
 	protected ParsedMethodInfo createMethodInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
 		int accessFlag = in.readUnsignedShort();
 		String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
 		Constant constant = builder.getConstant(in.readUnsignedShort());
-		return new ParsedMethodInfo(accessFlag, methodName, populateMethodParameters((String) constant.getObject()));
+		return new ParsedMethodInfo(accessFlag, methodName, new TypeParser(builder).populateMethodParameters(constant));
 	}
-
-	List<String> populateMethodParameters(String descriptor) {
-		String parameterValue = descriptor.substring(descriptor.indexOf('(') + 1, descriptor.indexOf(')'));
-		List<String> parameters = new ArrayList<>();
-		while (!parameterValue.isEmpty()) {
-			String result = nextTypeFromDescriptor(parameterValue);
-			parameterValue = parameterValue.substring(isObject(parameterValue) ? 2 + result.length() : 1);
-			parameters.add(result);
-		}
-		return parameters;
-	}
-
-	protected static String nextTypeFromDescriptor(String parameterValue) {
-		// For see table 4.2 in the jvm specs
-		switch (parameterValue.charAt(0)) {
-		case 'B':
-			return Byte.class.getName();
-		case 'C':
-			return Character.class.getName();
-		case 'D':
-			return Double.class.getName();
-		case 'F':
-			return Float.class.getName();
-		case 'I':
-			return Integer.class.getName();
-		case 'J':
-			return Long.class.getName();
-		case 'L':
-			return parameterValue.substring(1, parameterValue.indexOf(';')).replace('/', '.');
-		case '[':
-			return nextTypeFromDescriptor(parameterValue.substring(1));
-		case 'S':
-			return Short.class.getName();
-		case 'Z':
-			return Boolean.class.getName();
-		default:
-			throw new RuntimeException("Unkown type: " + parameterValue);
-		}
-	}
-
-	private boolean isObject(String parameterValue) {
-		return parameterValue.charAt(0) == 'L';
-	}
-
 }

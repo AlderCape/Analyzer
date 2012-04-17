@@ -1,11 +1,12 @@
 digraph G {
-"com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 7, A 0.0, I 1.0, D 0.0)"];
+"com.aldercape.internal.analyzer" [label="com.aldercape.internal.analyzer\n(Ca 0, Ce 8, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.classmodel" [label="com.aldercape.internal.analyzer.classmodel\n(Ca 0, Ce 3, A 0.4, I 1.0, D 0.4)"];
 "com.aldercape.internal.analyzer.javaclass" [label="com.aldercape.internal.analyzer.javaclass\n(Ca 0, Ce 5, A 0.1, I 1.0, D 0.1)"];
 "com.aldercape.internal.analyzer.outputformats" [label="com.aldercape.internal.analyzer.outputformats\n(Ca 0, Ce 6, A 0.0, I 1.0, D 0.0)"];
 "com.aldercape.internal.analyzer.reports" [label="com.aldercape.internal.analyzer.reports\n(Ca 0, Ce 4, A 0.1, I 1.0, D 0.1)"];
 "com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.classmodel";
 "com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.javaclass";
+"com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.outputformats";
 "com.aldercape.internal.analyzer" -> "com.aldercape.internal.analyzer.reports";
 "com.aldercape.internal.analyzer.javaclass" -> "com.aldercape.internal.analyzer.classmodel";
 "com.aldercape.internal.analyzer.outputformats" -> "com.aldercape.internal.analyzer.classmodel";

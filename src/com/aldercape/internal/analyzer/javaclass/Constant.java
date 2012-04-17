@@ -49,6 +49,14 @@ public class Constant {
 		return type == ConstantPoolType.Utf8 && "InnerClasses".equals(object);
 	}
 
+	public boolean isCode() {
+		return type == ConstantPoolType.Utf8 && "Code".equals(object);
+	}
+
+	public boolean isLocalVariableTable() {
+		return type == ConstantPoolType.Utf8 && "LocalVariableTable".equals(object);
+	}
+
 	protected String getName(ConstantPoolInfo constants) {
 		return (String) constants.get(getNameIndex()).getObject();
 	}

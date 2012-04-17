@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import testdata.ClassWithAllPrimitivesInOneConstructor;
@@ -233,12 +232,11 @@ public class JavaClassParserTest {
 	}
 
 	@Test
-	@Ignore
 	public void parseClassWithDependencyInMethod() throws Exception {
 		ClassInfo result = new JavaClassParser().parse(ClassWithRefInMethod.class.getName());
-		Set<PackageInfo> expectedPackages = new HashSet<>();
-		expectedPackages.add(new PackageInfo("java.lang"));
-		expectedPackages.add(new PackageInfo("java.util"));
-		assertEquals(expectedPackages, result.getPackageDependencies());
+		Set<ClassInfo> expectedPackages = new HashSet<>();
+		expectedPackages.add(new ClassInfoBase("java.lang.Object"));
+		expectedPackages.add(new ClassInfoBase("java.util.Date"));
+		assertEquals(expectedPackages, result.getClassDependencies());
 	}
 }
