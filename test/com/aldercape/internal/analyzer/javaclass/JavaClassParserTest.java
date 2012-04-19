@@ -29,6 +29,7 @@ import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
+import com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser;
 
 public class JavaClassParserTest {
 

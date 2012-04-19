@@ -1,7 +1,10 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.javaclass.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aldercape.internal.analyzer.javaclass.Constant;
+import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
 
 public class TypeParser {
 

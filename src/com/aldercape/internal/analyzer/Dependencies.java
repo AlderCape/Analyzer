@@ -15,7 +15,8 @@ import com.aldercape.internal.analyzer.classmodel.ClassRepository.ClassRepositor
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 import com.aldercape.internal.analyzer.classmodel.TypeInfo;
 import com.aldercape.internal.analyzer.javaclass.ClassFinder;
-import com.aldercape.internal.analyzer.javaclass.JavaClassParser;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
+import com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
 import com.aldercape.internal.analyzer.reports.DependencyInversionReport;
@@ -67,6 +68,7 @@ public class Dependencies {
 	protected void createReports() throws IOException {
 		dependencyReports.add(createPackageDependencyReport("project"));
 		dependencyReports.add(createClassDependencyReport(getPackageName(ClassInfo.class), getBaseIgnoredPackages()));
+		dependencyReports.add(createClassDependencyReport(getPackageName(ConstantPoolInfo.class), getBaseIgnoredPackages()));
 		dependencyReports.add(createClassDependencyReport(getPackageName(JavaClassParser.class), getBaseIgnoredPackages()));
 		classDependencyInversion = createClassDependencyInversion(getPackageName(JavaClassParser.class));
 	}

@@ -1,49 +1,30 @@
 package com.aldercape.internal.analyzer.javaclass;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
 
 public class AnnotationAttributeType extends AttributeTypeAdapter {
 
-	private String className;
+	private ClassInfo className;
 
-	public AnnotationAttributeType(byte[] values, JavaClassBuilder builder) throws IOException {
-		consume(values, builder);
-	}
-
-	private void consume(byte[] values, JavaClassBuilder builder) throws IOException {
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(values));
-		int numAnnotations = in.readUnsignedShort();
-		for (int i = 0; i < numAnnotations; i++) {
-			int annTypeIndex = in.readUnsignedShort();
-			TypeParser parser = new TypeParser(builder);
-			className = parser.parseTypeFromIndex(annTypeIndex);
-			int numNameValuePairs = in.readUnsignedShort();
-		}
+	public AnnotationAttributeType(ClassInfo annotation) {
+		this.className = annotation;
 	}
 
 	protected String getConstantAsString(JavaClassBuilder builder, int annTypeIndex) {
 		return (String) builder.getConstant(annTypeIndex).getObject();
 	}
 
-	public String getClassName() {
-		return className;
-	}
-
 	@Override
 	public Set<PackageInfo> getDependentPackages() {
-		return Collections.singleton(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
+		return Collections.singleton(className.getPackage());
 	}
 
 	@Override
 	public Set<? extends ClassInfo> getDependentClasses() {
-		return Collections.singleton(ClassRepository.getClass(className));
+		return Collections.singleton(className);
 	}
 }

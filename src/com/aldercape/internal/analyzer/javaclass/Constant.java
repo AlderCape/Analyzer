@@ -57,7 +57,7 @@ public class Constant {
 		return type == ConstantPoolType.Utf8 && "LocalVariableTable".equals(object);
 	}
 
-	protected String getName(ConstantPoolInfo constants) {
+	public String getName(ConstantPoolInfo constants) {
 		return (String) constants.get(getNameIndex()).getObject();
 	}
 

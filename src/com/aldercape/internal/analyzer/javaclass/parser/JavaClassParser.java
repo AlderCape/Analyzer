@@ -1,4 +1,4 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.javaclass.parser;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -9,6 +9,11 @@ import java.io.IOException;
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
+import com.aldercape.internal.analyzer.javaclass.Constant;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolType;
+import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
+import com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo;
+import com.aldercape.internal.analyzer.javaclass.VersionInfo;
 
 public class JavaClassParser {
 
