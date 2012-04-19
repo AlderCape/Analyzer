@@ -15,7 +15,7 @@ public class ConstantPoolInfo {
 		return constantPool.get(index - 1);
 	}
 
-	protected String getConstantClassName(int index) {
+	public String getConstantClassName(int index) {
 		return ((String) get(index).getObject()).replace("/", ".");
 	}
 

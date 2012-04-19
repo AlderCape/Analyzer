@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
@@ -23,7 +24,7 @@ public class ClassInfoBaseTest {
 	@Test
 	public void classDependencies() {
 		Set<MethodInfo> methods = new HashSet<>();
-		List<String> interfaces = Collections.emptyList();
+		List<ClassInfo> interfaces = Collections.emptyList();
 		List<FieldInfo> fields = Collections.emptyList();
 
 		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List")));
@@ -42,7 +43,7 @@ public class ClassInfoBaseTest {
 	@Test
 	public void packageDependencies() {
 		Set<MethodInfo> methods = new HashSet<>();
-		List<String> interfaces = Collections.emptyList();
+		List<ClassInfo> interfaces = Collections.emptyList();
 		List<FieldInfo> fields = Collections.emptyList();
 
 		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List")));

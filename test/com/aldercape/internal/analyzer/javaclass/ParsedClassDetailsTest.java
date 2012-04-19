@@ -21,7 +21,7 @@ public class ParsedClassDetailsTest {
 
 	private Set<MethodInfo> methods;
 	private List<FieldInfo> fields;
-	private List<String> interfaces;
+	private List<ClassInfo> interfaces;
 	private ClassInfo currentClass;
 
 	@Before

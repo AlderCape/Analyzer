@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
+import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
@@ -17,17 +18,17 @@ public class JavaClassBuilder {
 	private VersionInfo versionInfo;
 	private List<Constant> constantPool = new ArrayList<>();
 	private int accessFlags;
-	private int classNameIndex;
+	private String classNameIndex;
 
-	private int superclassNameIndex;
+	private ClassInfo superclass;
 	private Set<MethodInfo> methods = new HashSet<>();
 	private List<FieldInfo> fields = new ArrayList<>();
-	private List<String> interfaces = new ArrayList<>();
+	private List<ClassInfo> interfaces = new ArrayList<>();
 	private AttributeInfo attributes;
 
 	public ClassInfoBase create() {
-		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, ClassRepository.getClass(constants.getConstantClassName(superclassNameIndex + 1)), interfaces, fields, methods, attributes, versionInfo);
-		ClassInfoBase result = ClassRepository.getClass(constants.getConstantClassName(classNameIndex + 1));
+		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, superclass, interfaces, fields, methods, attributes, versionInfo);
+		ClassInfoBase result = ClassRepository.getClass(classNameIndex);
 		result.setDetails(parsedClassDetails);
 		// if (result.isInnerClass()) {
 		// result.getEnclosingClass().addInnerClass(result);
@@ -56,15 +57,15 @@ public class JavaClassBuilder {
 		fields.add(info);
 	}
 
-	public void setClassNameIndex(int classNameIndex) {
+	public void setClassNameIndex(String classNameIndex) {
 		this.classNameIndex = classNameIndex;
 	}
 
-	public void setSuperclassNameIndex(int superclassNameIndex) {
-		this.superclassNameIndex = superclassNameIndex;
+	public void setSuperclassNameIndex(ClassInfo superclassNameIndex) {
+		this.superclass = superclassNameIndex;
 	}
 
-	public void addInterfaceInfo(String interfaceName) {
+	public void addInterfaceInfo(ClassInfo interfaceName) {
 		interfaces.add(interfaceName);
 	}
 

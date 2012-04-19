@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.javaclass.Constant;
 import com.aldercape.internal.analyzer.javaclass.ConstantPoolType;
@@ -88,11 +89,13 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddClassName(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setClassNameIndex(in.readUnsignedShort());
+		String className = builder.getConstants().getConstantClassName(in.readUnsignedShort() + 1);
+		builder.setClassNameIndex(className);
 	}
 
 	protected void createAndAddSuperclass(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setSuperclassNameIndex(in.readUnsignedShort());
+		ClassInfoBase superClass = ClassRepository.getClass(builder.getConstants().getConstantClassName(in.readUnsignedShort() + 1));
+		builder.setSuperclassNameIndex(superClass);
 	}
 
 	protected void createAndAddInterfaces(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -100,7 +103,7 @@ public class JavaClassParser {
 		for (int i = 0; i < interfacesCount; i++) {
 			int interfaceNameIndex = in.readUnsignedShort();
 			Constant constant = builder.getConstant(interfaceNameIndex);
-			builder.addInterfaceInfo(constant.getName(builder.getConstants()).replace('/', '.'));
+			builder.addInterfaceInfo(ClassRepository.getClass(constant.getName(builder.getConstants()).replace('/', '.')));
 		}
 	}
 

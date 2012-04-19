@@ -1,6 +1,5 @@
 package com.aldercape.internal.analyzer.javaclass;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,7 +9,6 @@ import java.util.Set;
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassDetails;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
-import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo.AccessModifier;
@@ -23,18 +21,18 @@ public class ParsedClassDetails implements ClassDetails {
 
 	private List<FieldInfo> fields = new ArrayList<>();
 	private Set<MethodInfo> methods = new HashSet<>();
-	private List<String> interfaces = new ArrayList<>();
+	private List<ClassInfo> interfaces = new ArrayList<>();
 	private AttributeInfo attributes = new AttributeInfo();
 	private VersionInfo versionInfo;
 
-	public ParsedClassDetails(int accessFlags, ClassInfo superClass, List<String> interfaces, List<FieldInfo> fields, Set<MethodInfo> methods, AttributeInfo attributes, VersionInfo versionInfo) {
+	public ParsedClassDetails(int accessFlags, ClassInfo superClass, List<ClassInfo> interfaces, List<FieldInfo> fields, Set<MethodInfo> methods, AttributeInfo attributes, VersionInfo versionInfo) {
 		this.superclassName = superClass;
 		this.accessInfo = new AccessInfo(accessFlags);
-		this.interfaces = interfaces;
 		this.fields = fields;
 		this.methods = methods;
 		this.attributes = attributes;
 		this.versionInfo = versionInfo;
+		this.interfaces = interfaces;
 	}
 
 	@Override
@@ -56,9 +54,7 @@ public class ParsedClassDetails implements ClassDetails {
 	public Set<ClassInfo> getClassDependencies(ClassInfo baseClass) {
 		Set<ClassInfo> result = new HashSet<>();
 		result.add(superclassName);
-		for (String interfaceName : interfaces) {
-			result.add(ClassRepository.getClass(interfaceName));
-		}
+		result.addAll(interfaces);
 		for (FieldInfo field : fields) {
 			result.addAll(field.getDependentClasses());
 		}
