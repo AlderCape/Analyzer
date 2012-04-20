@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
@@ -19,7 +18,6 @@ import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 import com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser;
 import com.aldercape.internal.analyzer.outputformats.DotOutputFormat;
 import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
-import com.aldercape.internal.analyzer.reports.DependencyInversionReport;
 import com.aldercape.internal.analyzer.reports.DependencyReport;
 import com.aldercape.internal.analyzer.reports.FilteredDependencyReport;
 import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
@@ -27,7 +25,6 @@ import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 public class Dependencies {
 	private List<DependencyReport<? extends TypeInfo>> dependencyReports = new ArrayList<>();
 	private Set<PackageInfo> baseIgnoredPackages;
-	private DependencyInversionReport classDependencyInversion;
 
 	public static void main(String[] args) throws IOException {
 		new Dependencies().run();
@@ -52,11 +49,6 @@ public class Dependencies {
 
 	protected void writeReports() throws IOException {
 		writeDotFiles();
-		writeMetrics();
-	}
-
-	protected void writeMetrics() {
-		writeContentToConsole(classDependencyInversion);
 	}
 
 	protected void writeDotFiles() throws IOException {
@@ -70,32 +62,10 @@ public class Dependencies {
 		dependencyReports.add(createClassDependencyReport(getPackageName(ClassInfo.class), getBaseIgnoredPackages()));
 		dependencyReports.add(createClassDependencyReport(getPackageName(ConstantPoolInfo.class), getBaseIgnoredPackages()));
 		dependencyReports.add(createClassDependencyReport(getPackageName(JavaClassParser.class), getBaseIgnoredPackages()));
-		classDependencyInversion = createClassDependencyInversion(getPackageName(JavaClassParser.class));
 	}
 
 	protected String getPackageName(Class<?> clazz) {
 		return clazz.getPackage().getName();
-	}
-
-	private DependencyInversionReport createClassDependencyInversion(final String packageName) {
-		final DependencyInversionReport baseReport = new DependencyInversionReport();
-		ClassRepository.addListener(new ClassRepositoryListener() {
-
-			@Override
-			public void classCreated(ClassInfo newClass) {
-				if (newClass.getPackage().equals(new PackageInfo(packageName))) {
-					baseReport.addClass(newClass);
-				}
-			}
-		});
-		return baseReport;
-	}
-
-	private void writeContentToConsole(DependencyInversionReport report) {
-		SortedSet<ClassInfo> classes = report.getIncludedTypes();
-		for (ClassInfo info : classes) {
-			System.out.println(info.getName() + " " + report.getDependencyInversionFor(info));
-		}
 	}
 
 	protected DependencyReport<ClassInfo> createClassDependencyReport(final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {

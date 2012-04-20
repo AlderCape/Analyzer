@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
@@ -16,11 +17,11 @@ import com.aldercape.internal.analyzer.reports.ClassDependencyReport;
 
 public class DotOutputClassDependencyTest {
 
-	@Test
-	public void simpleOutput() throws IOException {
-		DotOutputFormat<ClassInfo> format = new DotOutputFormat<>();
-		StringWriter writer = new StringWriter();
-		ClassDependencyReport report = new ClassDependencyReport("Report name") {
+	private ClassDependencyReport report;
+
+	@Before
+	public void setUp() {
+		report = new ClassDependencyReport("Report name") {
 			@Override
 			public SortedSet<ClassInfo> getChildrenFor(ClassInfo classInfo) {
 
@@ -38,10 +39,33 @@ public class DotOutputClassDependencyTest {
 				return result;
 			}
 		};
+
+	}
+
+	@Test
+	public void simpleOutput() throws IOException {
+		DotOutputFormat<ClassInfo> format = new DotOutputFormat<>();
+		StringWriter writer = new StringWriter();
 		format.write(report, writer);
 		String expected = "digraph G {\n";
 		expected += "\"FirstClass\" [label=\"FirstClass\"];\n";
 		expected += "\"SecondClass\" [label=\"SecondClass\"];\n";
+
+		expected += "\"FirstClass\" -> \"SecondClass\";\n";
+		expected += "\"SecondClass\" -> \"FirstClass\";\n";
+
+		expected += "}\n";
+		assertEquals(expected, writer.toString());
+	}
+
+	@Test
+	public void metricOutput() throws IOException {
+		DotOutputFormat<ClassInfo> format = new DotOutputFormat<>(true);
+		StringWriter writer = new StringWriter();
+		format.write(report, writer);
+		String expected = "digraph G {\n";
+		expected += "\"FirstClass\" [label=\"FirstClass\\n(DI 1)\"];\n";
+		expected += "\"SecondClass\" [label=\"SecondClass\\n(DI 1)\"];\n";
 
 		expected += "\"FirstClass\" -> \"SecondClass\";\n";
 		expected += "\"SecondClass\" -> \"FirstClass\";\n";

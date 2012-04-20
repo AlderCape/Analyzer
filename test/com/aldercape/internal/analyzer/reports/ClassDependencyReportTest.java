@@ -83,6 +83,5 @@ public class ClassDependencyReportTest {
 		assertEquals(Collections.singleton(new ClassInfoBase("test.FirstClass")), report.getIncludedTypes());
 		assertEquals(Collections.emptySet(), report.getChildrenFor(concreteClass));
 		assertEquals(Collections.emptySet(), report.getParentsFor(concreteClass));
-
 	}
 }

@@ -13,14 +13,14 @@ import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 
 public class DependencyInversionReportTest {
 
-	private DependencyInversionReport report;
+	private ClassDependencyReport report;
 	private ClassInfoStub classInfo1;
 	private ClassInfo concreateClass;
 	private ClassInfo abstractClass;
 
 	@Before
 	public void setUp() {
-		report = new DependencyInversionReport();
+		report = new ClassDependencyReport("Report name");
 		classInfo1 = new ClassInfoStub("FirstClass");
 		abstractClass = new ClassInfoStub("Abstract");
 		((ClassInfoStub) abstractClass).setAbstract(true);
