@@ -12,17 +12,11 @@ public class ClassRepository {
 		public void classCreated(ClassInfo newClass);
 	}
 
-	private static ClassRepository instance = new ClassRepository();
-
-	private static Set<ClassRepositoryListener> listeners = new HashSet<>();
+	private Set<ClassRepositoryListener> listeners = new HashSet<>();
 
 	private Map<String, ClassInfoBase> loadedClasses = new HashMap<>();
 
-	public static ClassInfoBase getClass(String className) {
-		return instance.doGetClass(className);
-	}
-
-	private ClassInfoBase doGetClass(String className) {
+	public ClassInfoBase getClass(String className) {
 		if (!loadedClasses.containsKey(className)) {
 			loadedClasses.put(className, new ClassInfoBase(className));
 			notifyListeners(loadedClasses.get(className));
@@ -36,11 +30,7 @@ public class ClassRepository {
 		}
 	}
 
-	public static void reset() {
-		instance = new ClassRepository();
-	}
-
-	public static void addListener(ClassRepositoryListener l) {
+	public void addListener(ClassRepositoryListener l) {
 		listeners.add(l);
 	}
 }

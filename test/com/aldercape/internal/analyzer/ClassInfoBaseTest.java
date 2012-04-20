@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
@@ -27,8 +28,8 @@ public class ClassInfoBaseTest {
 		List<ClassInfo> interfaces = Collections.emptyList();
 		List<FieldInfo> fields = Collections.emptyList();
 
-		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List")));
-		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String")));
+		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List"), new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String"), new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 		ClassInfoBase classInfo = new ClassInfoBase("testpackage.TestClass", classDetails);
@@ -46,8 +47,8 @@ public class ClassInfoBaseTest {
 		List<ClassInfo> interfaces = Collections.emptyList();
 		List<FieldInfo> fields = Collections.emptyList();
 
-		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List")));
-		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String")));
+		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List"), new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String"), new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 		ClassInfoBase classInfo = new ClassInfoBase("testpackage.TestClass", classDetails);

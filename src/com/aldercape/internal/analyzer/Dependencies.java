@@ -25,6 +25,7 @@ import com.aldercape.internal.analyzer.reports.PackageDependencyReport;
 public class Dependencies {
 	private List<DependencyReport<? extends TypeInfo>> dependencyReports = new ArrayList<>();
 	private Set<PackageInfo> baseIgnoredPackages;
+	ClassRepository repository = new ClassRepository();
 
 	public static void main(String[] args) throws IOException {
 		new Dependencies().run();
@@ -70,7 +71,7 @@ public class Dependencies {
 
 	protected DependencyReport<ClassInfo> createClassDependencyReport(final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {
 		final ClassDependencyReport baseReport = new ClassDependencyReport(packageName);
-		ClassRepository.addListener(new ClassRepositoryListener() {
+		repository.addListener(new ClassRepositoryListener() {
 
 			@Override
 			public void classCreated(ClassInfo newClass) {
@@ -85,7 +86,7 @@ public class Dependencies {
 
 	protected DependencyReport<PackageInfo> createPackageDependencyReport(String reportName) throws IOException {
 		final PackageDependencyReport baseReport = new PackageDependencyReport(reportName);
-		ClassRepository.addListener(new ClassRepositoryListener() {
+		repository.addListener(new ClassRepositoryListener() {
 			@Override
 			public void classCreated(ClassInfo newClass) {
 				baseReport.addClass(newClass);
@@ -122,7 +123,7 @@ public class Dependencies {
 
 	protected void parseFile(File file) {
 		try {
-			JavaClassParser parser = new JavaClassParser();
+			JavaClassParser parser = new JavaClassParser(repository);
 			parser.parse(file);
 		} catch (Exception e) {
 			System.out.println("Faild to parse file: " + file + " (" + e.getMessage() + ")");

@@ -21,11 +21,13 @@ public class ParsedMethodInfo implements MethodInfo {
 	private AttributeInfo attributeInfo = new AttributeInfo();
 
 	private int accessFlag;
+	private ClassRepository repository;
 
-	public ParsedMethodInfo(int accessFlag, String methodName, List<String> parameters) {
+	public ParsedMethodInfo(int accessFlag, String methodName, List<String> parameters, ClassRepository repository) {
 		this.accessFlag = accessFlag;
 		this.methodName = methodName;
 		this.parameters = parameters;
+		this.repository = repository;
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class ParsedMethodInfo implements MethodInfo {
 	public Set<ClassInfo> getDependentClasses() {
 		Set<ClassInfo> result = new HashSet<>();
 		for (String dependency : parameters) {
-			result.add(ClassRepository.getClass(dependency));
+			result.add(repository.getClass(dependency));
 		}
 		result.addAll(attributeInfo.getDependentClasses());
 		return result;

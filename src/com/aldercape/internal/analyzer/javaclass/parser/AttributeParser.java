@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.javaclass.Constant;
 import com.aldercape.internal.analyzer.javaclass.Constant.ConstantAttributeType;
 import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
@@ -17,14 +18,15 @@ public class AttributeParser {
 	private ConstantPoolInfo constantPool;
 	private Map<ConstantAttributeType, AttributeTypeParser> parsers = new HashMap<>();
 
-	public AttributeParser(ConstantPoolInfo constantPool, TypeParser typeParser) {
+	public AttributeParser(ConstantPoolInfo constantPool, TypeParser typeParser, ClassRepository repository) {
 		this.constantPool = constantPool;
+
 		parsers.put(ConstantAttributeType.Unkown, new NullAttributeTypeParser());
 		parsers.put(ConstantAttributeType.Code, new CodeAttributeParser(this));
-		parsers.put(ConstantAttributeType.LocalVariableTable, new LocalVariableTableParser(typeParser));
-		parsers.put(ConstantAttributeType.InnerClasses, new InnerClassAttributeParser(constantPool));
-		parsers.put(ConstantAttributeType.Exceptions, new ExceptionAttributeParser(typeParser));
-		parsers.put(ConstantAttributeType.RuntimeVisibleAnnotations, new AnnotationAttributeParser(typeParser));
+		parsers.put(ConstantAttributeType.LocalVariableTable, new LocalVariableTableParser(typeParser, repository));
+		parsers.put(ConstantAttributeType.InnerClasses, new InnerClassAttributeParser(constantPool, repository));
+		parsers.put(ConstantAttributeType.Exceptions, new ExceptionAttributeParser(typeParser, repository));
+		parsers.put(ConstantAttributeType.RuntimeVisibleAnnotations, new AnnotationAttributeParser(typeParser, repository));
 		parsers.put(ConstantAttributeType.SourceFile, new SourceFileAttributeTypeParser());
 		parsers.put(ConstantAttributeType.LineNumberTable, new LineNumberTableAttributeTypeParser());
 		parsers.put(ConstantAttributeType.Signature, new SignatureAttributeTypeParser());

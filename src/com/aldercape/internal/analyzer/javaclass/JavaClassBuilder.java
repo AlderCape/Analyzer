@@ -26,9 +26,9 @@ public class JavaClassBuilder {
 	private List<ClassInfo> interfaces = new ArrayList<>();
 	private AttributeInfo attributes;
 
-	public ClassInfoBase create() {
+	public ClassInfoBase create(ClassRepository repository) {
 		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, superclass, interfaces, fields, methods, attributes, versionInfo);
-		ClassInfoBase result = ClassRepository.getClass(classNameIndex);
+		ClassInfoBase result = repository.getClass(classNameIndex);
 		result.setDetails(parsedClassDetails);
 		// if (result.isInnerClass()) {
 		// result.getEnclosingClass().addInnerClass(result);

@@ -15,9 +15,11 @@ import com.aldercape.internal.analyzer.javaclass.ExceptionAttributeType;
 public class ExceptionAttributeParser implements AttributeTypeParser {
 
 	private TypeParser typeParser;
+	private ClassRepository repository;
 
-	public ExceptionAttributeParser(TypeParser typeParser) {
+	public ExceptionAttributeParser(TypeParser typeParser, ClassRepository repository) {
 		this.typeParser = typeParser;
+		this.repository = repository;
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class ExceptionAttributeParser implements AttributeTypeParser {
 			int classConstantIndex = in.readUnsignedShort();
 			String className = typeParser.nextObjectFromIndex(classConstantIndex);
 			exceptions.add(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
-			exceptionClasses.add(ClassRepository.getClass(className));
+			exceptionClasses.add(repository.getClass(className));
 		}
 
 		return new ExceptionAttributeType(exceptionClasses, exceptions);

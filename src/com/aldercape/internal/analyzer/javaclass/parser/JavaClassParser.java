@@ -21,8 +21,10 @@ public class JavaClassParser {
 	private DataInputStream in;
 	private AttributeParser attributeParser;
 	private TypeParser typeParser;
+	private ClassRepository repository;
 
-	public JavaClassParser() {
+	public JavaClassParser(ClassRepository repository) {
+		this.repository = repository;
 	}
 
 	public ClassInfoBase parse(String name) throws FileNotFoundException {
@@ -50,7 +52,7 @@ public class JavaClassParser {
 		try {
 			JavaClassBuilder builder = new JavaClassBuilder();
 			typeParser = new TypeParser(builder.getConstants());
-			attributeParser = new AttributeParser(builder.getConstants(), typeParser);
+			attributeParser = new AttributeParser(builder.getConstants(), typeParser, repository);
 
 			createAndAddVersionInfo(in, builder);
 			createAndAddConstantPool(in, builder);
@@ -61,7 +63,7 @@ public class JavaClassParser {
 			createAndAddFields(in, builder);
 			createAndAddMethods(in, builder);
 			createAndAddAtrributes(in, builder);
-			return builder.create();
+			return builder.create(repository);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +101,7 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddSuperclass(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		ClassInfoBase superClass = ClassRepository.getClass(builder.getConstantClassName(in.readUnsignedShort()));
+		ClassInfoBase superClass = repository.getClass(builder.getConstantClassName(in.readUnsignedShort()));
 		builder.setSuperclassNameIndex(superClass);
 	}
 
@@ -108,7 +110,7 @@ public class JavaClassParser {
 		for (int i = 0; i < interfacesCount; i++) {
 			int interfaceNameIndex = in.readUnsignedShort();
 			Constant constant = builder.getConstant(interfaceNameIndex);
-			builder.addInterfaceInfo(ClassRepository.getClass(constant.getName(builder.getConstants()).replace('/', '.')));
+			builder.addInterfaceInfo(repository.getClass(constant.getName(builder.getConstants()).replace('/', '.')));
 		}
 	}
 
@@ -117,7 +119,7 @@ public class JavaClassParser {
 		for (int i = 0; i < fieldsCount; i++) {
 			int accessFlag = in.readUnsignedShort();
 			String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
-			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, typeParser.parseTypeFromIndex(in.readUnsignedShort()));
+			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, typeParser.parseTypeFromIndex(in.readUnsignedShort()), repository);
 			AttributeInfo attributeInfo = attributeParser.createAttributes(in);
 			fieldInfo.setAttribute(attributeInfo);
 			builder.addFieldInfo(fieldInfo);
@@ -138,6 +140,6 @@ public class JavaClassParser {
 		int accessFlag = in.readUnsignedShort();
 		String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
 		Constant constant = builder.getConstant(in.readUnsignedShort());
-		return new ParsedMethodInfo(accessFlag, methodName, typeParser.populateMethodParameters(constant));
+		return new ParsedMethodInfo(accessFlag, methodName, typeParser.populateMethodParameters(constant), repository);
 	}
 }

@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.FieldInfo;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
@@ -35,8 +36,8 @@ public class ParsedClassDetailsTest {
 	@Test
 	public void noDependenciesTwoMethods() {
 		List<String> noParameters = Collections.emptyList();
-		methods.add(new ParsedMethodInfo(0, "method1", noParameters));
-		methods.add(new ParsedMethodInfo(0, "method2", noParameters));
+		methods.add(new ParsedMethodInfo(0, "method1", noParameters, new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", noParameters, new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 		assertEquals(Collections.singleton(new ClassInfoBase("testpackage.A")), classDetails.getClassDependencies(currentClass));
@@ -46,8 +47,8 @@ public class ParsedClassDetailsTest {
 	public void oneMethodWithDependenciesTwoMethods() {
 
 		List<String> noParameters = Collections.emptyList();
-		methods.add(new ParsedMethodInfo(0, "method1", noParameters));
-		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String")));
+		methods.add(new ParsedMethodInfo(0, "method1", noParameters, new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String"), new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
@@ -59,8 +60,8 @@ public class ParsedClassDetailsTest {
 
 	@Test
 	public void twoMethodsWithDependencies() {
-		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("java.util.List")));
-		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String")));
+		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("java.util.List"), new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String"), new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
@@ -73,8 +74,8 @@ public class ParsedClassDetailsTest {
 
 	@Test
 	public void onSamePackageGetsFiltered() {
-		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List")));
-		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String")));
+		methods.add(new ParsedMethodInfo(0, "method1", Collections.singletonList("testpackage.List"), new ClassRepository()));
+		methods.add(new ParsedMethodInfo(0, "method2", Collections.singletonList("java.lang.String"), new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
@@ -87,7 +88,7 @@ public class ParsedClassDetailsTest {
 
 	@Test
 	public void fieldsAreIncluded() {
-		fields.add(new FieldInfo(0, "str", "java.lang.String"));
+		fields.add(new FieldInfo(0, "str", "java.lang.String", new ClassRepository()));
 
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 
@@ -99,9 +100,9 @@ public class ParsedClassDetailsTest {
 
 	@Test
 	public void methodsAreIncluded() {
-		MethodInfo publicMethod = new ParsedMethodInfo(0x1, "publicMethod", emptyStringList());
-		MethodInfo privateMethod = new ParsedMethodInfo(0x2, "privateMethod", emptyStringList());
-		MethodInfo protectedMethod = new ParsedMethodInfo(0x4, "protectedMethod", emptyStringList());
+		MethodInfo publicMethod = new ParsedMethodInfo(0x1, "publicMethod", emptyStringList(), new ClassRepository());
+		MethodInfo privateMethod = new ParsedMethodInfo(0x2, "privateMethod", emptyStringList(), new ClassRepository());
+		MethodInfo protectedMethod = new ParsedMethodInfo(0x4, "protectedMethod", emptyStringList(), new ClassRepository());
 		methods.add(publicMethod);
 		methods.add(privateMethod);
 		methods.add(protectedMethod);
@@ -119,7 +120,7 @@ public class ParsedClassDetailsTest {
 
 	@Test
 	public void constructorsAreNotMethods() {
-		MethodInfo publicMethod = new ParsedMethodInfo(0x1, "<init>", emptyStringList());
+		MethodInfo publicMethod = new ParsedMethodInfo(0x1, "<init>", emptyStringList(), new ClassRepository());
 		methods.add(publicMethod);
 		ParsedClassDetails classDetails = new ParsedClassDetails(0, new ClassInfoBase("testpackage.A"), interfaces, fields, methods, new AttributeInfo(), new VersionInfo(0, 0, 0));
 		assertEquals(Collections.emptySet(), classDetails.getMethods());

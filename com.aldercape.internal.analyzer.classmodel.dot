@@ -9,7 +9,7 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener" [label="com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener\n(DI 0.5)"];
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" [label="com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest\n(DI 0)"];
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" [label="com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy\n(DI 0.5)"];
-"com.aldercape.internal.analyzer.classmodel.FieldInfo" [label="com.aldercape.internal.analyzer.classmodel.FieldInfo\n(DI 0.167)"];
+"com.aldercape.internal.analyzer.classmodel.FieldInfo" [label="com.aldercape.internal.analyzer.classmodel.FieldInfo\n(DI 0.143)"];
 "com.aldercape.internal.analyzer.classmodel.MethodInfo" [label="com.aldercape.internal.analyzer.classmodel.MethodInfo\n(DI 0)"];
 "com.aldercape.internal.analyzer.classmodel.MethodInfo$AccessModifier" [label="com.aldercape.internal.analyzer.classmodel.MethodInfo$AccessModifier\n(DI 0)"];
 "com.aldercape.internal.analyzer.classmodel.PackageInfo" [label="com.aldercape.internal.analyzer.classmodel.PackageInfo\n(DI 0.25)"];
@@ -25,11 +25,13 @@ digraph G {
 "com.aldercape.internal.analyzer.classmodel.ClassRepository" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener";
 "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "com.aldercape.internal.analyzer.classmodel.ClassInfoBase";
+"com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest" -> "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository$ClassRepositoryListener";
 "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest$1ListenerSpy" -> "com.aldercape.internal.analyzer.classmodel.ClassRepositoryTest";
 "com.aldercape.internal.analyzer.classmodel.FieldInfo" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
 "com.aldercape.internal.analyzer.classmodel.FieldInfo" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
+"com.aldercape.internal.analyzer.classmodel.FieldInfo" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository";
 "com.aldercape.internal.analyzer.classmodel.PackageInfo" -> "com.aldercape.internal.analyzer.classmodel.TypeInfo";
 }

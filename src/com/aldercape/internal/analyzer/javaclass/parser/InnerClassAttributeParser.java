@@ -13,9 +13,11 @@ import com.aldercape.internal.analyzer.javaclass.InnerClassAttributeType;
 public class InnerClassAttributeParser implements AttributeTypeParser {
 
 	private ConstantPoolInfo constantPool;
+	private ClassRepository repository;
 
-	public InnerClassAttributeParser(ConstantPoolInfo constantPool) {
+	public InnerClassAttributeParser(ConstantPoolInfo constantPool, ClassRepository repository) {
 		this.constantPool = constantPool;
+		this.repository = repository;
 	}
 
 	@Override
@@ -29,14 +31,13 @@ public class InnerClassAttributeParser implements AttributeTypeParser {
 			int innerName = in.readUnsignedShort();
 			int accessFlags = in.readUnsignedShort();
 			if (outerClassInfo > 0) {
-				outerClass = ClassRepository.getClass(constantPool.get(outerClassInfo).getName(constantPool).replace('/', '.'));
+				outerClass = repository.getClass(constantPool.get(outerClassInfo).getName(constantPool).replace('/', '.'));
 			} else {
 				String innerClassName = constantPool.get(innerClassInfo).getName(constantPool);
-				outerClass = ClassRepository.getClass(innerClassName.substring(0, innerClassName.indexOf('$')).replace('/', '.'));
+				outerClass = repository.getClass(innerClassName.substring(0, innerClassName.indexOf('$')).replace('/', '.'));
 			}
 		}
 
 		return new InnerClassAttributeType(outerClass);
 	}
-
 }

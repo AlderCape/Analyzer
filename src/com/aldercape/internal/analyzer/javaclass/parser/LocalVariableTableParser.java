@@ -13,9 +13,11 @@ import com.aldercape.internal.analyzer.javaclass.LocalVariableTableAttributeType
 public class LocalVariableTableParser implements AttributeTypeParser {
 
 	private TypeParser typeParser;
+	private ClassRepository repository;
 
-	public LocalVariableTableParser(TypeParser typeParser) {
+	public LocalVariableTableParser(TypeParser typeParser, ClassRepository repository) {
 		this.typeParser = typeParser;
+		this.repository = repository;
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class LocalVariableTableParser implements AttributeTypeParser {
 			int descriptor_index = in.readUnsignedShort();
 			int index = in.readUnsignedShort();
 			String type = typeParser.parseTypeFromIndex(descriptor_index);
-			classes.add(ClassRepository.getClass(type));
+			classes.add(repository.getClass(type));
 		}
 		return new LocalVariableTableAttributeType(classes);
 	}

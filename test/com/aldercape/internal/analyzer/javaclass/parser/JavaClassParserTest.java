@@ -1,4 +1,4 @@
-package com.aldercape.internal.analyzer.javaclass;
+package com.aldercape.internal.analyzer.javaclass.parser;
 
 import static org.junit.Assert.*;
 
@@ -33,9 +33,11 @@ import com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser;
 
 public class JavaClassParserTest {
 
+	private JavaClassParser parser;
+
 	@Before
 	public void setUp() {
-		ClassRepository.reset();
+		this.parser = new JavaClassParser(new ClassRepository());
 	}
 
 	@Test
@@ -47,7 +49,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parsesEmptyClass() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(EmptyClass.class.getName());
+		ClassInfo result = parser.parse(EmptyClass.class.getName());
 		assertEquals(EmptyClass.class.getName(), result.getName());
 		assertFalse(result.isAbstract());
 		assertFalse(result.isInnerClass());
@@ -59,20 +61,20 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parsesEmptyInterface() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(EmptyInterface.class.getName());
+		ClassInfo result = parser.parse(EmptyInterface.class.getName());
 		assertEquals(EmptyInterface.class.getName(), result.getName());
 		assertTrue(result.isAbstract());
 	}
 
 	@Test
 	public void parsesClassWithOneMethod() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithOneMethod.class.getName());
+		ClassInfo result = parser.parse(ClassWithOneMethod.class.getName());
 		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.Object")), result.getClassDependencies());
 	}
 
 	@Test
 	public void parsesClassWithTwoConstructors() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithTwoConstructors.class.getName());
+		ClassInfo result = parser.parse(ClassWithTwoConstructors.class.getName());
 
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(new ClassInfoBase(String.class.getName()));
@@ -84,7 +86,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parsesClassWithAllPrimitivesInOneConstructor() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithAllPrimitivesInOneConstructor.class.getName());
+		ClassInfo result = parser.parse(ClassWithAllPrimitivesInOneConstructor.class.getName());
 		Set<ClassInfo> expected = new HashSet<>();
 		expected.add(new ClassInfoBase(Byte.class.getName()));
 		expected.add(new ClassInfoBase(Short.class.getName()));
@@ -100,7 +102,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parsesAbstractClassWithOneField() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithOneField.class.getName());
+		ClassInfo result = parser.parse(ClassWithOneField.class.getName());
 		Set<ClassInfo> expectedClasses = new HashSet<>();
 		expectedClasses.add(new ClassInfoBase("java.lang.Object"));
 		expectedClasses.add(new ClassInfoBase("java.lang.String"));
@@ -110,7 +112,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parsesClassWithOneInterface() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithAnInterface.class.getName());
+		ClassInfo result = parser.parse(ClassWithAnInterface.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
@@ -123,7 +125,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseClassDependsOnSuperclassPackage() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(EmptyClass.class.getName());
+		ClassInfo result = parser.parse(EmptyClass.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		assertEquals(expectedPackages, result.getPackageDependencies());
@@ -131,7 +133,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseClassWithAnnotation() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithClassAnnotation.class.getName());
+		ClassInfo result = parser.parse(ClassWithClassAnnotation.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
@@ -140,7 +142,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseFieldWithAnnotation() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithFieldAnnotation.class.getName());
+		ClassInfo result = parser.parse(ClassWithFieldAnnotation.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
@@ -149,7 +151,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseMethodWithAnnotation() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithMethodAnnotation.class.getName());
+		ClassInfo result = parser.parse(ClassWithMethodAnnotation.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("org.junit"));
 		expectedPackages.add(new PackageInfo("java.lang"));
@@ -158,7 +160,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseFieldArray() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithArrays.class.getName());
+		ClassInfo result = parser.parse(ClassWithArrays.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
@@ -168,7 +170,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseMethodException() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithException.class.getName());
+		ClassInfo result = parser.parse(ClassWithException.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
@@ -179,7 +181,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseInnerClass() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithInnerClass.InnerStatic.class.getName());
+		ClassInfo result = parser.parse(ClassWithInnerClass.InnerStatic.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		expectedPackages.add(new PackageInfo("java.util"));
@@ -190,7 +192,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseOuterClass() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithInnerClass.class.getName());
+		ClassInfo result = parser.parse(ClassWithInnerClass.class.getName());
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
 		assertEquals(expectedPackages, result.getPackageDependencies());
@@ -200,8 +202,8 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseInnerClassAndOuter() throws Exception {
-		ClassInfo innerResult = new JavaClassParser().parse(ClassWithInnerClass.InnerStatic.class.getName());
-		ClassInfo outerResult = new JavaClassParser().parse(ClassWithInnerClass.class.getName());
+		ClassInfo innerResult = parser.parse(ClassWithInnerClass.InnerStatic.class.getName());
+		ClassInfo outerResult = parser.parse(ClassWithInnerClass.class.getName());
 
 		Set<PackageInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new PackageInfo("java.lang"));
@@ -225,8 +227,8 @@ public class JavaClassParserTest {
 
 	@Test
 	public void sameDependencyInTwoClassesShouldReturnSameInstance() throws Exception {
-		ClassInfo first = new JavaClassParser().parse(ClassWithOneMethod.class.getName());
-		ClassInfo second = new JavaClassParser().parse(EmptyClass.class.getName());
+		ClassInfo first = parser.parse(ClassWithOneMethod.class.getName());
+		ClassInfo second = parser.parse(EmptyClass.class.getName());
 		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.Object")), first.getClassDependencies());
 		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.Object")), second.getClassDependencies());
 		assertSame(first.getClassDependencies().iterator().next(), second.getClassDependencies().iterator().next());
@@ -234,7 +236,7 @@ public class JavaClassParserTest {
 
 	@Test
 	public void parseClassWithDependencyInMethod() throws Exception {
-		ClassInfo result = new JavaClassParser().parse(ClassWithRefInMethod.class.getName());
+		ClassInfo result = parser.parse(ClassWithRefInMethod.class.getName());
 		Set<ClassInfo> expectedPackages = new HashSet<>();
 		expectedPackages.add(new ClassInfoBase("java.lang.Object"));
 		expectedPackages.add(new ClassInfoBase("java.util.Date"));

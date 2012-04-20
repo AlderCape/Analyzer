@@ -11,9 +11,11 @@ import com.aldercape.internal.analyzer.javaclass.AnnotationAttributeType;
 public class AnnotationAttributeParser implements AttributeTypeParser {
 
 	private TypeParser typeParser;
+	private ClassRepository repository;
 
-	public AnnotationAttributeParser(TypeParser typeParser) {
+	public AnnotationAttributeParser(TypeParser typeParser, ClassRepository repository) {
 		this.typeParser = typeParser;
+		this.repository = repository;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class AnnotationAttributeParser implements AttributeTypeParser {
 			className = typeParser.parseTypeFromIndex(annTypeIndex);
 			int numNameValuePairs = in.readUnsignedShort();
 		}
-		return new AnnotationAttributeType(ClassRepository.getClass(className));
+		return new AnnotationAttributeType(repository.getClass(className));
 	}
 
 }

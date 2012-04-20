@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
+import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 import com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo;
 
@@ -20,14 +21,14 @@ public class MethodInfoTest {
 	@Test
 	public void noDependencies() {
 		List<String> parameters = new ArrayList<String>();
-		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters, new ClassRepository());
 		assertEquals(Collections.emptySet(), methodInfo.getDependentClasses());
 	}
 
 	@Test
 	public void dependsOnJavaLang() {
 		List<String> parameters = Collections.singletonList("java.lang.String");
-		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters, new ClassRepository());
 		assertEquals(Collections.singleton(new ClassInfoBase("java.lang.String")), methodInfo.getDependentClasses());
 	}
 
@@ -40,7 +41,7 @@ public class MethodInfoTest {
 		expected.add(new ClassInfoBase("java.lang.String"));
 		expected.add(new ClassInfoBase("java.util.List"));
 
-		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters);
+		MethodInfo methodInfo = new ParsedMethodInfo(-1, "testMethod", parameters, new ClassRepository());
 		assertEquals(expected, methodInfo.getDependentClasses());
 	}
 }

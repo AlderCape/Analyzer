@@ -2,19 +2,13 @@ package com.aldercape.internal.analyzer.classmodel;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class ClassRepositoryTest {
 
-	@Before
-	public void setUp() {
-		ClassRepository.reset();
-	}
-
 	@Test
 	public void shouldAlwaysReturnAClassInfo() {
-		ClassInfoBase class1 = ClassRepository.getClass("testclass");
+		ClassInfoBase class1 = new ClassRepository().getClass("testclass");
 		assertEquals("testclass", class1.getName());
 	}
 
@@ -30,11 +24,12 @@ public class ClassRepositoryTest {
 		}
 		;
 		ListenerSpy l = new ListenerSpy();
-		ClassRepository.addListener(l);
-		ClassInfoBase class1 = ClassRepository.getClass("testclass");
+		ClassRepository repository = new ClassRepository();
+		repository.addListener(l);
+		ClassInfoBase class1 = repository.getClass("testclass");
 		assertSame(class1, l.newClass);
 		l.newClass = null;
-		ClassRepository.getClass("testclass");
+		repository.getClass("testclass");
 		assertNull(l.newClass);
 	}
 }
