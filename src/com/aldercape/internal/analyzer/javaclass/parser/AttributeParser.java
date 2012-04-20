@@ -17,14 +17,14 @@ public class AttributeParser {
 	private ConstantPoolInfo constantPool;
 	private Map<ConstantAttributeType, AttributeTypeParser> parsers = new HashMap<>();
 
-	public AttributeParser(ConstantPoolInfo constantPool) {
+	public AttributeParser(ConstantPoolInfo constantPool, TypeParser typeParser) {
 		this.constantPool = constantPool;
 		parsers.put(ConstantAttributeType.Unkown, new NullAttributeTypeParser());
 		parsers.put(ConstantAttributeType.Code, new CodeAttributeParser(this));
-		parsers.put(ConstantAttributeType.LocalVariableTable, new LocalVariableTableParser(new TypeParser(constantPool)));
+		parsers.put(ConstantAttributeType.LocalVariableTable, new LocalVariableTableParser(typeParser));
 		parsers.put(ConstantAttributeType.InnerClasses, new InnerClassAttributeParser(constantPool));
-		parsers.put(ConstantAttributeType.Exceptions, new ExceptionAttributeParser(constantPool));
-		parsers.put(ConstantAttributeType.RuntimeVisibleAnnotations, new AnnotationAttributeParser(constantPool));
+		parsers.put(ConstantAttributeType.Exceptions, new ExceptionAttributeParser(typeParser));
+		parsers.put(ConstantAttributeType.RuntimeVisibleAnnotations, new AnnotationAttributeParser(typeParser));
 		parsers.put(ConstantAttributeType.SourceFile, new SourceFileAttributeTypeParser());
 		parsers.put(ConstantAttributeType.LineNumberTable, new LineNumberTableAttributeTypeParser());
 		parsers.put(ConstantAttributeType.Signature, new SignatureAttributeTypeParser());

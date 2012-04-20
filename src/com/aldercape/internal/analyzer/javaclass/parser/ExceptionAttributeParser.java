@@ -10,15 +10,14 @@ import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
-import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 import com.aldercape.internal.analyzer.javaclass.ExceptionAttributeType;
 
 public class ExceptionAttributeParser implements AttributeTypeParser {
 
-	private ConstantPoolInfo constantPool;
+	private TypeParser typeParser;
 
-	public ExceptionAttributeParser(ConstantPoolInfo constantPool) {
-		this.constantPool = constantPool;
+	public ExceptionAttributeParser(TypeParser typeParser) {
+		this.typeParser = typeParser;
 	}
 
 	@Override
@@ -29,7 +28,7 @@ public class ExceptionAttributeParser implements AttributeTypeParser {
 		int numExceptions = in.readUnsignedShort();
 		for (int i = 0; i < numExceptions; i++) {
 			int classConstantIndex = in.readUnsignedShort();
-			String className = new TypeParser(constantPool).nextObjectFromIndex(classConstantIndex);
+			String className = typeParser.nextObjectFromIndex(classConstantIndex);
 			exceptions.add(new PackageInfo(className.substring(0, className.lastIndexOf('.'))));
 			exceptionClasses.add(ClassRepository.getClass(className));
 		}

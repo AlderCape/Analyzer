@@ -49,8 +49,8 @@ public class JavaClassParser {
 	private ClassInfoBase parse() {
 		try {
 			JavaClassBuilder builder = new JavaClassBuilder();
-			attributeParser = new AttributeParser(builder.getConstants());
 			typeParser = new TypeParser(builder.getConstants());
+			attributeParser = new AttributeParser(builder.getConstants(), typeParser);
 
 			createAndAddVersionInfo(in, builder);
 			createAndAddConstantPool(in, builder);
