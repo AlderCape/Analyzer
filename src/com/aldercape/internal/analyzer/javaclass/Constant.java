@@ -6,6 +6,10 @@ public class Constant {
 	private int nameIndex;
 	private Object object;
 
+	public enum ConstantAttributeType {
+		Code, RuntimeVisibleAnnotations, Exceptions, InnerClasses, LocalVariableTable, SourceFile, LineNumberTable, Signature, LocalVariableTypeTable, StackMapTable, EnclosingMethod, ConstantValue, Unkown;
+	}
+
 	@Override
 	public String toString() {
 		return "Constant [type=" + type + ", nameIndex=" + nameIndex + ", object=" + object + "]";
@@ -37,28 +41,20 @@ public class Constant {
 		return type;
 	}
 
-	public boolean isAnnotation() {
-		return type == ConstantPoolType.Utf8 && "RuntimeVisibleAnnotations".equals(object);
-	}
-
-	public boolean isException() {
-		return type == ConstantPoolType.Utf8 && "Exceptions".equals(object);
-	}
-
-	public boolean isInnerClass() {
-		return type == ConstantPoolType.Utf8 && "InnerClasses".equals(object);
-	}
-
-	public boolean isCode() {
-		return type == ConstantPoolType.Utf8 && "Code".equals(object);
-	}
-
-	public boolean isLocalVariableTable() {
-		return type == ConstantPoolType.Utf8 && "LocalVariableTable".equals(object);
-	}
-
 	public String getName(ConstantPoolInfo constants) {
 		return (String) constants.get(getNameIndex()).getObject();
+	}
+
+	public ConstantAttributeType getAttributeType() {
+		if (type != ConstantPoolType.Utf8) {
+			return ConstantAttributeType.Unkown;
+		}
+		try {
+			return ConstantAttributeType.valueOf((String) object);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Unrecognized parser requsted: " + object);
+			return ConstantAttributeType.Unkown;
+		}
 	}
 
 }

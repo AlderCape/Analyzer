@@ -2,26 +2,43 @@ package com.aldercape.internal.analyzer.javaclass.parser;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.aldercape.internal.analyzer.classmodel.AttributeInfo;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.javaclass.Constant;
-import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
+import com.aldercape.internal.analyzer.javaclass.Constant.ConstantAttributeType;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 import com.aldercape.internal.analyzer.javaclass.UndefinedAttributeType;
 
 public class AttributeParser {
 
-	private JavaClassBuilder builder;
+	private ConstantPoolInfo constantPool;
+	private Map<ConstantAttributeType, AttributeTypeParser> parsers = new HashMap<>();
 
-	public AttributeParser(JavaClassBuilder builder) {
-		this.builder = builder;
+	public AttributeParser(ConstantPoolInfo constantPool) {
+		this.constantPool = constantPool;
+		parsers.put(ConstantAttributeType.Unkown, new NullAttributeTypeParser());
+		parsers.put(ConstantAttributeType.Code, new CodeAttributeParser(this));
+		parsers.put(ConstantAttributeType.LocalVariableTable, new LocalVariableTableParser(new TypeParser(constantPool)));
+		parsers.put(ConstantAttributeType.InnerClasses, new InnerClassAttributeParser(constantPool));
+		parsers.put(ConstantAttributeType.Exceptions, new ExceptionAttributeParser(constantPool));
+		parsers.put(ConstantAttributeType.RuntimeVisibleAnnotations, new AnnotationAttributeParser(constantPool));
+		parsers.put(ConstantAttributeType.SourceFile, new SourceFileAttributeTypeParser());
+		parsers.put(ConstantAttributeType.LineNumberTable, new LineNumberTableAttributeTypeParser());
+		parsers.put(ConstantAttributeType.Signature, new SignatureAttributeTypeParser());
+		parsers.put(ConstantAttributeType.LocalVariableTypeTable, new LocalVariableTypeTableAttributeTypeParser());
+		parsers.put(ConstantAttributeType.StackMapTable, new StackMapTableAttributeTypeParser());
+		parsers.put(ConstantAttributeType.EnclosingMethod, new EnclosingMethodAttributeTypeParser());
+		parsers.put(ConstantAttributeType.ConstantValue, new ConstantValueAttributeTypeParser());
 	}
 
 	private AttributeType parseAttribute(DataInputStream in) throws IOException {
 		AttributeType attrType = new UndefinedAttributeType();
 		int nameIndex = in.readUnsignedShort();
 		if (nameIndex != 0) {
-			Constant type = builder.getConstant(nameIndex);
+			Constant type = constantPool.get(nameIndex);
 			int attrLength = in.readInt();
 			byte[] values = new byte[attrLength];
 			for (int b = 0; b < attrLength; b++) {
@@ -44,17 +61,6 @@ public class AttributeParser {
 	}
 
 	public AttributeTypeParser getAttributeTypeParser(Constant type) {
-		if (type.isCode()) {
-			return new CodeAttributeParser(new AttributeParser(builder), builder);
-		} else if (type.isLocalVariableTable()) {
-			return new LocalVariableTableParser(new TypeParser(builder));
-		} else if (type.isInnerClass()) {
-			return new InnerClassAttributeParser(builder);
-		} else if (type.isException()) {
-			return new ExceptionAttributeParser(builder);
-		} else if (type.isAnnotation()) {
-			return new AnnotationAttributeParser(builder);
-		}
-		return new NullAttributeTypeParser();
+		return parsers.get(type.getAttributeType());
 	}
 }

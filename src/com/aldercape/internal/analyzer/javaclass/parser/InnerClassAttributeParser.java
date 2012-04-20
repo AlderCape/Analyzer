@@ -7,15 +7,15 @@ import java.io.IOException;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 import com.aldercape.internal.analyzer.javaclass.InnerClassAttributeType;
-import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
 
 public class InnerClassAttributeParser implements AttributeTypeParser {
 
-	private JavaClassBuilder builder;
+	private ConstantPoolInfo constantPool;
 
-	public InnerClassAttributeParser(JavaClassBuilder builder) {
-		this.builder = builder;
+	public InnerClassAttributeParser(ConstantPoolInfo constantPool) {
+		this.constantPool = constantPool;
 	}
 
 	@Override
@@ -29,9 +29,9 @@ public class InnerClassAttributeParser implements AttributeTypeParser {
 			int innerName = in.readUnsignedShort();
 			int accessFlags = in.readUnsignedShort();
 			if (outerClassInfo > 0) {
-				outerClass = ClassRepository.getClass(builder.getConstant(outerClassInfo).getName(builder.getConstants()).replace('/', '.'));
+				outerClass = ClassRepository.getClass(constantPool.get(outerClassInfo).getName(constantPool).replace('/', '.'));
 			} else {
-				String innerClassName = builder.getConstant(innerClassInfo).getName(builder.getConstants());
+				String innerClassName = constantPool.get(innerClassInfo).getName(constantPool);
 				outerClass = ClassRepository.getClass(innerClassName.substring(0, innerClassName.indexOf('$')).replace('/', '.'));
 			}
 		}

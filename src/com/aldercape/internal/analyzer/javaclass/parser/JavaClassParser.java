@@ -19,6 +19,8 @@ import com.aldercape.internal.analyzer.javaclass.VersionInfo;
 public class JavaClassParser {
 
 	private DataInputStream in;
+	private AttributeParser attributeParser;
+	private TypeParser typeParser;
 
 	public JavaClassParser() {
 	}
@@ -47,6 +49,9 @@ public class JavaClassParser {
 	private ClassInfoBase parse() {
 		try {
 			JavaClassBuilder builder = new JavaClassBuilder();
+			attributeParser = new AttributeParser(builder.getConstants());
+			typeParser = new TypeParser(builder.getConstants());
+
 			createAndAddVersionInfo(in, builder);
 			createAndAddConstantPool(in, builder);
 			createAndAddAccessFlags(in, builder);
@@ -64,7 +69,7 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddAtrributes(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		builder.setAttributes(new AttributeParser(builder).createAttributes(in));
+		builder.setAttributes(attributeParser.createAttributes(in));
 	}
 
 	protected void createAndAddVersionInfo(DataInputStream in, JavaClassBuilder builder) throws IOException {
@@ -89,12 +94,12 @@ public class JavaClassParser {
 	}
 
 	protected void createAndAddClassName(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		String className = builder.getConstants().getConstantClassName(in.readUnsignedShort() + 1);
+		String className = builder.getConstantClassName(in.readUnsignedShort());
 		builder.setClassNameIndex(className);
 	}
 
 	protected void createAndAddSuperclass(DataInputStream in, JavaClassBuilder builder) throws IOException {
-		ClassInfoBase superClass = ClassRepository.getClass(builder.getConstants().getConstantClassName(in.readUnsignedShort() + 1));
+		ClassInfoBase superClass = ClassRepository.getClass(builder.getConstantClassName(in.readUnsignedShort()));
 		builder.setSuperclassNameIndex(superClass);
 	}
 
@@ -112,8 +117,8 @@ public class JavaClassParser {
 		for (int i = 0; i < fieldsCount; i++) {
 			int accessFlag = in.readUnsignedShort();
 			String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
-			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, new TypeParser(builder).parseTypeFromIndex(in.readUnsignedShort()));
-			AttributeInfo attributeInfo = new AttributeParser(builder).createAttributes(in);
+			FieldInfo fieldInfo = new FieldInfo(accessFlag, methodName, typeParser.parseTypeFromIndex(in.readUnsignedShort()));
+			AttributeInfo attributeInfo = attributeParser.createAttributes(in);
 			fieldInfo.setAttribute(attributeInfo);
 			builder.addFieldInfo(fieldInfo);
 
@@ -124,7 +129,7 @@ public class JavaClassParser {
 		int methodsCount = in.readUnsignedShort();
 		for (int i = 0; i < methodsCount; i++) {
 			ParsedMethodInfo info = createMethodInfo(in, builder);
-			info.setAttribute(new AttributeParser(builder).createAttributes(in));
+			info.setAttribute(attributeParser.createAttributes(in));
 			builder.addMethodInfo(info);
 		}
 	}
@@ -133,6 +138,6 @@ public class JavaClassParser {
 		int accessFlag = in.readUnsignedShort();
 		String methodName = (String) builder.getConstant(in.readUnsignedShort()).getObject();
 		Constant constant = builder.getConstant(in.readUnsignedShort());
-		return new ParsedMethodInfo(accessFlag, methodName, new TypeParser(builder).populateMethodParameters(constant));
+		return new ParsedMethodInfo(accessFlag, methodName, typeParser.populateMethodParameters(constant));
 	}
 }

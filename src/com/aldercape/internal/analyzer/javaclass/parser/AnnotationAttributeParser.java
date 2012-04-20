@@ -7,14 +7,14 @@ import java.io.IOException;
 import com.aldercape.internal.analyzer.classmodel.AttributeType;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.javaclass.AnnotationAttributeType;
-import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 
 public class AnnotationAttributeParser implements AttributeTypeParser {
 
-	private JavaClassBuilder builder;
+	private ConstantPoolInfo constantPool;
 
-	public AnnotationAttributeParser(JavaClassBuilder builder) {
-		this.builder = builder;
+	public AnnotationAttributeParser(ConstantPoolInfo constantPool) {
+		this.constantPool = constantPool;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class AnnotationAttributeParser implements AttributeTypeParser {
 		int numAnnotations = in.readUnsignedShort();
 		for (int i = 0; i < numAnnotations; i++) {
 			int annTypeIndex = in.readUnsignedShort();
-			TypeParser parser = new TypeParser(builder);
+			TypeParser parser = new TypeParser(constantPool);
 			className = parser.parseTypeFromIndex(annTypeIndex);
 			int numNameValuePairs = in.readUnsignedShort();
 		}

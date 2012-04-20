@@ -1,5 +1,6 @@
 package com.aldercape.internal.analyzer.javaclass;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,9 +15,8 @@ import com.aldercape.internal.analyzer.classmodel.MethodInfo;
 
 public class JavaClassBuilder {
 
-	private ConstantPoolInfo constants = new ConstantPoolInfo();
+	private ConstantPoolInfo constantPool = new ConstantPoolInfo();
 	private VersionInfo versionInfo;
-	private List<Constant> constantPool = new ArrayList<>();
 	private int accessFlags;
 	private String classNameIndex;
 
@@ -41,12 +41,11 @@ public class JavaClassBuilder {
 	}
 
 	public void addConstant(Constant constant) {
-		constants.add(constant);
-		this.constantPool.add(constant);
+		constantPool.add(constant);
 	}
 
 	public Constant getConstant(int index) {
-		return constants.get(index);
+		return constantPool.get(index);
 	}
 
 	public void addMethodInfo(MethodInfo info) {
@@ -78,7 +77,11 @@ public class JavaClassBuilder {
 	}
 
 	public ConstantPoolInfo getConstants() {
-		return constants;
+		return constantPool;
+	}
+
+	public String getConstantClassName(int index) throws IOException {
+		return constantPool.getConstantClassName(index + 1);
 	}
 
 }

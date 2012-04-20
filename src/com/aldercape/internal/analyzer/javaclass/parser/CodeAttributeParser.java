@@ -5,26 +5,20 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import com.aldercape.internal.analyzer.javaclass.CodeAttributeType;
-import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
 
 public class CodeAttributeParser implements AttributeTypeParser {
 
-	private JavaClassBuilder builder;
 	private AttributeParser attributeParser;
 
-	public CodeAttributeParser(AttributeParser attributeParser, JavaClassBuilder builder) {
-		this.builder = builder;
+	public CodeAttributeParser(AttributeParser attributeParser) {
 		this.attributeParser = attributeParser;
-	}
-
-	public JavaClassBuilder getBuilder() {
-		return builder;
 	}
 
 	public AttributeParser getAttributeParser() {
 		return attributeParser;
 	}
 
+	@Override
 	public CodeAttributeType parse(byte[] values) throws IOException {
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(values));
 		int maxStack = in.readUnsignedShort();

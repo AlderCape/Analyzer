@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aldercape.internal.analyzer.javaclass.Constant;
-import com.aldercape.internal.analyzer.javaclass.JavaClassBuilder;
+import com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo;
 
 public class TypeParser {
 
-	private JavaClassBuilder builder;
+	private ConstantPoolInfo constantPool;
 
-	public TypeParser(JavaClassBuilder builder) {
-		this.builder = builder;
+	public TypeParser(ConstantPoolInfo constantPool) {
+		this.constantPool = constantPool;
 	}
 
 	public String nextTypeFromString(String parameterValue) {
@@ -43,7 +43,7 @@ public class TypeParser {
 	}
 
 	public String parseTypeFromIndex(int index) {
-		return nextTypeFromString((String) builder.getConstant(index).getObject());
+		return nextTypeFromString((String) constantPool.get(index).getObject());
 	}
 
 	List<String> populateMethodParameters(Constant constant) {
@@ -63,8 +63,7 @@ public class TypeParser {
 	}
 
 	public String nextObjectFromIndex(int classConstantIndex) {
-		Constant classConstant = builder.getConstant(classConstantIndex);
-		return nextTypeFromString("L" + classConstant.getName(builder.getConstants()) + ";");
+		return nextTypeFromString("L" + constantPool.get(classConstantIndex).getName(constantPool) + ";");
 	}
 
 }
