@@ -51,6 +51,11 @@ public class ParsedClassDetails implements ClassDetails {
 	}
 
 	@Override
+	public boolean isEnumeration() {
+		return accessInfo.isEnumeration();
+	}
+
+	@Override
 	public Set<ClassInfo> getClassDependencies(ClassInfo baseClass) {
 		Set<ClassInfo> result = new HashSet<>();
 		result.add(superclassName);

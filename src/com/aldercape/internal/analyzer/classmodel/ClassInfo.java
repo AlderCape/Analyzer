@@ -24,4 +24,6 @@ public interface ClassInfo extends Comparable<ClassInfo>, TypeInfo {
 
 	public Set<MethodInfo> getMethods();
 
+	public boolean isEnumeration();
+
 }

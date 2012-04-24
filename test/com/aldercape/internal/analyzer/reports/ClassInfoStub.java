@@ -113,4 +113,9 @@ public class ClassInfoStub implements ClassInfo {
 	public Set<MethodInfo> getMethods() {
 		return methods;
 	}
+
+	@Override
+	public boolean isEnumeration() {
+		return false;
+	}
 }

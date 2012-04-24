@@ -24,12 +24,12 @@ import testdata.ClassWithRefInMethod;
 import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
+import testdata.enums.TestEnum;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
 import com.aldercape.internal.analyzer.classmodel.ClassInfoBase;
 import com.aldercape.internal.analyzer.classmodel.ClassRepository;
 import com.aldercape.internal.analyzer.classmodel.PackageInfo;
-import com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser;
 
 public class JavaClassParserTest {
 
@@ -241,5 +241,16 @@ public class JavaClassParserTest {
 		expectedPackages.add(new ClassInfoBase("java.lang.Object"));
 		expectedPackages.add(new ClassInfoBase("java.util.Date"));
 		assertEquals(expectedPackages, result.getClassDependencies());
+	}
+
+	@Test
+	public void testEnumWithNoDependencies() throws Exception {
+		ClassInfo first = parser.parse(TestEnum.class.getName());
+		Set<ClassInfo> expectedDependencies = new HashSet<>();
+		expectedDependencies.add(new ClassInfoBase("java.lang.String"));
+		expectedDependencies.add(new ClassInfoBase("java.lang.Integer"));
+		expectedDependencies.add(new ClassInfoBase("java.lang.Enum"));
+		assertEquals(expectedDependencies, first.getClassDependencies());
+		assertTrue(first.isEnumeration());
 	}
 }

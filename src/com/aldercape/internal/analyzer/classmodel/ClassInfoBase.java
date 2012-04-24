@@ -64,9 +64,9 @@ public class ClassInfoBase implements ClassInfo {
 	@Override
 	public Set<ClassInfo> getClassDependencies() {
 		Set<ClassInfo> result = new HashSet<>(details.getClassDependencies(this));
-		for (ClassInfo innerClass : innerClasses) {
-			result.addAll(innerClass.getClassDependencies());
-		}
+		// for (ClassInfo innerClass : innerClasses) {
+		// result.addAll(innerClass.getClassDependencies());
+		// }
 		return result;
 	}
 
@@ -78,6 +78,11 @@ public class ClassInfoBase implements ClassInfo {
 	@Override
 	public boolean isInnerClass() {
 		return details.isInnerClass() && !details.getEnclosingClass().equals(this);
+	}
+
+	@Override
+	public boolean isEnumeration() {
+		return details.isEnumeration();
 	}
 
 	public void setDetails(ClassDetails details) {

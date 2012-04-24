@@ -1,9 +1,7 @@
 package com.aldercape.internal.analyzer.classmodel;
 
-
 import java.util.Collections;
 import java.util.Set;
-
 
 public interface ClassDetails {
 
@@ -16,6 +14,11 @@ public interface ClassDetails {
 
 		@Override
 		public boolean isAbstract() {
+			return false;
+		}
+
+		@Override
+		public boolean isEnumeration() {
 			return false;
 		}
 
@@ -45,4 +48,6 @@ public interface ClassDetails {
 	public ClassInfo getEnclosingClass();
 
 	public Set<MethodInfo> getMethods();
+
+	public boolean isEnumeration();
 }

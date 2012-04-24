@@ -30,9 +30,9 @@ public class JavaClassBuilder {
 		ParsedClassDetails parsedClassDetails = new ParsedClassDetails(accessFlags, superclass, interfaces, fields, methods, attributes, versionInfo);
 		ClassInfoBase result = repository.getClass(classNameIndex);
 		result.setDetails(parsedClassDetails);
-		// if (result.isInnerClass()) {
-		// result.getEnclosingClass().addInnerClass(result);
-		// }
+		if (result.isInnerClass()) {
+			result.getEnclosingClass().addInnerClass(result);
+		}
 		return result;
 	}
 
