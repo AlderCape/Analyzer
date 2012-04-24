@@ -1,9 +1,7 @@
 package com.aldercape.internal.analyzer.classmodel;
 
-
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class ClassInfoBase implements ClassInfo {
 

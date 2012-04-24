@@ -33,8 +33,6 @@ public class Dependencies {
 
 	public Dependencies() {
 		baseIgnoredPackages = new HashSet<>();
-		baseIgnoredPackages.add(new PackageInfo("java.lang"));
-		baseIgnoredPackages.add(new PackageInfo("java.util"));
 		baseIgnoredPackages.add(new PackageInfo("org.junit"));
 	}
 
@@ -60,16 +58,16 @@ public class Dependencies {
 
 	protected void createReports() throws IOException {
 		dependencyReports.add(createPackageDependencyReport("project"));
-		dependencyReports.add(createClassDependencyReport(getPackageName(ClassInfo.class), getBaseIgnoredPackages()));
-		dependencyReports.add(createClassDependencyReport(getPackageName(ConstantPoolInfo.class), getBaseIgnoredPackages()));
-		dependencyReports.add(createClassDependencyReport(getPackageName(JavaClassParser.class), getBaseIgnoredPackages()));
+		dependencyReports.add(createClassDependencyReport(getPackageName(ClassInfo.class)));
+		dependencyReports.add(createClassDependencyReport(getPackageName(ConstantPoolInfo.class)));
+		dependencyReports.add(createClassDependencyReport(getPackageName(JavaClassParser.class)));
 	}
 
 	protected String getPackageName(Class<?> clazz) {
 		return clazz.getPackage().getName();
 	}
 
-	protected DependencyReport<ClassInfo> createClassDependencyReport(final String packageName, Set<PackageInfo> ignoredPackages) throws IOException {
+	protected DependencyReport<ClassInfo> createClassDependencyReport(final String packageName) throws IOException {
 		final ClassDependencyReport baseReport = new ClassDependencyReport(packageName);
 		repository.addListener(new ClassRepositoryListener() {
 
@@ -81,7 +79,10 @@ public class Dependencies {
 			}
 		});
 
-		return new FilteredDependencyReport<>(baseReport, ignoredPackages);
+		FilteredDependencyReport<ClassInfo> result = new FilteredDependencyReport<>(baseReport, getBaseIgnoredPackages());
+
+		result.ignoreParentPackage(new PackageInfo("java"));
+		return result;
 	}
 
 	protected DependencyReport<PackageInfo> createPackageDependencyReport(String reportName) throws IOException {
@@ -93,15 +94,11 @@ public class Dependencies {
 			}
 		});
 		FilteredDependencyReport<PackageInfo> report = new FilteredDependencyReport<>(baseReport);
-		report.ignorePackage(new PackageInfo("java.lang"));
-		report.ignorePackage(new PackageInfo("java.util"));
-		report.ignorePackage(new PackageInfo("org.junit"));
-		report.ignorePackage(new PackageInfo("java.io"));
-		report.ignorePackage(new PackageInfo("java.util.concurrent"));
-		report.ignorePackage(new PackageInfo("testdata"));
-		report.ignorePackage(new PackageInfo("testdata.filefinder"));
-		report.ignorePackage(new PackageInfo("testdata.filefinder.multiplefiles"));
-		report.ignorePackage(new PackageInfo("testdata.filefinder.singleclasspackage"));
+		report.ignoreParentPackage(new PackageInfo("java.lang"));
+		report.ignoreParentPackage(new PackageInfo("java.util"));
+		report.ignoreParentPackage(new PackageInfo("org.junit"));
+		report.ignoreParentPackage(new PackageInfo("java.io"));
+		report.ignoreParentPackage(new PackageInfo("testdata"));
 		return report;
 	}
 

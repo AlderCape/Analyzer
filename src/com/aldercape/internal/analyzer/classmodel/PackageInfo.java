@@ -8,6 +8,13 @@ public class PackageInfo implements Comparable<PackageInfo>, TypeInfo {
 		this.name = name;
 	}
 
+	public boolean isParentTo(PackageInfo info) {
+		if (!info.getPackage().getName().startsWith(getName())) {
+			return false;
+		}
+		return info.getPackage().getName().charAt(name.length()) == '.';
+	}
+
 	@Override
 	public String getName() {
 		return name;

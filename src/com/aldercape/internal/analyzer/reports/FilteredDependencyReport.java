@@ -13,6 +13,8 @@ public class FilteredDependencyReport<T extends TypeInfo> implements DependencyR
 
 	private DependencyReport<T> baseReport;
 	private Set<PackageInfo> ignoredPackages = new HashSet<>();
+	private Set<PackageInfo> includedPackages = new HashSet<>();
+	private Set<PackageInfo> ignoredParentPackages = new HashSet<>();
 
 	public FilteredDependencyReport(DependencyReport<T> baseReport) {
 		this.baseReport = baseReport;
@@ -23,18 +25,49 @@ public class FilteredDependencyReport<T extends TypeInfo> implements DependencyR
 		this.ignoredPackages.addAll(ignoredPackages);
 	}
 
-	public SortedSet<T> filter(SortedSet<? extends T> original) {
+	private SortedSet<T> filter(SortedSet<? extends T> original) {
 		SortedSet<T> result = new TreeSet<>();
 		for (T info : original) {
-			if (!ignoredPackages.contains(info.getPackage())) {
+			if (isIncluded(info)) {
 				result.add(info);
 			}
 		}
 		return result;
 	}
 
+	private boolean isIncluded(T info) {
+		if (includedPackages.contains(info.getPackage())) {
+			return true;
+		}
+		if (ignoredPackages.contains(info.getPackage())) {
+			return false;
+		}
+		if (ignoredParentPackages.contains(info.getPackage())) {
+			return false;
+		}
+		return isParentPackageIncluded(info.getPackage());
+	}
+
+	private boolean isParentPackageIncluded(PackageInfo info) {
+		for (PackageInfo packageInfo : ignoredParentPackages) {
+
+			if (packageInfo.isParentTo(info)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void ignorePackage(PackageInfo packageInfo) {
 		ignoredPackages.add(packageInfo);
+	}
+
+	public void includePackage(PackageInfo packageInfo) {
+		includedPackages.add(packageInfo);
+	}
+
+	public void ignoreParentPackage(PackageInfo packageInfo) {
+		ignoredParentPackages.add(packageInfo);
 	}
 
 	@Override
