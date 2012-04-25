@@ -1,6 +1,5 @@
 package com.aldercape.internal.analyzer.reports;
 
-import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -11,14 +10,18 @@ public class SingleClassReport implements ClassConsumer {
 	protected SortedSet<ClassInfo> classes = new TreeSet<>();
 
 	public SortedSet<ClassInfo> getIncludedTypes() {
-		return Collections.unmodifiableSortedSet(classes);
+		SortedSet<ClassInfo> result = new TreeSet<>();
+		for (ClassInfo info : classes) {
+			if (isValidClass(info)) {
+				result.add(info);
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public void addClass(ClassInfo classInfo) {
-		if (isValidClass(classInfo)) {
-			classes.add(classInfo);
-		}
+		classes.add(classInfo);
 	}
 
 	protected boolean isValidClass(ClassInfo classInfo) {

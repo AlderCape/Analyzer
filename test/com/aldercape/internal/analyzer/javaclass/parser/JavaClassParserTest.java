@@ -24,6 +24,7 @@ import testdata.ClassWithRefInMethod;
 import testdata.ClassWithTwoConstructors;
 import testdata.EmptyClass;
 import testdata.EmptyInterface;
+import testdata.enums.EnumWithAbstractMethod;
 import testdata.enums.TestEnum;
 
 import com.aldercape.internal.analyzer.classmodel.ClassInfo;
@@ -252,5 +253,12 @@ public class JavaClassParserTest {
 		expectedDependencies.add(new ClassInfoBase("java.lang.Enum"));
 		assertEquals(expectedDependencies, first.getClassDependencies());
 		assertTrue(first.isEnumeration());
+	}
+
+	@Test
+	public void testEnumInnerClass() throws Exception {
+		ClassInfo first = parser.parse(EnumWithAbstractMethod.class.getName() + "$1");
+		assertTrue(first.isEnumeration());
+		assertTrue(first.isInnerClass());
 	}
 }

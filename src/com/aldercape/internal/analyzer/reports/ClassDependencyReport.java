@@ -18,6 +18,9 @@ public class ClassDependencyReport extends SingleClassReport implements Dependen
 
 	@Override
 	protected boolean isValidClass(ClassInfo classInfo) {
+		if (classInfo.isEnumeration() && classInfo.isInnerClass()) {
+			return false;
+		}
 		return !classInfo.isInnerClass();
 	}
 

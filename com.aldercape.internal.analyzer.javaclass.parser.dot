@@ -1,6 +1,5 @@
 digraph G {
 "com.aldercape.internal.analyzer.javaclass.parser.AnnotationAttributeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.AnnotationAttributeParser\n(DI 0.111)"];
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.AttributeParser\n(DI 0.154)"];
 "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser\n(DI 0)"];
 "com.aldercape.internal.analyzer.javaclass.parser.CodeAttributeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.CodeAttributeParser\n(DI 0.143)"];
 "com.aldercape.internal.analyzer.javaclass.parser.ConstantValueAttributeTypeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.ConstantValueAttributeTypeParser\n(DI 0.5)"];
@@ -8,7 +7,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.parser.ExceptionAttributeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.ExceptionAttributeParser\n(DI 0.1)"];
 "com.aldercape.internal.analyzer.javaclass.parser.InnerClassAttributeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.InnerClassAttributeParser\n(DI 0.2)"];
 "com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser" [label="com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser\n(DI 0.059)"];
-"com.aldercape.internal.analyzer.javaclass.parser.JavaClassParserTest" [label="com.aldercape.internal.analyzer.javaclass.parser.JavaClassParserTest\n(DI 0.125)"];
 "com.aldercape.internal.analyzer.javaclass.parser.LineNumberTableAttributeTypeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.LineNumberTableAttributeTypeParser\n(DI 0.5)"];
 "com.aldercape.internal.analyzer.javaclass.parser.LocalVariableTableParser" [label="com.aldercape.internal.analyzer.javaclass.parser.LocalVariableTableParser\n(DI 0.1)"];
 "com.aldercape.internal.analyzer.javaclass.parser.LocalVariableTypeTableAttributeTypeParser" [label="com.aldercape.internal.analyzer.javaclass.parser.LocalVariableTypeTableAttributeTypeParser\n(DI 0.5)"];
@@ -20,13 +18,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.parser.AnnotationAttributeParser" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository";
 "com.aldercape.internal.analyzer.javaclass.parser.AnnotationAttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.AnnotationAttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.TypeParser";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.classmodel.AttributeInfo";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.classmodel.AttributeType";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.javaclass.Constant";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.javaclass.ConstantPoolInfo";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser";
-"com.aldercape.internal.analyzer.javaclass.parser.AttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.TypeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.CodeAttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.CodeAttributeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.ConstantValueAttributeTypeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser";
@@ -50,8 +41,6 @@ digraph G {
 "com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser" -> "com.aldercape.internal.analyzer.javaclass.ParsedMethodInfo";
 "com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser" -> "com.aldercape.internal.analyzer.javaclass.parser.TypeParser";
-"com.aldercape.internal.analyzer.javaclass.parser.JavaClassParserTest" -> "com.aldercape.internal.analyzer.classmodel.ClassInfo";
-"com.aldercape.internal.analyzer.javaclass.parser.JavaClassParserTest" -> "com.aldercape.internal.analyzer.javaclass.parser.JavaClassParser";
 "com.aldercape.internal.analyzer.javaclass.parser.LineNumberTableAttributeTypeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.AttributeTypeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.LineNumberTableAttributeTypeParser" -> "com.aldercape.internal.analyzer.javaclass.parser.NullAttributeTypeParser";
 "com.aldercape.internal.analyzer.javaclass.parser.LocalVariableTableParser" -> "com.aldercape.internal.analyzer.classmodel.ClassRepository";

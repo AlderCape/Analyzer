@@ -21,6 +21,9 @@ public class PackageDependencyReport implements DependencyReport<PackageInfo>, C
 
 	@Override
 	public void addClass(ClassInfo info) {
+		if (info.isEnumeration() && info.isInnerClass()) {
+			return;
+		}
 		packageDependencyInfoFor(info.getPackage()).add(info);
 
 		for (PackageInfo packageName : info.getPackageDependencies()) {
@@ -85,6 +88,7 @@ public class PackageDependencyReport implements DependencyReport<PackageInfo>, C
 		return metrics;
 	}
 
+	@Override
 	public String getReportName() {
 		return reportName;
 	}
